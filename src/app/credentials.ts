@@ -7,4 +7,4 @@ export const FIREBASE_CONFIG= {
         storageBucket: "areyoubusy-91f24.appspot.com",
         messagingSenderId: "951387861736"
       }
-    }
+    };
