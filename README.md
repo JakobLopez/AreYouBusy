@@ -2,9 +2,9 @@
 
 Things To Install:
 
-* npm https://www.npmjs.com/get-npm     ```npm install -g iconic```
+* npm https://www.npmjs.com/get-npm     
 * Visual Studio Code https://code.visualstudio.com/download
 * Gitbash https://github.com/msysgit/msysgit/releases/
-* Ionic:
+* Ionic:```npm install -g iconic```
 
 
