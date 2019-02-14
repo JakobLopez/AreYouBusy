@@ -13,11 +13,9 @@
 
     <ion-item class="text-fields">
       <ion-label floating>Password</ion-label>
-      <ion-input type="password" formControlName="password"  id="textInput"></ion-input>
+      <ion-input type="password" formControlName="password" class="form-controll" id="textInput"></ion-input>
     </ion-item>
-
-    <br>
-
+    
     <button ion-button full class="submit-button" type="submit" (click)=tryLogin(loginForm.value)>
       Login
     </button>
