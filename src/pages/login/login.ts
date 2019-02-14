@@ -3,9 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
 
-
-
-
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -21,6 +18,7 @@ export class LoginPage {
     public auth: AuthProvider) {
   }
 
+  //Create login form upon loading page
   ionViewWillLoad() {
     this.loginForm = this.formBuilder.group({
       email: new FormControl(),
@@ -28,6 +26,7 @@ export class LoginPage {
     });
   }
 
+  //Attempts to login user given credentials from loginForm
   async tryLogin(credentials) {
     try {
       await this.auth.login(credentials);
