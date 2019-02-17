@@ -23,8 +23,7 @@ export class AuthProvider {
   async register(credentials) {
     try {
       await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
-      console.log("created");
-
+      console.log("Successfully created");
     }
     catch (e) {
       throw (e)

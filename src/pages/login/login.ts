@@ -32,10 +32,16 @@ export class LoginPage {
     try {
       await this.auth.login(credentials);
       console.log("success")
+      this.navCtrl.setRoot('LoginPage');
     } catch (e) {
       console.log(e);
       this.errorMessage = e.message;
     }
+  }
+
+  //Sends user to RegistrationPage
+  goToRegistration(){
+    this.navCtrl.push('RegistrationPage');
   }
 
 }
