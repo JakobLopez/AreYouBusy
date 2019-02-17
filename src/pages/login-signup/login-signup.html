@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-navbar no-border-bottom>
+    <ion-title>
+      Authentication
+    </ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="loginSignUp">
+
+      <ion-segment-button value="login">
+        Login
+      </ion-segment-button>
+
+      <ion-segment-button value="signUp">
+        Sign Up
+      </ion-segment-button>
+
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content padding>
+
+  <div [ngSwitch]="loginSignUp">
+
+    <form [formGroup]="loginForm" (submit)="tryLogin(loginForm.value)" novalidate *ngSwitchCase="'login'">
+
+      <ion-item>
+
+        <ion-label stacked> Email </ion-label>
+        <ion-input formControlName="email" type="email"  placeholder="username@gmail.com"
+          [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
+
+      </ion-item>
+
+      <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)">
+        <p> Please enter a valid email.</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked> Password </ion-label>
+        <ion-input formControlName="password" type="password" placeholder="password"
+          [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)"></ion-input>
+      </ion-item>
+
+      <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)">
+        <p> Your password needs more than 6 characters. </p>
+      </ion-item>
+
+      <br>
+
+      <button ion-button block color="navBar" type="submit">
+        Login
+      </button>
+
+    </form>
+  
+
+    <form [formGroup]="signUpForm" (submit)="tryRegister(value)" novalidate *ngSwitchCase="'signUp'">
+
+      <ion-item>
+
+        <ion-label stacked> Name </ion-label>
+        <ion-input formControlName="name" type="text" placeholder="Suri"
+          [class.invalid]="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)"></ion-input>
+
+      </ion-item>
+
+      <ion-item class="error-message" *ngIf="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)">
+        <p> Please enter a valid Name.</p>
+      </ion-item>
+
+      <ion-item>
+
+        <ion-label stacked> Email </ion-label>
+        <ion-input  formControlName="email" type="email" placeholder="username@gmail.com"
+          [class.invalid]="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)"></ion-input>
+
+      </ion-item>
+
+      <ion-item class="error-message" *ngIf="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)">
+        <p> Please enter a valid email.</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked> Password </ion-label>
+        <ion-input formControlName="password" type="password" placeholder="Password"
+          [class.invalid]="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)"></ion-input>
+      </ion-item>
+
+      <ion-item class="error-message" *ngIf="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)">
+        <p> Your password needs more than 6 characters. </p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked> Confirm Password </ion-label>
+        <ion-input formControlName="confirmPassword" type="password" 
+          placeholder="Confirm Password" [class.invalid]="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)"></ion-input>
+      </ion-item>
+
+      <ion-item class="error-message" *ngIf="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
+        <p> Your password needs more than 6 characters. </p>
+      </ion-item>
+
+      <ion-item class="error-message" *ngIf="signUpForm.errors && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
+        <p> Your passwords do not match. </p>
+      </ion-item>
+
+
+      <br>
+
+      <button ion-button block color="navBar" type="submit">
+        Sign Up
+      </button>
+
+    </form>
+
+  </div>
+
+</ion-content>
