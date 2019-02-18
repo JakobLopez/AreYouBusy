@@ -40,7 +40,6 @@ export class LoginSignupPage {
   }
 
 
-
   //Attempts to login user given credentials from loginForm
   async tryLogin(credentials) {
     try {
@@ -62,10 +61,10 @@ export class LoginSignupPage {
       await this.auth.register(value);
 
       //Once the user signs up, pass them to to login segment to login. Could modify to auto-login the user.
-      this.loginSignUp = 'login';
+      //this.loginSignUp = 'login';
       //this.successMessage = "Your account has been created.";
 
-      //this.goLoginPage();
+      this.navCtrl.push('HomePage');
     }
     catch (e) {
       console.log(e);

@@ -59,7 +59,7 @@
     </form>
   
 
-    <form [formGroup]="signUpForm" (submit)="tryRegister(value)" novalidate *ngSwitchCase="'signUp'">
+    <form [formGroup]="signUpForm" (submit)="tryRegister(signUpForm.value)" novalidate *ngSwitchCase="'signUp'">
 
       <ion-item>
 
@@ -76,7 +76,7 @@
       <ion-item>
 
         <ion-label stacked> Email </ion-label>
-        <ion-input  formControlName="email" type="email" placeholder="username@gmail.com"
+        <ion-input formControlName="email" type="email" placeholder="username@gmail.com"
           [class.invalid]="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)"></ion-input>
 
       </ion-item>
