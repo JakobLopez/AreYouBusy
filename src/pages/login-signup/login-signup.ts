@@ -11,10 +11,17 @@ import { AuthProvider } from '../../providers/auth/auth'
   templateUrl: 'login-signup.html',
 })
 export class LoginSignupPage {
-  public loginForm: FormGroup;
-  public loginSignUp: string = "login";
-  public signUpForm: FormGroup;
-  public submitAttempt: boolean = false;
+  loginForm: FormGroup;
+  loginSignUp: string = "login";
+  signUpForm: FormGroup;
+  submitAttempt: boolean = false;
+
+  accounts = [
+    { val: 'Student', isChecked: true },
+    { val: 'Teacher', isChecked: false }
+  ];
+  chosenAccount: any;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -29,7 +36,8 @@ export class LoginSignupPage {
       name: ['', Validators.compose([Validators.minLength(1), Validators.required])],
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      confirmPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])]
+      confirmPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])],
+      checkbox : ['false', Validators.required]
     }, { validator: ValidatorProvider.matchingPasswords('password', 'confirmPassword') })
     
   }
@@ -38,7 +46,6 @@ export class LoginSignupPage {
     console.log('ionViewDidLoad LoginSignupPage');
 
   }
-
 
   //Attempts to login user given credentials from loginForm
   async tryLogin(credentials) {
@@ -65,11 +72,18 @@ export class LoginSignupPage {
       //this.successMessage = "Your account has been created.";
 
       this.navCtrl.push('HomePage');
+
+      console.log(this.chosenAccount)
     }
     catch (e) {
       console.log(e);
       //this.errorMessage = e.message;
     }
+  }
+
+  //Sets the value for the account type chosen in checkbox
+  setValue(val){
+    this.chosenAccount = val;
   }
 
 }
