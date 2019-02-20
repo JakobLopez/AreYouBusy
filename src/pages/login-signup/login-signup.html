@@ -123,22 +123,19 @@
         <ion-list-header>
           Account Type
         </ion-list-header>
-      
         <ion-item *ngFor="let entry of account">
           <ion-label>{{entry.val}}</ion-label>
           <ion-radio (ionSelect)="setValue(entry.val)"></ion-radio>
         </ion-item>
       </ion-list>
+      
       <br>
 
       <button ion-button block color="gold" type="submit">
         Sign Up
       </button>
-
     </form>
-
   </div>
- 
 </ion-content>
 </div>
 
