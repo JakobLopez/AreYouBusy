@@ -12,6 +12,7 @@ import { FIREBASE_CONFIG } from './credentials'
 import { MyApp } from './app.component';
 import { AuthProvider } from '../providers/auth/auth';
 import { ValidatorProvider } from '../providers/validator/validator';
+import { DatabaseProvider } from '../providers/database/database';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ValidatorProvider } from '../providers/validator/validator';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    ValidatorProvider
+    ValidatorProvider,
+    DatabaseProvider
   ]
 })
 export class AppModule {}

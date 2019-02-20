@@ -29,7 +29,7 @@
       <form [formGroup]="loginForm" (submit)="tryLogin(loginForm.value)" novalidate *ngSwitchCase="'login'">
         <ion-item>
           <!-- <ion-label stacked> Email </ion-label> -->
-          <ion-input formControlName="email" type="email" placeholder="username@gmail.com" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
+          <ion-input transparent formControlName="email" type="email" placeholder="username@gmail.com" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
 
         </ion-item>
 

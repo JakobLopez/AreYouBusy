@@ -16,10 +16,6 @@ export class LoginSignupPage {
   signUpForm: FormGroup;
   submitAttempt: boolean = false;
 
-  accounts = [
-    { val: 'Student', isChecked: false },
-    { val: 'Teacher', isChecked: false }
-  ];
   account = [
     { val: 'Student' },
     { val: 'Teacher' }
@@ -70,6 +66,7 @@ export class LoginSignupPage {
       this.submitAttempt = true;
       
       await this.auth.register(value);
+      console.log(value)
 
       //Once the user signs up, pass them to to login segment to login. Could modify to auto-login the user.
       //this.loginSignUp = 'login';

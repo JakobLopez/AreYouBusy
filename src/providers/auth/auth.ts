@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { DatabaseProvider } from '../database/database';
 
 
 @Injectable()
 export class AuthProvider {
   uid: String;
 
-  constructor(public afAuth: AngularFireAuth) {
+  constructor(public afAuth: AngularFireAuth,
+    public db: DatabaseProvider) {
     console.log('Hello AuthProvider Provider');
   }
 
@@ -20,10 +22,11 @@ export class AuthProvider {
   * @Returns:
   *    Error if couldn't create account
   **/
-  async register(credentials) {
+  async register(credentials:any) {
     try {
-      await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
-      console.log("Successfully created");
+      let newuser = await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
+      await this.db.setUserDoc(newuser.user.uid, credentials)
+      console.log("Authenticated user")
     }
     catch (e) {
       throw (e)
