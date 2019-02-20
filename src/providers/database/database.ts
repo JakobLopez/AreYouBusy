@@ -28,7 +28,7 @@ export class DatabaseProvider {
         creation_time: new Date()
       }
 
-      await this.db.collection('Students').doc(id).set(obj);
+      await this.db.collection(`${obj.type}s`).doc(id).set(obj);
 
     } catch (e) {
       throw e;
