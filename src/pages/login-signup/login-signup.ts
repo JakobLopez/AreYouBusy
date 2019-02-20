@@ -41,7 +41,7 @@ export class LoginSignupPage {
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
       confirmPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      checkbox : ['false', Validators.required]
+      type : ['', Validators.required]
     }, { validator: ValidatorProvider.matchingPasswords('password', 'confirmPassword') })
     
   }

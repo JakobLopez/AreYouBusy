@@ -14,7 +14,12 @@ page-login-signup {
     #tint{
         background-color: rgba(0, 0, 0, 0.6);
     }
-    .type{
-        display:inline;
+    .col{
+        display:inline-block;
     }
+
+    .error-message{
+        color:red;
+    }
+
 }

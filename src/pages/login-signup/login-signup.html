@@ -4,7 +4,7 @@
 
     <ion-title padding center text center>
 
-      <ion-toolbar no-border-top  transparent>
+      <ion-toolbar no-border-top transparent>
         <ion-segment [(ngModel)]="loginSignUp">
           <ion-segment-button value="login">
             Login
@@ -50,7 +50,7 @@
 
         <br>
 
-        <button ion-button block color="gold" type="submit">
+        <button ion-button block [disabled]="!loginForm.valid" color="gold" type="submit">
           Login
         </button>
 
@@ -66,7 +66,7 @@
         </ion-item>
 
         <ion-item class="error-message" *ngIf="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)">
-          <p> Please enter a valid Name.</p>
+          <p color="danger"> Please enter a valid Name.</p>
         </ion-item>
 
         <br>
@@ -110,21 +110,17 @@
 
         <br>
 
-        <ion-list radio-group>
-          <ion-list-header color="white">
-            Account Type
-          </ion-list-header>
-          <ion-row class="type">
-            <ion-item *ngFor="let entry of account">
-              <ion-label>{{entry.val}}</ion-label>
-              <ion-radio (ionSelect)="setValue(entry.val)"></ion-radio>
-            </ion-item>
-          </ion-row>
-        </ion-list>
+        <ion-row formControlName='type' radio-group >
+          <ion-item *ngFor="let entry of account" class="col">
+            <ion-label>{{entry.val}}</ion-label>
+            <ion-radio value="{{entry.val}}" (ionSelect)="setValue(entry.val)"></ion-radio>
+          </ion-item>
+
+        </ion-row>
 
         <br>
 
-        <button ion-button block color="gold" type="submit">
+        <button ion-button block [disabled]="!signUpForm.valid" color="gold" type="submit">
           Sign Up
         </button>
       </form>
