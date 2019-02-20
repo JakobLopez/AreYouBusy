@@ -103,17 +103,17 @@
         <p> Your passwords do not match. </p>
       </ion-item>
 
+      <ion-list radio-group >
+        <ion-list-header>
+          Account Type
+        </ion-list-header>
 
-      <!-- Checkboxes in a List -->
-      <ion-list>
-        <ion-label stacked>Account Type</ion-label>
-        <ion-item *ngFor="let entry of accounts">
+        <ion-item *ngFor="let entry of account">
           <ion-label>{{entry.val}}</ion-label>
-          <ion-checkbox  formControlName="checkbox" slot="end" checked="false" (click)="setValue(entry.val)"></ion-checkbox>
+          <ion-radio (ionSelect)="setValue(entry.val)"></ion-radio>
         </ion-item>
       </ion-list>
-
-
+      
       <br>
 
       <button ion-button block color="navBar" type="submit">

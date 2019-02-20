@@ -17,8 +17,12 @@ export class LoginSignupPage {
   submitAttempt: boolean = false;
 
   accounts = [
-    { val: 'Student', isChecked: true },
+    { val: 'Student', isChecked: false },
     { val: 'Teacher', isChecked: false }
+  ];
+  account = [
+    { val: 'Student' },
+    { val: 'Teacher' }
   ];
   chosenAccount: any;
 
@@ -84,6 +88,8 @@ export class LoginSignupPage {
   //Sets the value for the account type chosen in checkbox
   setValue(val){
     this.chosenAccount = val;
+    console.log(val);
+
   }
 
 }
