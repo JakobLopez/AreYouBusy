@@ -32,8 +32,9 @@
 
       <ion-item >
 
-        <ion-label stacked> Email </ion-label>
-        <ion-input formControlName="email" type="email" placeholder="username@gmail.com" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
+        <!-- <ion-label stacked> Email </ion-label> -->
+        <ion-input formControlName="email" type="email"  placeholder="username@gmail.com"
+          [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
 
       </ion-item>
       
@@ -44,8 +45,9 @@
       <br>
       
       <ion-item>
-        <ion-label stacked> Password </ion-label>
-        <ion-input formControlName="password" type="password" placeholder="password" [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)"></ion-input>
+        <!-- <ion-label stacked> Password </ion-label> -->
+        <ion-input formControlName="password" type="password" placeholder="password"
+          [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)"></ion-input>
       </ion-item>
 
       <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)">
@@ -59,14 +61,15 @@
       </button>
 
     </form>
-
+  
 
     <form [formGroup]="signUpForm" (submit)="tryRegister(signUpForm.value)" novalidate *ngSwitchCase="'signUp'">
 
       <ion-item>
 
-        <ion-label stacked> Name </ion-label>
-        <ion-input formControlName="name" type="text" placeholder="Suri" [class.invalid]="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)"></ion-input>
+        <!-- <ion-label stacked> Name </ion-label> -->
+        <ion-input formControlName="name" type="text" placeholder="Name"
+          [class.invalid]="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)"></ion-input>
 
       </ion-item>
 
@@ -78,8 +81,9 @@
 
       <ion-item>
 
-        <ion-label stacked> Email </ion-label>
-        <ion-input formControlName="email" type="email" placeholder="username@gmail.com" [class.invalid]="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)"></ion-input>
+        <!-- <ion-label stacked> Email </ion-label> -->
+        <ion-input formControlName="email" type="email" placeholder="username@gmail.com"
+          [class.invalid]="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)"></ion-input>
 
       </ion-item>
 
@@ -90,8 +94,9 @@
       <br>
 
       <ion-item>
-        <ion-label stacked> Password </ion-label>
-        <ion-input formControlName="password" type="password" placeholder="Password" [class.invalid]="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)"></ion-input>
+        <!-- <ion-label stacked> Password </ion-label> -->
+        <ion-input formControlName="password" type="password" placeholder="Password"
+          [class.invalid]="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)"></ion-input>
       </ion-item>
 
       <ion-item class="error-message" *ngIf="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)">
@@ -101,8 +106,9 @@
       <br>
 
       <ion-item>
-        <ion-label stacked> Confirm Password </ion-label>
-        <ion-input formControlName="confirmPassword" type="password" placeholder="Confirm Password" [class.invalid]="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)"></ion-input>
+        <!-- <ion-label stacked> Confirm Password </ion-label> -->
+        <ion-input formControlName="confirmPassword" type="password" 
+          placeholder="Confirm Password" [class.invalid]="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)"></ion-input>
       </ion-item>
 
       <ion-item class="error-message" *ngIf="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
@@ -112,18 +118,17 @@
       <ion-item class="error-message" *ngIf="signUpForm.errors && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
         <p> Your passwords do not match. </p>
       </ion-item>
-
+      
       <ion-list radio-group >
         <ion-list-header>
           Account Type
         </ion-list-header>
-
+      
         <ion-item *ngFor="let entry of account">
           <ion-label>{{entry.val}}</ion-label>
           <ion-radio (ionSelect)="setValue(entry.val)"></ion-radio>
         </ion-item>
       </ion-list>
-      
       <br>
 
       <button ion-button block color="gold" type="submit">
@@ -136,4 +141,6 @@
  
 </ion-content>
 </div>
+
+
 
