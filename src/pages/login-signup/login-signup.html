@@ -1,47 +1,51 @@
 <ion-header>
-  <ion-navbar no-border-bottom>
-    <ion-title>
-      Authentication
+  <ion-navbar no-border-bottom transparent>
+    <ion-title padding center text center>
+      
+      <ion-toolbar no-border-top [color]="gold">
+        <ion-segment [(ngModel)]="loginSignUp" >
+          <ion-segment-button value="login">
+            Login
+          </ion-segment-button>
+    
+          <ion-segment-button value="signUp">
+            Sign Up
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
+
     </ion-title>
   </ion-navbar>
-
-  <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="loginSignUp">
-
-      <ion-segment-button value="login">
-        Login
-      </ion-segment-button>
-
-      <ion-segment-button value="signUp">
-        Sign Up
-      </ion-segment-button>
-
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 
-
-
-<ion-content padding>
-
-  <div [ngSwitch]="loginSignUp">
+<div id="background">
+<ion-content padding  id="tint">
+  <div [ngSwitch]="loginSignUp"  id="login">
+  
+  <!-- formats MSU emblem and header -->
+  <div style="text-align:center">
+  <img height = 150 width = 150 src="../../assets/imgs/MSUemblem.png">
+  <h1 style="color:white">AreYouBusy</h1>
+  </div>
 
     <form [formGroup]="loginForm" (submit)="tryLogin(loginForm.value)" novalidate *ngSwitchCase="'login'">
 
-      <ion-item>
+      <ion-item >
 
-        <ion-label stacked> Email </ion-label>
+        <!-- <ion-label stacked> Email </ion-label> -->
         <ion-input formControlName="email" type="email"  placeholder="username@gmail.com"
           [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
 
       </ion-item>
-
+      
       <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)">
         <p> Please enter a valid email.</p>
       </ion-item>
-
+      
+      <br>
+      
       <ion-item>
-        <ion-label stacked> Password </ion-label>
+        <!-- <ion-label stacked> Password </ion-label> -->
         <ion-input formControlName="password" type="password" placeholder="password"
           [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)"></ion-input>
       </ion-item>
@@ -52,7 +56,7 @@
 
       <br>
 
-      <button ion-button block color="navBar" type="submit">
+      <button ion-button block color="gold" type="submit">
         Login
       </button>
 
@@ -63,8 +67,8 @@
 
       <ion-item>
 
-        <ion-label stacked> Name </ion-label>
-        <ion-input formControlName="name" type="text" placeholder="Suri"
+        <!-- <ion-label stacked> Name </ion-label> -->
+        <ion-input formControlName="name" type="text" placeholder="Name"
           [class.invalid]="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)"></ion-input>
 
       </ion-item>
@@ -73,9 +77,11 @@
         <p> Please enter a valid Name.</p>
       </ion-item>
 
+      <br>
+
       <ion-item>
 
-        <ion-label stacked> Email </ion-label>
+        <!-- <ion-label stacked> Email </ion-label> -->
         <ion-input formControlName="email" type="email" placeholder="username@gmail.com"
           [class.invalid]="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)"></ion-input>
 
@@ -85,8 +91,10 @@
         <p> Please enter a valid email.</p>
       </ion-item>
 
+      <br>
+
       <ion-item>
-        <ion-label stacked> Password </ion-label>
+        <!-- <ion-label stacked> Password </ion-label> -->
         <ion-input formControlName="password" type="password" placeholder="Password"
           [class.invalid]="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)"></ion-input>
       </ion-item>
@@ -95,8 +103,10 @@
         <p> Your password needs more than 6 characters. </p>
       </ion-item>
 
+      <br>
+
       <ion-item>
-        <ion-label stacked> Confirm Password </ion-label>
+        <!-- <ion-label stacked> Confirm Password </ion-label> -->
         <ion-input formControlName="confirmPassword" type="password" 
           placeholder="Confirm Password" [class.invalid]="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)"></ion-input>
       </ion-item>
@@ -109,15 +119,16 @@
         <p> Your passwords do not match. </p>
       </ion-item>
 
-
       <br>
 
-      <button ion-button block color="navBar" type="submit">
+      <button ion-button block color="gold" type="submit">
         Sign Up
       </button>
 
     </form>
 
   </div>
-
+ 
 </ion-content>
+</div>
+
