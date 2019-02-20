@@ -1,25 +1,22 @@
-<ion-header>
-  <ion-navbar no-border-bottom transparent>
-    <ion-title padding center text center>
-      
-      <ion-toolbar no-border-top [color]="gold">
-        <ion-segment [(ngModel)]="loginSignUp" >
-          <ion-segment-button value="login">
-            Login
-          </ion-segment-button>
-    
-          <ion-segment-button value="signUp">
-            Sign Up
-          </ion-segment-button>
-        </ion-segment>
-      </ion-toolbar>
-
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
 <div id="background">
 <ion-content padding  id="tint">
+
+    <ion-title padding center text center>
+      
+        <ion-toolbar no-border-top [color]="gold" transparent>
+          <ion-segment [(ngModel)]="loginSignUp" >
+            <ion-segment-button value="login">
+              Login
+            </ion-segment-button>
+      
+            <ion-segment-button value="signUp">
+              Sign Up
+            </ion-segment-button>
+          </ion-segment>
+        </ion-toolbar>
+  
+      </ion-title>
+
   <div [ngSwitch]="loginSignUp"  id="login">
   
   <!-- formats MSU emblem and header -->
