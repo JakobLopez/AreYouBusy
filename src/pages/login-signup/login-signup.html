@@ -2,7 +2,7 @@
   <ion-navbar no-border-bottom transparent>
     <ion-title padding center text center>
       
-      <ion-toolbar no-border-top [color]="gold">
+      <ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="loginSignUp" >
           <ion-segment-button value="login">
             Login
@@ -25,7 +25,7 @@
   <!-- formats MSU emblem and header -->
   <div style="text-align:center">
   <img height = 150 width = 150 src="../../assets/imgs/MSUemblem.png">
-  <h1 style="color:white">AreYouBusy</h1>
+  <h1 style="color:white"><strong>AreYouBusy</strong></h1>
   </div>
 
     <form [formGroup]="loginForm" (submit)="tryLogin(loginForm.value)" novalidate *ngSwitchCase="'login'">
