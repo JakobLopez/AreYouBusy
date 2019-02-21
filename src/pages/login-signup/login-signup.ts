@@ -52,7 +52,7 @@ export class LoginSignupPage {
     try {
       await this.auth.login(credentials);
       console.log("success")
-      this.navCtrl.setRoot('LoginPage');
+      this.navCtrl.setRoot('HomePage');
     } catch (e) {
       console.log(e);
       //this.errorMessage = e.message;
