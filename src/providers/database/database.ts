@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import * as firebase from 'firebase';
+import { Observable } from 'rxjs'
+
 import 'firebase/firestore';
+
+
+
 
 @Injectable()
 export class DatabaseProvider {
