@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { DatabaseProvider } from '../database/database';
+import * as firebase from 'firebase/app';
 
 
 @Injectable()
 export class AuthProvider {
-  uid: String;
+  uid: string;
 
   constructor(public afAuth: AngularFireAuth,
     public db: DatabaseProvider) {
-    console.log('Hello AuthProvider Provider');
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          console.log(user.email + " is signed in")
+        } else {
+          console.log("Nobody is signed in")
+        }
+      });
   }
 
   /**
@@ -26,7 +33,6 @@ export class AuthProvider {
     try {
       let newuser = await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
       await this.db.setUserDoc(newuser.user.uid, credentials)
-      console.log("Authenticated user")
     }
     catch (e) {
       throw (e)

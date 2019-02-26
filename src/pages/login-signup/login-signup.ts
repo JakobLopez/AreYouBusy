@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidatorProvider } from '../../providers/validator/validator';
 import { AuthProvider } from '../../providers/auth/auth'
+import { DatabaseProvider } from '../../providers/database/database';
 
 
 @IonicPage()
@@ -26,7 +27,8 @@ export class LoginSignupPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
-    public auth: AuthProvider, ) {
+    public auth: AuthProvider, 
+    public db: DatabaseProvider) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
@@ -51,11 +53,16 @@ export class LoginSignupPage {
   async tryLogin(credentials) {
     try {
       await this.auth.login(credentials);
-      console.log("success")
-      this.navCtrl.setRoot('HomePage');
+      console.log("Login sucess");
+
+      let type = await this.db.getUserType(this.auth.uid);
+
+      if(type == 'Student')
+        this.navCtrl.setRoot('HomePage');
+      else
+        this.navCtrl.setRoot('MePage');
     } catch (e) {
       console.log(e);
-      //this.errorMessage = e.message;
     }
   }
 
@@ -66,27 +73,22 @@ export class LoginSignupPage {
       this.submitAttempt = true;
       
       await this.auth.register(value);
-      console.log(value)
+      console.log("Registration sucess");
 
-      //Once the user signs up, pass them to to login segment to login. Could modify to auto-login the user.
-      //this.loginSignUp = 'login';
-      //this.successMessage = "Your account has been created.";
+      if(this.chosenAccount == 'Student')
+        this.navCtrl.push('HomePage');
+      else
+        this.navCtrl.setRoot('MePage');
 
-      this.navCtrl.push('HomePage');
-
-      console.log(this.chosenAccount)
     }
     catch (e) {
       console.log(e);
-      //this.errorMessage = e.message;
     }
   }
 
   //Sets the value for the account type chosen in checkbox
   setValue(val){
     this.chosenAccount = val;
-    console.log(val);
-
   }
 
 }
