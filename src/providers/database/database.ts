@@ -17,21 +17,12 @@ export class DatabaseProvider {
   }
 
     /* usersObject
-   * Desc: ASYNC. Get an object containing all users in the database.
-   * Returns: an object containing all users in the database, keyed by user id
-   * Example returned object:
-   *     {
-   *         "SGUSBONAOINUE": {
-   *             "first": "John",
-   *             "last": "Doe",
-   *             "Picture": "./John_Doe.jpg"
-   *         },
-   *         "XCASIUGDAUIGT": {
-   *             "first": "Jane",
-   *             "last": "Doe",
-   *             "Picture": "./Jane_Doe.jpg"
-   *         }
-   *     }
+   * Desc: 
+   *      Get an object containing all users in the database.
+   * Params:
+   *      none
+   * Returns: 
+   *      an object containing all users in the database, keyed by user id
    */
   async usersObject() {
 
@@ -59,7 +50,8 @@ export class DatabaseProvider {
 
 
   /* userSetDoc
-  * Desc: Asynchronous. Uploads a user document to the firestore.
+  * Desc:  
+  *     Uploads a user document to the firestore.
   * Params:
   *     id: the id of the document being set
   *     firstname: the first name of the user
@@ -85,6 +77,14 @@ export class DatabaseProvider {
     }
   }
 
+  /* getUserType
+  * Desc:  
+  *     Gets the user type from database
+  * Params:
+  *     id: the id of the document being fetched
+  * returns: 
+  *     'Student' or 'Teacher', else throws error
+  */
   async getUserType(id: string){
     try{
       let user = await this.usersObject();
