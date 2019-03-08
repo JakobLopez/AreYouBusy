@@ -16,7 +16,7 @@ export class TabPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider,
     public auth: AuthProvider) {
-    this.setTabs();
+      this.setTabs();
   }
 
   ionViewDidLoad() {

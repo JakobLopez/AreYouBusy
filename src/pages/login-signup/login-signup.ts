@@ -24,7 +24,6 @@ export class LoginSignupPage {
   ];
   chosenAccount: any;
 
-
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
@@ -47,7 +46,6 @@ export class LoginSignupPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginSignupPage');
-
   }
 
   //Attempts to login user given credentials from loginForm
@@ -55,7 +53,8 @@ export class LoginSignupPage {
     try {
       await this.auth.login(credentials);
       console.log("Login sucess");
-      let type = await this.db.getUserType(this.auth.uid);
+
+      await this.db.setAccountType(this.auth.uid);
 
       this.navCtrl.setRoot('TabPage');
     } catch (e) {
