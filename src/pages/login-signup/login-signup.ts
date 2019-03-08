@@ -6,6 +6,7 @@ import { AuthProvider } from '../../providers/auth/auth'
 import { DatabaseProvider } from '../../providers/database/database';
 
 
+
 @IonicPage()
 @Component({
   selector: 'page-login-signup',
@@ -54,13 +55,9 @@ export class LoginSignupPage {
     try {
       await this.auth.login(credentials);
       console.log("Login sucess");
-
       let type = await this.db.getUserType(this.auth.uid);
 
-      if(type == 'Student')
-        this.navCtrl.setRoot('HomePage');
-      else
-        this.navCtrl.setRoot('MePage');
+      this.navCtrl.setRoot('TabPage');
     } catch (e) {
       console.log(e);
     }
@@ -79,7 +76,6 @@ export class LoginSignupPage {
         this.navCtrl.push('HomePage');
       else
         this.navCtrl.setRoot('MePage');
-
     }
     catch (e) {
       console.log(e);

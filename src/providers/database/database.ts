@@ -9,8 +9,9 @@ import 'firebase/firestore';
 
 @Injectable()
 export class DatabaseProvider {
-  
+  accountType:any;
   private fire: any;
+
   constructor(public db: AngularFirestore) {
     console.log('Hello DatabaseProvider Provider');
     this.fire = firebase.firestore();
@@ -89,6 +90,7 @@ export class DatabaseProvider {
     try{
       let user = await this.usersObject();
       user = user[id];
+      this.accountType = user['type']
       return user['type'];
     }catch(e){
       throw(e);
