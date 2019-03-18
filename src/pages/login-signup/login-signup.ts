@@ -71,10 +71,10 @@ export class LoginSignupPage {
       await this.auth.register(value);
       console.log("Registration sucess");
 
-      if(this.chosenAccount == 'Student')
-        this.navCtrl.push('HomePage');
-      else
-        this.navCtrl.setRoot('MePage');
+      await this.db.setAccountType(this.auth.uid, this.chosenAccount)
+
+      this.navCtrl.push('TabPage');
+
     }
     catch (e) {
       console.log(e);

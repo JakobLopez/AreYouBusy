@@ -33,6 +33,7 @@ export class AuthProvider {
     try {
       let newuser = await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
       await this.db.setUserDoc(newuser.user.uid, credentials)
+      this.uid = this.afAuth.auth.currentUser.uid;
     }
     catch (e) {
       throw (e)

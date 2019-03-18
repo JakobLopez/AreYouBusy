@@ -28,12 +28,12 @@ export class StudentProfilePage {
   async getUserInformation() {
     try {
       let user = await this.db.getUser(this.auth.uid);
-      console.log(user);
       
       this.userInfo.name = user['name'];
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
- 
+
+      console.log(user);
     }
     catch (e) {
       console.log(e);

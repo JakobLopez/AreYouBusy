@@ -60,10 +60,12 @@ export class DatabaseProvider {
   async getUser(uid: any) {
     try {
       let userRef: any;
-      if (this.accountType = 'Student')
+      console.log(uid)
+      if (this.accountType == 'Student')
         userRef = await this.db.collection('Students').ref.where('uid', '==', uid);
       else
         userRef = await this.db.collection('Teachers').ref.where('uid', '==', uid);
+
       let result = await userRef.get();
 
       var doc_obj = {};
@@ -118,11 +120,15 @@ export class DatabaseProvider {
   * returns: 
   *     'Student' or 'Teacher', else throws error
   */
-  async setAccountType(id: string) {
+  async setAccountType(id: string, type?: any) {
     try {
-      await this.createUsersObject();
-      let user = this.allUsers[id];
-      this.accountType = user['type']
+      if (type)
+        this.accountType = type;
+      else {
+        await this.createUsersObject();
+        let user = this.allUsers[id];
+        this.accountType = user['type'];
+      }
     } catch (e) {
       throw (e);
     }
