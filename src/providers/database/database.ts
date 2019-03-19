@@ -5,8 +5,6 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 
 
-
-
 @Injectable()
 export class DatabaseProvider {
   accountType: any;
@@ -16,40 +14,9 @@ export class DatabaseProvider {
   constructor(public db: AngularFirestore) {
     console.log('Hello DatabaseProvider Provider');
     this.fire = firebase.firestore();
-    this.createUsersObject();
   }
 
-  /* usersObject
- * Desc: 
- *      Get an object containing all users in the database.
- * Params:
- *      none
- * Returns: 
- *      an object containing all users in the database, keyed by user id
- */
-  async createUsersObject() {
-
-    try {
-      var query = await this.fire.collection("Users").get();
-      var collection_obj = {};
-      query.forEach(
-        (doc: any) => {
-          var doc_obj = {};
-          var doc_data = doc.data();
-          for (var field in doc_data) {
-            doc_obj[field] = doc_data[field];
-          }
-          collection_obj[doc.id] = doc_obj;
-        }
-      );
-      this.allUsers = collection_obj;
-    }
-    catch (e) {
-      throw e;
-    }
-  }
-
-  /* userSetDoc
+  /* getUser
   * Desc:  
   *     Gets a user document
   * Params:
@@ -60,7 +27,7 @@ export class DatabaseProvider {
   async getUser(uid: any) {
     try {
       let userRef: any;
-      console.log(uid)
+
       if (this.accountType == 'Student')
         userRef = await this.db.collection('Students').ref.where('uid', '==', uid);
       else
@@ -83,6 +50,37 @@ export class DatabaseProvider {
     }
   }
 
+  /* getAllTeachers
+  * Desc:  
+  *     Get object containing all the teachers
+  * Params:
+  *     none
+  * returns: 
+  *     Object with all teachers
+  */
+  async getAllTeachers() {
+    try {
+      var query = await this.fire.collection("Teachers").get();
+      var collection_obj = {};
+      query.forEach(
+        (doc: any) => {
+          var doc_obj = {};
+          var doc_data = doc.data();
+          for (var field in doc_data) {
+            doc_obj[field] = doc_data[field];
+          }
+          collection_obj[doc.id] = doc_obj;
+        }
+      );
+      return collection_obj;
+    }
+    catch (e) {
+      throw e;
+    }
+  }
+
+
+
   /* userSetDoc
   * Desc:  
   *     Uploads a user document to the firestore.
@@ -95,7 +93,8 @@ export class DatabaseProvider {
   async setUserDoc(id: string, credentials: any) {
     try {
       var o = {
-        type: credentials.type
+        type: credentials.type,
+        uid: id
       };
       var obj = {
         name: credentials.name,
@@ -125,9 +124,20 @@ export class DatabaseProvider {
       if (type)
         this.accountType = type;
       else {
-        await this.createUsersObject();
-        let user = this.allUsers[id];
-        this.accountType = user['type'];
+        let userRef: any;
+
+        userRef = await this.db.collection('Users').ref.where('uid', '==', id);
+
+        let result = await userRef.get();
+
+        var doc_obj = {};
+        result.forEach(doc => {
+          var doc_data = doc.data();
+          for (var field in doc_data) {
+            doc_obj[field] = doc_data[field];
+          }
+        })
+        this.accountType = doc_obj['type'];
       }
     } catch (e) {
       throw (e);
