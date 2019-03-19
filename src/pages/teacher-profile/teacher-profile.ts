@@ -27,6 +27,7 @@ export class TeacherProfilePage {
     console.log('ionViewDidLoad TeacherProfilePage');
   }
 
+  // Set user information from database so it can be displayed
   async getUserInformation() {
     try {
       let user = await this.db.getUser(this.auth.uid,false);

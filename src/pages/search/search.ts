@@ -21,6 +21,7 @@ export class SearchPage {
     this.getAllTeachers()
   }
 
+  // Get list of all the teacher profiles
   async getAllTeachers() {
     try {
       let usersObj = await this.db.getAllTeachers();
@@ -33,13 +34,12 @@ export class SearchPage {
     }
   }
 
+  // Go to selected Teacher profile
   viewUser(viewID:any) {
     try {
       this.navCtrl.push('ViewPage',{
         item:viewID
         });
-
-
     }
     catch (e) {
       console.log(e);

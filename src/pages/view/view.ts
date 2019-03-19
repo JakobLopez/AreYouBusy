@@ -25,6 +25,8 @@ export class ViewPage {
     console.log('ionViewDidLoad ViewPage');
   }
 
+  // Set user information from database so it can be displayed
+  // Information displayed is slightly different than what page owner sees
   async getUserInformation(id: any) {
     try {
       let user = await this.db.getUser(id,true);

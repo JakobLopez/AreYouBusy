@@ -21,6 +21,7 @@ export class DatabaseProvider {
   *     Gets a user document
   * Params:
   *     uid: uid of user that will be returned
+  *     search: if true, only search Teachers 
   * returns: 
   *     user document with all its fields
   */
@@ -84,13 +85,12 @@ export class DatabaseProvider {
 
 
 
-  /* userSetDoc
+  /* setUserDoc
   * Desc:  
   *     Uploads a user document to the firestore.
   * Params:
   *     id: the id of the document being set
-  *     firstname: the first name of the user
-  *     lastname: the last name of the user
+  *     credentials: object with name, email, password and account type
   * returns: nothing.
   */
   async setUserDoc(id: string, credentials: any) {
