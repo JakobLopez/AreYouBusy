@@ -1,34 +1,34 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import { AuthProvider } from '../../providers/auth/auth';
 
 
 @IonicPage()
 @Component({
-  selector: 'page-student-profile',
-  templateUrl: 'student-profile.html',
+  selector: 'page-view',
+  templateUrl: 'view.html',
 })
-export class StudentProfilePage {
+export class ViewPage {
+  value: any;
   userInfo: any = {
     name: null,
     email: null,
     type: null
   };
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public db: DatabaseProvider, public auth: AuthProvider) {
-      this.getUserInformation();
 
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public db: DatabaseProvider) {    
+    this.getUserInformation(navParams.get('item'));
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StudentProfilePage');
+    console.log('ionViewDidLoad ViewPage');
   }
 
-  async getUserInformation() {
+  async getUserInformation(id: any) {
     try {
-      let user = await this.db.getUser(this.auth.uid,false);
-      
+      let user = await this.db.getUser(id,true);
+
       this.userInfo.name = user['name'];
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
@@ -38,6 +38,6 @@ export class StudentProfilePage {
     catch (e) {
       console.log(e);
     }
-
   }
+
 }

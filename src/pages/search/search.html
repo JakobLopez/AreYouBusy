@@ -22,8 +22,9 @@
   -->
 
   <ion-list>
-    <ion-item *ngFor="let person of users">
+    <ion-item *ngFor="let person of users" (click)='viewUser(person.User.uid)'>
       <ion-avatar item-start>
+        
         <!--
         <img *ngIf="person.Picture" src={{person.Picture}} >
         <img *ngIf="!person.Picture" src={{testImage}} >

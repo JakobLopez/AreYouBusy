@@ -29,7 +29,7 @@ export class TeacherProfilePage {
 
   async getUserInformation() {
     try {
-      let user = await this.db.getUser(this.auth.uid);
+      let user = await this.db.getUser(this.auth.uid,false);
 
       this.userInfo.name = user['name'];
       this.userInfo.email = user['email'];

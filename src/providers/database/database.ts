@@ -24,12 +24,15 @@ export class DatabaseProvider {
   * returns: 
   *     user document with all its fields
   */
-  async getUser(uid: any) {
+  async getUser(uid: any, search: boolean) {
     try {
       let userRef: any;
-
-      if (this.accountType == 'Student')
-        userRef = await this.db.collection('Students').ref.where('uid', '==', uid);
+      if (!search) {
+        if (this.accountType == 'Student')
+          userRef = await this.db.collection('Students').ref.where('uid', '==', uid);
+        else
+          userRef = await this.db.collection('Teachers').ref.where('uid', '==', uid);
+      }
       else
         userRef = await this.db.collection('Teachers').ref.where('uid', '==', uid);
 

@@ -13,7 +13,7 @@ export class SearchPage {
   users = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public db:DatabaseProvider) {
+    public db: DatabaseProvider) {
   }
 
   ionViewDidLoad() {
@@ -21,15 +21,27 @@ export class SearchPage {
     this.getAllTeachers()
   }
 
-  async getAllTeachers(){
-    try{
+  async getAllTeachers() {
+    try {
       let usersObj = await this.db.getAllTeachers();
-      for(var user in usersObj)
-      {
-        this.users.push({Key:user,User:usersObj[user]});
+      for (var user in usersObj) {
+        this.users.push({ Key: user, User: usersObj[user] });
       }
     }
-    catch(e){
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  viewUser(viewID:any) {
+    try {
+      this.navCtrl.push('ViewPage',{
+        item:viewID
+        });
+
+
+    }
+    catch (e) {
       console.log(e);
     }
   }
