@@ -1,3 +1,9 @@
 page-student-profile {
-
+    .bg{
+        //background-image: url('../assets/img/dp.jpg');
+        height: 300px;
+        background-size: cover;
+        filter: blur(5px);
+        background-position: center center;
+    }
 }

@@ -13,6 +13,7 @@ import { MyApp } from './app.component';
 import { AuthProvider } from '../providers/auth/auth';
 import { ValidatorProvider } from '../providers/validator/validator';
 import { DatabaseProvider } from '../providers/database/database';
+import { AppointmentProvider } from '../providers/appointment/appointment';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { DatabaseProvider } from '../providers/database/database';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     ValidatorProvider,
-    DatabaseProvider
+    DatabaseProvider,
+    AppointmentProvider
   ]
 })
 export class AppModule {}

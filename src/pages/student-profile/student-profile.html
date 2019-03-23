@@ -1,16 +1,19 @@
 <ion-content padding class="profileContent">
+    <div class="bg">
+      </div>
+  <ion-profile-header [options]="options"></ion-profile-header>
+  <ion-card>
+    <div>
+      <h3>{{userInfo.email}}</h3>
+    </div>
+    <div>
+      <h3>{{userInfo.name}} </h3>
+    </div>
+    <div>
+      <h3>{{userInfo.type}} </h3>
+    </div>
+  </ion-card>
 
 
-  <div>
-    <h3>{{userInfo.email}}</h3>
-  </div>
-  <div>
-    <h3>{{userInfo.name}} </h3>
-  </div>
-  <div>
-    <h3>{{userInfo.type}} </h3>
-  </div>
 
- 
-
-  </ion-content>
+</ion-content>

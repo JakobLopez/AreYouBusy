@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>book</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+  <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-datetime pickerFormat="DDD MMM DD YYYY" [(ngModel)]="myAppointment['date']"></ion-datetime>
+  </ion-item>
+  <ion-item>
+      <ion-label>Time</ion-label>
+      <ion-datetime pickerFormat="h:mm A" [(ngModel)]="myAppointment['slotTime']"></ion-datetime>
+  </ion-item>
+
+  <h2>{{myAppointment.date}}</h2>
+  <h2>{{myAppointment.time}}</h2>
+
+  <button ion-button (click)='makeAppointment()'>Make Appointment</button>
+
+</ion-content>
