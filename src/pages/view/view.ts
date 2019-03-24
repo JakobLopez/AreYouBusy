@@ -23,7 +23,8 @@ export class ViewPage {
     public db: DatabaseProvider, 
     public auth: AuthProvider, 
     public alertCtrl: AlertController,
-    public toastCtrl:ToastController) {
+    public toastCtrl:ToastController,
+    ) {
     this.getUserInformation(navParams.get('item'));
   }
 

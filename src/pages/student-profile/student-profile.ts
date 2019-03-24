@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { Observable } from 'rxjs'
 
 
 @IonicPage()
@@ -15,17 +17,21 @@ export class StudentProfilePage {
     email: null,
     type: null
   };
-
   favorites = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public db: DatabaseProvider, public auth: AuthProvider) {
-      //this.getUserInformation();
+    public db: DatabaseProvider, public auth: AuthProvider,
+    public afs: AngularFirestore) {
+      //Track real-time changes to favorites list
+      this.afs.collection('Students').doc(this.auth.uid).collection('Favorites').valueChanges().subscribe(data=>{
+        this.getUserInformation();
+      })
+     
 
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StudentProfilePage');
-    this.getUserInformation()
   }
 
   // Set user information from database so it can be displayed
