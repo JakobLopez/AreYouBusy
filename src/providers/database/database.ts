@@ -3,7 +3,6 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs'
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { UrlSerializer } from 'ionic-angular';
 
 
 @Injectable()
@@ -183,17 +182,19 @@ export class DatabaseProvider {
   async isFavorite(id: string, teachID: string) {
     try {
       var userRef: any;
-      if (this.accountType == 'Student')
-        userRef = this.db.collection('Students').doc(id).collection('Favorites').doc(teachID);
-      else
-        userRef = this.db.collection('Teachers').doc(id).collection('Favorites').doc(teachID);
 
-      let doc = await userRef.get();
-      if (!doc.exists) {
-        console.log('No such document!');
-      } else {
-        console.log('Document data:', doc.data());
-      }
+      if (this.accountType == 'Student')
+        userRef = await this.db.collection('Students').doc(id).collection('Favorites').doc(teachID).ref;
+      else
+        userRef = await this.db.collection('Teachers').doc(id).collection('Favorites').doc(teachID).ref;
+
+      let docs = await userRef.get();
+
+      if (docs.exists)
+        return true;
+      else
+        return false;
+
     } catch (e) {
       throw (e);
     }
@@ -220,10 +221,22 @@ export class DatabaseProvider {
 
       query.forEach(
         (doc: any) => {
-          favs.push({Key: doc.id,User:teacherObj[doc.id]});
+          favs.push({ Key: doc.id, User: teacherObj[doc.id] });
         }
       );
       return favs;
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  async removeFavorite(id: string, teachID: string) {
+    try {
+
+      if (this.accountType == 'Student')
+        await this.db.collection('Students').doc(id).collection('Favorites').doc(teachID).delete();
+      else
+        await this.db.collection('Teachers').doc(id).collection('Favorites').doc(teachID).delete();
     } catch (e) {
       throw (e);
     }

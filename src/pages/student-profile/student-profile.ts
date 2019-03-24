@@ -19,12 +19,13 @@ export class StudentProfilePage {
   favorites = [];
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider, public auth: AuthProvider) {
-      this.getUserInformation();
+      //this.getUserInformation();
 
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StudentProfilePage');
+    this.getUserInformation()
   }
 
   // Set user information from database so it can be displayed
