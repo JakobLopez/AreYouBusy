@@ -1,17 +1,24 @@
 <ion-content padding class="profileContent">
-    set an appointment
 
-    <div>
-      <h3>{{userInfo.email}}</h3>
-    </div>
-    <div>
-      <h3>{{userInfo.name}} </h3>
-    </div>
-    <div>
-      <h3>{{userInfo.type}} </h3>
-    </div>
-    <button ion-button (click)='goToBook()'>Make an Appointment</button>
-  
-   
-  
-    </ion-content>
+  <div>
+    <h3>{{userInfo.email}}</h3>
+  </div>
+  <div>
+    <h3>{{userInfo.name}} </h3>
+  </div>
+  <div>
+    <h3>{{userInfo.type}} </h3>
+  </div>
+
+  <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
+    <ion-icon name="star"></ion-icon>
+    Add Favorite
+  </button>
+  <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
+    <ion-icon name="star"></ion-icon>
+  </button>
+  <button ion-button (click)='goToBook()'>Make an Appointment</button>
+
+
+
+</ion-content>

@@ -84,7 +84,6 @@ export class DatabaseProvider {
   }
 
 
-
   /* setUserDoc
   * Desc:  
   *     Uploads a user document to the firestore.
@@ -146,5 +145,58 @@ export class DatabaseProvider {
       throw (e);
     }
   }
+
+  /* setFavorite
+  * Desc:  
+  *     Adds a teacher document to current user's favorite collection
+  * Params:
+  *     id: id of current user
+  *     teachID: the id of teacher being added as favorite
+  * Returns
+  *     none if successful, else throws error
+  */
+  async setFavorite(id:string, teachID: string) {
+    try {
+      let temp = {};
+      temp["reference"] = this.db.collection('Teachers').doc(teachID).ref;
+
+      if (this.accountType == 'Student')
+        await this.db.collection('Students').doc(id).collection('Favorites').doc(teachID).set(temp);
+      else
+        await this.db.collection('Teachers').doc(id).collection('Favorites').doc(teachID).set(temp);
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+
+  /* isFavorite
+  * Desc:  
+  *     Adds a teacher document to current user's favorite collection
+  * Params:
+  *     id: id of current user
+  *     teachID: the id of teacher being added as favorite
+  * Returns
+  *     true if teacher is in favorites collection of current user
+  */
+  async isFavorite(id:string,teachID: string) {
+    try {
+      var userRef: any;
+      if (this.accountType == 'Student')
+        userRef = this.db.collection('Students').doc(id).collection('Favorites').doc(teachID);
+      else
+        userRef = this.db.collection('Teachers').doc(id).collection('Favorites').doc(teachID);
+
+      let doc = await userRef.get();
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        console.log('Document data:', doc.data());
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
 
 }
