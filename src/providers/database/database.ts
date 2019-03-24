@@ -16,6 +16,14 @@ export class DatabaseProvider {
     this.fire = firebase.firestore();
   }
 
+  /********************************************************************************************/
+  /*                                   GETTER METHODS                                         */
+  /*                These methods retrieve some information from the database                 */   
+  /* getUser                                                                                  */
+  /* getAllTeachers                                                                           */
+  /* getFavorites                                                                             */
+  /********************************************************************************************/
+
   /* getUser
   * Desc:  
   *     Gets a user document
@@ -83,6 +91,44 @@ export class DatabaseProvider {
     }
   }
 
+  /* getFavorites
+  * Desc:  
+  *     Get favorite teachers from current user
+  * Params:
+  *     id: id of current user
+  * Returns
+  *     list containing objects of favorite teachers
+  */
+ async getFavorites(id: string) {
+  try {
+    let favs = [];
+    let query: any;
+    if (this.accountType == 'Student')
+      query = await this.fire.collection('Students').doc(id).collection('Favorites').get();
+    else
+      query = await this.fire.collection('Teachers').doc(id).collection('Favorites').get();
+
+    let teacherObj = await this.getAllTeachers();
+
+    query.forEach(
+      (doc: any) => {
+        favs.push({ Key: doc.id, User: teacherObj[doc.id] });
+      }
+    );
+    return favs;
+  } catch (e) {
+    throw (e);
+  }
+}
+
+  /********************************************************************************************/
+  /*                                   SETTER METHODS                                         */
+  /*              These methods set some information in the database or global variables      */   
+  /* setUserDoc                                                                               */
+  /* setAccountType                                                                           */
+  /* setFavorite                                                                              */
+  /* removeFavorite                                                                           */                                                                      
+  /********************************************************************************************/
 
   /* setUserDoc
   * Desc:  
@@ -169,6 +215,32 @@ export class DatabaseProvider {
     }
   }
 
+  /* removeFavorite
+  * Desc:  
+  *     Removes a teacher from current user's favorite list
+  * Params:
+  *     id: id of current user
+  *     teachID: the id of teacher being removed
+  * Returns
+  *     none if successful, else throws error
+  */
+  async removeFavorite(id: string, teachID: string) {
+    try {
+
+      if (this.accountType == 'Student')
+        await this.db.collection('Students').doc(id).collection('Favorites').doc(teachID).delete();
+      else
+        await this.db.collection('Teachers').doc(id).collection('Favorites').doc(teachID).delete();
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  /********************************************************************************************/
+  /*                                   VALIDATION METHODS                                     */
+  /*                    These methods VERIFY some information in the database                 */   
+  /* isFavorite                                                                               */                                                                                                         
+  /********************************************************************************************/
 
   /* isFavorite
   * Desc:  
@@ -200,47 +272,9 @@ export class DatabaseProvider {
     }
   }
 
-  /* getFavorites
-  * Desc:  
-  *     Get favorite teachers from current user
-  * Params:
-  *     id: id of current user
-  * Returns
-  *     list containing objects of favorite teachers
-  */
-  async getFavorites(id: string) {
-    try {
-      let favs = [];
-      let query: any;
-      if (this.accountType == 'Student')
-        query = await this.fire.collection('Students').doc(id).collection('Favorites').get();
-      else
-        query = await this.fire.collection('Teachers').doc(id).collection('Favorites').get();
 
-      let teacherObj = await this.getAllTeachers();
 
-      query.forEach(
-        (doc: any) => {
-          favs.push({ Key: doc.id, User: teacherObj[doc.id] });
-        }
-      );
-      return favs;
-    } catch (e) {
-      throw (e);
-    }
-  }
 
-  async removeFavorite(id: string, teachID: string) {
-    try {
-
-      if (this.accountType == 'Student')
-        await this.db.collection('Students').doc(id).collection('Favorites').doc(teachID).delete();
-      else
-        await this.db.collection('Teachers').doc(id).collection('Favorites').doc(teachID).delete();
-    } catch (e) {
-      throw (e);
-    }
-  }
 
 
 }
