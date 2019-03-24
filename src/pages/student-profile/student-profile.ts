@@ -15,6 +15,8 @@ export class StudentProfilePage {
     email: null,
     type: null
   };
+
+  favorites = [];
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider, public auth: AuthProvider) {
       this.getUserInformation();
@@ -34,11 +36,14 @@ export class StudentProfilePage {
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
 
+      this.favorites = await this.db.getFavorites(this.auth.uid);
+
       console.log(user);
     }
     catch (e) {
       console.log(e);
     }
-
   }
+
+
 }

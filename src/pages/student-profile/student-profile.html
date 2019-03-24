@@ -9,7 +9,9 @@
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
     <hr>
 
-
+    <ion-item *ngFor="let fav of favorites">
+      <h2>{{fav.User.name }}</h2>
+    </ion-item>
   </div>
 
 

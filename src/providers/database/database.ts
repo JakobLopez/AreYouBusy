@@ -3,6 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs'
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { UrlSerializer } from 'ionic-angular';
 
 
 @Injectable()
@@ -45,7 +46,7 @@ export class DatabaseProvider {
         for (var field in doc_data) {
           doc_obj[field] = doc_data[field];
         }
-      })
+      });
 
       return doc_obj;
     }
@@ -155,7 +156,7 @@ export class DatabaseProvider {
   * Returns
   *     none if successful, else throws error
   */
-  async setFavorite(id:string, teachID: string) {
+  async setFavorite(id: string, teachID: string) {
     try {
       let temp = {};
       temp["reference"] = this.db.collection('Teachers').doc(teachID).ref;
@@ -172,14 +173,14 @@ export class DatabaseProvider {
 
   /* isFavorite
   * Desc:  
-  *     Adds a teacher document to current user's favorite collection
+  *     Determines if teacher is in current user's favorites collection
   * Params:
   *     id: id of current user
   *     teachID: the id of teacher being added as favorite
   * Returns
   *     true if teacher is in favorites collection of current user
   */
-  async isFavorite(id:string,teachID: string) {
+  async isFavorite(id: string, teachID: string) {
     try {
       var userRef: any;
       if (this.accountType == 'Student')
@@ -193,6 +194,36 @@ export class DatabaseProvider {
       } else {
         console.log('Document data:', doc.data());
       }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  /* getFavorites
+  * Desc:  
+  *     Get favorite teachers from current user
+  * Params:
+  *     id: id of current user
+  * Returns
+  *     list containing objects of favorite teachers
+  */
+  async getFavorites(id: string) {
+    try {
+      let favs = [];
+      let query: any;
+      if (this.accountType == 'Student')
+        query = await this.fire.collection('Students').doc(id).collection('Favorites').get();
+      else
+        query = await this.fire.collection('Teachers').doc(id).collection('Favorites').get();
+
+      let teacherObj = await this.getAllTeachers();
+
+      query.forEach(
+        (doc: any) => {
+          favs.push({Key: doc.id,User:teacherObj[doc.id]});
+        }
+      );
+      return favs;
     } catch (e) {
       throw (e);
     }

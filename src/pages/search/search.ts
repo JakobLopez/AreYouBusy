@@ -32,7 +32,7 @@ export class SearchPage {
     catch (e) {
       console.log(e);
     }
-  }
+  } 
 
   // Go to selected Teacher profile
   viewUser(viewID:any) {
