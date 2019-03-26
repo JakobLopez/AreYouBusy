@@ -154,7 +154,49 @@
   then back to available when the appointment ends. This status will be able to be toggled in case of
   an early or late ending appointment. Schedules and statuses can change dynamically for professors' 
   convenience.
-  \subsection{External Interface Requirements} 
+  \subsubsection{REQ6. Favorite}
+  \paragraph{Introduction}
+  AYB must allow users to have a list of favorite professors.
+  \paragraph{Inputs}
+  When the user visits a professor's page, there should be a button to favorite/unfavorite the specific 
+  professor.
+  \paragraph{Processing}
+  When a user toggles the favorite button, a method is called from the DatabaseProvider. Favorite professors
+  are stored in a collection within the user's document named "Favorites". The professor's uid will be stored
+  in the collection when being added and removed when being unfavorited. 
+  \paragraph{Outputs}
+  The button will change each time it is toggled. It will be a star if the professor is a favorite or a
+  box displaying the star and "Add as favorite" if not a favorite. On the user's profile page, their favorite
+  list will be displayed and change in real-time. Having a list of favorite teachers allows for quicker access
+  to their page.
+  \subsubsection{REQ7. Keep user signed in}
+  \paragraph{Introduction}
+  AYB must allow users to stay signed in even after exiting the system.
+  \paragraph{Inputs}
+  The user logs into their account.
+  \paragraph{Processing}
+  When a user logs into their account, their information is pulled from the database so the proper information
+  can be displayed on the profile page. The system should convert that information to a JSON object and save it
+  in the devices local storage. If the user logs out, the local storage will be cleared.
+  \paragraph{Outputs}
+  When the user closes out of the system without logging out and then they reopen the app, they will not have to
+  re-signin. The system will use the information from local storage to instantly bring them to their profile 
+  page.
+  \subsubsection{REQ8. Forgot password}
+  \paragraph{Introduction}
+  AYB must allow users to reset their password.
+  \paragraph{Inputs}
+  The user logs clicks on the "Forgot password?" prompt on the LoginSignupPage. The user will enter their 
+  email they use to log in to the app and then click "Reset." 
+  \paragraph{Processing}
+  Since Firebase authenticates users in the database, it handles reset password. The AuthProvider will call
+  a Firebase method to reset the password, which sends an email with a link to the user's specified email.
+  \paragraph{Outputs}
+  Opens an alert telling the user to check their email and reroutes them to the LoginSignupPage. Once the user
+  clicks the link, they can login with their Firebase generated password and be brought to their normal profile
+  page.
+  \subsection{Non-functional Requirements}
+  \subsubsection{External Interface Requirements} 
   \paragraph{User Interfaces}
   The system interface will be composed of 3 main pages: login/register, profile, professor search. 
   The design should be simple and clean, following the basic look of an ionic app. Users will interact
@@ -172,9 +214,9 @@
   when a student makes a request, and student's will recieve a notification if the professor denies the 
   request. These notifications and changes in the databse should be almost instantaneous in order to provide
   the users with the most pertinent information.
-  \subsection{Design Constraints}
+  \subsubsection{Design Constraints}
   The system will only be deployed on Android devices.
-  \subsection{Attributes}
+  \subsubsection{Attributes}
   \paragraph{Availability}
   Key functionality of the system will not be available if the user does not have an internet connection.
   The user would not be able to authenticate, search for a professor, make an appointment, or recieve
@@ -187,10 +229,11 @@
   For the best system experience, users should be active on their account and maintain a correct schedule. 
   Users should also be signed up under the correct account type (student or teacher). If a teacher account
   is made and they are not verified, the user will be deleted from the database.
-  \subsection{Other Requirements}
+  \subsubsection{Other Requirements}
   \paragraph{Database}
   The database must be properly concieved and normalized. Duplicate information must directly lead to a 
-  performance boost, where a database query would be slow without it. 
+  performance boost, where a database query would be slow without it. Objects in the system should subscribe
+  to value changes in the database in order to take advantage of the real-time characteristics of Firebase.
   \paragraph{Operations}
 
   \section{Appendices}
