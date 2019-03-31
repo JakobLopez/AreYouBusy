@@ -13,9 +13,9 @@ export class BookPage {
   myAppointment: any = {
     date: "",
     slotTime: "",
-    displayTime: "",
     from: this.auth.uid,
-    to: this.navParams.get('item')
+    to: this.navParams.get('item'),
+    timestamp:""
   };
 
 
@@ -30,8 +30,11 @@ export class BookPage {
 
   async makeAppointment() {
     try {
-      let hoursMinutes = this.myAppointment.slotTime.split(':');
-      this.myAppointment.displayTime = await this.formatAMPM(hoursMinutes);
+      let date = this.myAppointment.date + ' ' + this.myAppointment.slotTime;
+      let time = new Date(date);
+      this.myAppointment.timestamp = await time.getTime(); 
+
+
       await this.ap.createAppointment(this.myAppointment);
       this.navCtrl.pop();
 
@@ -39,18 +42,6 @@ export class BookPage {
       console.log(e);
     }
   }
-  async formatAMPM(date) {
-    try {
-      var hours = date[0];
-      var minutes = date[1];
-      var ampm = hours >= 12 ? 'pm' : 'am';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      var strTime = hours + ':' + minutes + ' ' + ampm;
-      return strTime;
-    } catch (e) {
-      throw (e);
-    }
-  }
+  
+ 
 }

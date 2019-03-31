@@ -11,8 +11,9 @@ export class AppointmentProvider {
 
   async createAppointment(details: any) {
     try {
-      let slot = details.slotTime.replace(':','');
-      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(details.date).collection('Times').doc(slot).set(details);
+      let docID = this.db.createId();
+      
+      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(docID).set(details);
     } catch (e) {
       throw (e);
     }
