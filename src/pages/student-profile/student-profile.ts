@@ -3,7 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable } from 'rxjs'
+import { Appointment } from '../../appointment'
+import { AppointmentProvider } from '../../providers/appointment/appointment';
+import { OrderbyPipe } from '../../pipes/orderby/orderby'
 
 
 @IonicPage()
@@ -18,17 +20,24 @@ export class StudentProfilePage {
     type: null
   };
   favorites = [];
+  appointments: Appointment[];
+  today = new Date();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider, public auth: AuthProvider,
-    public afs: AngularFirestore) {
+    public afs: AngularFirestore,
+    public appt:AppointmentProvider) {
       //Track real-time changes to favorites list
       this.afs.collection('Students').doc(this.auth.uid).collection('Favorites').valueChanges().subscribe(data=>{
         this.getUserInformation();
-      })
+      });
      
-
   }
+  ngOnInit(): void {
+    this.appt.getAppointments(this.auth.uid)
+    .subscribe(appointments => this.appointments = appointments);
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StudentProfilePage');

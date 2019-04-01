@@ -12,6 +12,10 @@
     <ion-item *ngFor="let fav of favorites">
       <h2>{{fav.User.name }}</h2>
     </ion-item>
+    <ion-item [ngClass]="{'greyText': (appointment.date < today) ? true:false}" *ngFor="let appointment of appointments | orderby: 'date'" >
+        <h2>{{appointment.date | date:"MMMM d, yyyy"}}</h2>
+        <h2>{{appointment.date | date:"HH:mm"}}</h2>
+    </ion-item>
   </div>
 
 

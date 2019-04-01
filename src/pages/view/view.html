@@ -18,6 +18,9 @@
     <ion-icon name="star"></ion-icon>
   </button>
   <button ion-button (click)='goToBook()'>Make an Appointment</button>
+  <ion-item *ngFor="let appointment of appointments">
+    <h2>{{appointment.date | date:"MMMM d, yyyy"}}</h2>
+  </ion-item>
 
 
 

@@ -15,7 +15,6 @@ import { ValidatorProvider } from '../providers/validator/validator';
 import { DatabaseProvider } from '../providers/database/database';
 import { AppointmentProvider } from '../providers/appointment/appointment';
 
-
 @NgModule({
   declarations: [
     MyApp
@@ -26,6 +25,7 @@ import { AppointmentProvider } from '../providers/appointment/appointment';
     AngularFireModule.initializeApp(FIREBASE_CONFIG.config),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [

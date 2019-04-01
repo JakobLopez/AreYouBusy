@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController  } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
-
+import { Appointment } from '../../appointment'
+import { AppointmentProvider } from '../../providers/appointment/appointment';
 
 @IonicPage()
 @Component({
@@ -17,19 +18,26 @@ export class ViewPage {
     email: null,
     type: null
   };
-
+  appointments: Appointment[];
+  
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public db: DatabaseProvider, 
     public auth: AuthProvider, 
     public alertCtrl: AlertController,
     public toastCtrl:ToastController,
+    public appt:AppointmentProvider
     ) {
     this.getUserInformation(navParams.get('item'));
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewPage');
+  }
+
+  ngOnInit(): void {
+    this.appt.getAppointments(this.pageID)
+    .subscribe(appointments => this.appointments = appointments);
 
   }
 

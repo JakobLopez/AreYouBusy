@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable } from 'rxjs'
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
@@ -9,6 +8,7 @@ import 'firebase/firestore';
 export class DatabaseProvider {
   accountType: any;
   allUsers: any;
+  usersObj: any;
   private fire: any;
 
   constructor(public db: AngularFirestore) {
@@ -18,7 +18,7 @@ export class DatabaseProvider {
 
   /********************************************************************************************/
   /*                                   GETTER METHODS                                         */
-  /*                These methods retrieve some information from the database                 */   
+  /*                These methods retrieve some information from the database                 */
   /* getUser                                                                                  */
   /* getAllTeachers                                                                           */
   /* getFavorites                                                                             */
@@ -99,35 +99,35 @@ export class DatabaseProvider {
   * Returns
   *     list containing objects of favorite teachers
   */
- async getFavorites(id: string) {
-  try {
-    let favs = [];
-    let query: any;
-    if (this.accountType == 'Student')
-      query = await this.fire.collection('Students').doc(id).collection('Favorites').get();
-    else
-      query = await this.fire.collection('Teachers').doc(id).collection('Favorites').get();
+  async getFavorites(id: string) {
+    try {
+      let favs = [];
+      let query: any;
+      if (this.accountType == 'Student')
+        query = await this.fire.collection('Students').doc(id).collection('Favorites').get();
+      else
+        query = await this.fire.collection('Teachers').doc(id).collection('Favorites').get();
 
-    let teacherObj = await this.getAllTeachers();
+      let teacherObj = await this.getAllTeachers();
 
-    query.forEach(
-      (doc: any) => {
-        favs.push({ Key: doc.id, User: teacherObj[doc.id] });
-      }
-    );
-    return favs;
-  } catch (e) {
-    throw (e);
+      query.forEach(
+        (doc: any) => {
+          favs.push({ Key: doc.id, User: teacherObj[doc.id] });
+        }
+      );
+      return favs;
+    } catch (e) {
+      throw (e);
+    }
   }
-}
 
   /********************************************************************************************/
   /*                                   SETTER METHODS                                         */
-  /*              These methods set some information in the database or global variables      */   
+  /*              These methods set some information in the database or global variables      */
   /* setUserDoc                                                                               */
   /* setAccountType                                                                           */
   /* setFavorite                                                                              */
-  /* removeFavorite                                                                           */                                                                      
+  /* removeFavorite                                                                           */
   /********************************************************************************************/
 
   /* setUserDoc
@@ -171,22 +171,27 @@ export class DatabaseProvider {
     try {
       if (type)
         this.accountType = type;
-      else {
-        let userRef: any;
 
-        userRef = await this.db.collection('Users').ref.where('uid', '==', id);
-
-        let result = await userRef.get();
-
-        var doc_obj = {};
-        result.forEach(doc => {
+      var query = await this.fire.collection('Users').get();
+      var collection_obj = {};
+      query.forEach(
+        (doc: any) => {
+          var doc_obj = {};
           var doc_data = doc.data();
           for (var field in doc_data) {
             doc_obj[field] = doc_data[field];
           }
-        })
-        this.accountType = doc_obj['type'];
-      }
+          collection_obj[doc.id] = doc_obj;
+        }
+      );
+
+      this.usersObj = collection_obj;
+
+      if (!type)
+        this.accountType = collection_obj[id]['type'];
+
+
+
     } catch (e) {
       throw (e);
     }
@@ -238,8 +243,8 @@ export class DatabaseProvider {
 
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
-  /*                    These methods VERIFY some information in the database                 */   
-  /* isFavorite                                                                               */                                                                                                         
+  /*                    These methods VERIFY some information in the database                 */
+  /* isFavorite                                                                               */
   /********************************************************************************************/
 
   /* isFavorite

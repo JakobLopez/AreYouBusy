@@ -12,7 +12,6 @@ import { AuthProvider } from '../../providers/auth/auth';
 export class BookPage {
   myAppointment: any = {
     date: "",
-    slotTime: "",
     from: this.auth.uid,
     to: this.navParams.get('item'),
     timestamp:""
@@ -30,9 +29,13 @@ export class BookPage {
 
   async makeAppointment() {
     try {
-      let date = this.myAppointment.date + ' ' + this.myAppointment.slotTime;
-      let time = new Date(date);
-      this.myAppointment.timestamp = await time.getTime(); 
+
+      let myDate = new Date(this.myAppointment.date);
+  
+      myDate.setMinutes(myDate.getMinutes() + myDate.getTimezoneOffset());
+      
+
+      this.myAppointment.timestamp = await myDate.getTime(); 
 
 
       await this.ap.createAppointment(this.myAppointment);
