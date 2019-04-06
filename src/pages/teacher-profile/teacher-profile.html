@@ -9,9 +9,11 @@
       <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
       <hr>
   
-      <ion-item *ngFor="let appointment of appointments">
-        <h2>{{appointment.date | date:"MMMM d, yyyy"}}</h2>
-      </ion-item>
+      <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
+      *ngFor="let appointment of appointments | orderby: 'date'">
+        <h2>{{appointment.timestamp | date:"MMMM d, yyyy"}}</h2>
+        <h2>{{appointment.timestamp | date:"hh:mm a"}}</h2>
+    </ion-item>
   
     </div>
   

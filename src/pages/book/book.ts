@@ -17,7 +17,6 @@ export class BookPage {
     timestamp:""
   };
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public ap: AppointmentProvider, public auth: AuthProvider) {
 
@@ -33,12 +32,11 @@ export class BookPage {
       let myDate = new Date(this.myAppointment.date);
   
       myDate.setMinutes(myDate.getMinutes() + myDate.getTimezoneOffset());
-      
-
+  
       this.myAppointment.timestamp = await myDate.getTime(); 
 
-
       await this.ap.createAppointment(this.myAppointment);
+      
       this.navCtrl.pop();
 
     } catch (e) {

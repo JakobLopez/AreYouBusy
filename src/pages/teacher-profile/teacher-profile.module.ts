@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TeacherProfilePage } from './teacher-profile';
+import { PipesModule } from '../../pipes/pipes.module'
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { TeacherProfilePage } from './teacher-profile';
   ],
   imports: [
     IonicPageModule.forChild(TeacherProfilePage),
+    PipesModule
   ],
 })
 export class TeacherProfilePageModule {}

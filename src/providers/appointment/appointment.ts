@@ -29,7 +29,6 @@ export class AppointmentProvider {
     try{
       if (this.dbProv.usersObj[id]['type'] == 'Student')
       {
-        console.log('student')
         let userRef = this.db.collection('Students').doc(id);
         return userRef.collection<Appointment>(
           'Appointments'

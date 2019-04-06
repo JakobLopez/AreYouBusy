@@ -19,6 +19,7 @@ export class ViewPage {
     type: null
   };
   appointments: Appointment[];
+  today = Date.now();
   
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,

@@ -21,7 +21,7 @@ export class StudentProfilePage {
   };
   favorites = [];
   appointments: Appointment[];
-  today = new Date();
+  today = Date.now();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider, public auth: AuthProvider,
