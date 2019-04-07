@@ -15,13 +15,16 @@ export class AppointmentProvider {
 
   async createAppointment(details: any) {
     try {
-      let docID = this.db.createId();
-      let obj = details;
-      obj.id = docID;
+      let temp: Appointment = {
+        timestamp: details.timestamp,
+        to: details.to,
+        from: details.from,
+        id: this.db.createId()
+      };
 
-      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(docID).set(obj);
+      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(temp.id).set(temp);
       if (this.dbProv.accountType == 'Student')
-        await this.db.collection('Students').doc(details.from).collection('Appointments').doc(docID).set(obj);
+        await this.db.collection('Students').doc(details.from).collection('Appointments').doc(temp.id).set(temp);
     } catch (e) {
       throw (e);
     }
