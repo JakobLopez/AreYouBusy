@@ -15,8 +15,7 @@
 
     <ion-list>
       <div *ngFor="let appointment of appointments | orderby: 'date'">
-        <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }"
-        *ngIf="appointment.status != 'Cleared'">
+        <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
           <ion-item>
             {{appointment.timestamp | date:"MMMM d, yyyy"}}
             {{appointment.timestamp | date:"hh:mm a"}}

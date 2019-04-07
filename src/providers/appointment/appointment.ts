@@ -28,9 +28,8 @@ export class AppointmentProvider {
   }
 
   getAppointments(id: string): Observable<Appointment[]> {
-    try{
-      if (this.dbProv.usersObj[id]['type'] == 'Student')
-      {
+    try {
+      if (this.dbProv.usersObj[id]['type'] == 'Student') {
         let userRef = this.db.collection('Students').doc(id);
         return userRef.collection<Appointment>(
           'Appointments'
@@ -42,8 +41,7 @@ export class AppointmentProvider {
           });
         }));
       }
-      else
-      {
+      else {
         let userRef = this.db.collection('Teachers').doc(id);
         return userRef.collection<Appointment>(
           'Appointments'
@@ -55,16 +53,15 @@ export class AppointmentProvider {
           });
         }));
       }
-    }catch(e){
-      throw(e);
+    } catch (e) {
+      throw (e);
     }
   }
 
-  async clear(appointment:Appointment){
+  async clear(appointment: Appointment) {
     try{
-      let temp = {};
-      temp["status"] = "Cleared";
-      this.db.collection('Students').doc(appointment.from).collection('Appointments').doc(appointment.id).update(temp);
+      await this.db.collection('Students').doc(appointment.from).collection('Cleared Appointments').doc(appointment.id).set(appointment);
+      await this.db.collection('Students').doc(appointment.from).collection('Appointments').doc(appointment.id).delete();
     }
     catch(e){
       throw(e);

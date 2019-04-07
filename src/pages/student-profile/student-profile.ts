@@ -72,7 +72,6 @@ export class StudentProfilePage {
     try{
       await this.appt.clear(appoint);
     }
-    
     catch(e){
       console.log(e);
     }
