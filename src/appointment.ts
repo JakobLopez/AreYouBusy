@@ -3,4 +3,6 @@ export class Appointment {
     date: string;
     to: string;
     from: string;
+    id: string;
+    status: string;
   }

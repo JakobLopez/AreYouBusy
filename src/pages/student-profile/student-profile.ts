@@ -68,5 +68,15 @@ export class StudentProfilePage {
     }
   }
 
+  async clearAppointment(appoint:Appointment){
+    try{
+      await this.appt.clear(appoint);
+    }
+    
+    catch(e){
+      console.log(e);
+    }
+  }
+
 
 }

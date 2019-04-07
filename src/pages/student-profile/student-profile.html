@@ -13,11 +13,22 @@
       <h2>{{fav.User.name }}</h2>
     </ion-item>
 
-    <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
-      *ngFor="let appointment of appointments | orderby: 'date'">
-        <h2>{{appointment.timestamp | date:"MMMM d, yyyy"}}</h2>
-        <h2>{{appointment.timestamp | date:"hh:mm a"}}</h2>
-    </ion-item>
+    <ion-list>
+      <div *ngFor="let appointment of appointments | orderby: 'date'">
+        <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }"
+        *ngIf="appointment.status != 'Cleared'">
+          <ion-item>
+            {{appointment.timestamp | date:"MMMM d, yyyy"}}
+            {{appointment.timestamp | date:"hh:mm a"}}
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button (click)="clearAppointment(appointment)">
+              <ion-icon name="trash"></ion-icon>Delete
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </ion-list>
   </div>
 
 

@@ -3,7 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { DatabaseProvider } from '../database/database';
 import { Observable } from 'rxjs'
 import { Appointment } from '../../appointment'
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable()
@@ -16,10 +16,12 @@ export class AppointmentProvider {
   async createAppointment(details: any) {
     try {
       let docID = this.db.createId();
+      let obj = details;
+      obj.id = docID;
 
-      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(docID).set(details);
+      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(docID).set(obj);
       if (this.dbProv.accountType == 'Student')
-        await this.db.collection('Students').doc(details.from).collection('Appointments').doc(docID).set(details);
+        await this.db.collection('Students').doc(details.from).collection('Appointments').doc(docID).set(obj);
     } catch (e) {
       throw (e);
     }
@@ -56,7 +58,17 @@ export class AppointmentProvider {
     }catch(e){
       throw(e);
     }
+  }
 
+  async clear(appointment:Appointment){
+    try{
+      let temp = {};
+      temp["status"] = "Cleared";
+      this.db.collection('Students').doc(appointment.from).collection('Appointments').doc(appointment.id).update(temp);
+    }
+    catch(e){
+      throw(e);
+    }
   }
 
 }
