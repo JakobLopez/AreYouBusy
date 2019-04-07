@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
 import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
+import { Observable } from 'rxjs'
+import 'rxjs/add/observable/interval';
+
 
 @IonicPage()
 @Component({
@@ -19,16 +22,17 @@ export class ViewPage {
     type: null
   };
   appointments: Appointment[];
-  today = Date.now();
-  
-  constructor(public navCtrl: NavController, 
+  today:any;
+  sub:any;
+
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public db: DatabaseProvider, 
-    public auth: AuthProvider, 
+    public db: DatabaseProvider,
+    public auth: AuthProvider,
     public alertCtrl: AlertController,
-    public toastCtrl:ToastController,
-    public appt:AppointmentProvider
-    ) {
+    public toastCtrl: ToastController,
+    public appt: AppointmentProvider
+  ) {
     this.getUserInformation(navParams.get('item'));
   }
 
@@ -37,8 +41,13 @@ export class ViewPage {
   }
 
   ngOnInit(): void {
+    //Listen to changes in appointments
     this.appt.getAppointments(this.pageID)
-    .subscribe(appointments => this.appointments = appointments);
+      .subscribe(appointments => this.appointments = appointments);
+
+    //Get current time every second
+    this.sub = Observable.interval(1000)
+      .subscribe(() => this.today = Date.now());
 
   }
 
@@ -61,6 +70,8 @@ export class ViewPage {
       console.log(e);
     }
   }
+
+
   async favor() {
     try {
       return this.db.isFavorite(this.auth.uid, this.pageID);
@@ -69,9 +80,11 @@ export class ViewPage {
     }
   }
 
+  //Toggles favorite status of teacher
   toggleFollow() {
-
+    //If teacher is already a favorite
     if (this.isFollowing) {
+      //Confirm unfavorite with an alert
       let confirm = this.alertCtrl.create({
         title: 'Unfollow?',
         message: 'Are your sure you want to unfollow?',
@@ -81,7 +94,7 @@ export class ViewPage {
             handler: () => {
               this.isFollowing = false;
 
-              this.db.removeFavorite(this.auth.uid,this.pageID);
+              this.db.removeFavorite(this.auth.uid, this.pageID);
 
               let toast = this.toastCtrl.create({
                 message: 'You have unfollowed this professor',
@@ -96,15 +109,17 @@ export class ViewPage {
       });
       confirm.present();
     } else {
+      //Favorite teacher
       this.isFollowing = true;
       this.db.setFavorite(
         this.auth.uid,
         this.pageID);
     }
-
   }
 
+  //Goes to appointment page
   goToBook() {
+    //Sends teacher's uid
     this.navCtrl.push('BookPage', {
       item: this.pageID
     });

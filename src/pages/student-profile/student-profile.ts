@@ -5,7 +5,8 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
-import { OrderbyPipe } from '../../pipes/orderby/orderby'
+import { Observable } from 'rxjs'
+import 'rxjs/add/observable/interval';
 
 
 @IonicPage()
@@ -21,7 +22,8 @@ export class StudentProfilePage {
   };
   favorites = [];
   appointments: Appointment[];
-  today = Date.now();
+  sub:any;
+  today: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider, public auth: AuthProvider,
@@ -34,8 +36,13 @@ export class StudentProfilePage {
      
   }
   ngOnInit(): void {
+    //Watch for changes to appointments
     this.appt.getAppointments(this.auth.uid)
     .subscribe(appointments => this.appointments = appointments);
+
+    //Get current time every second
+    this.sub = Observable.interval(1000)
+    .subscribe(() => this.today = Date.now());
   }
 
 
