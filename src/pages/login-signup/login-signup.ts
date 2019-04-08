@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { ValidatorProvider } from '../../providers/validator/validator';
 import { AuthProvider } from '../../providers/auth/auth'
 import { DatabaseProvider } from '../../providers/database/database';
+import { Storage } from '@ionic/storage';
 
 
 
@@ -28,7 +29,8 @@ export class LoginSignupPage {
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     public auth: AuthProvider, 
-    public db: DatabaseProvider) {
+    public db: DatabaseProvider,
+    public storage: Storage) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
@@ -54,6 +56,8 @@ export class LoginSignupPage {
       await this.auth.login(credentials);
       console.log("Login sucess");
 
+      this.storage.set('user', JSON.stringify(this.auth.uid));
+
       await this.db.setAccountType(this.auth.uid);
 
       this.navCtrl.setRoot('TabPage');
@@ -71,7 +75,9 @@ export class LoginSignupPage {
       await this.auth.register(value);
       console.log("Registration sucess");
 
-      await this.db.setAccountType(this.auth.uid, this.chosenAccount)
+      await this.db.setAccountType(this.auth.uid, this.chosenAccount) 
+
+      await this.tryLogin(value);
 
       this.navCtrl.push('TabPage');
 

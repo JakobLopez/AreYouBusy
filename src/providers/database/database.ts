@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { Storage } from '@ionic/storage';
 
 
 @Injectable()
@@ -11,7 +12,8 @@ export class DatabaseProvider {
   usersObj: any;
   private fire: any;
 
-  constructor(public db: AngularFirestore) {
+  constructor(public db: AngularFirestore,
+    public storage: Storage) {
     console.log('Hello DatabaseProvider Provider');
     this.fire = firebase.firestore();
   }
@@ -189,9 +191,9 @@ export class DatabaseProvider {
 
       if (!type)
         this.accountType = collection_obj[id]['type'];
-
-
-
+      
+      this.storage.set('usersObj', JSON.stringify(collection_obj));
+      this.storage.set('type', JSON.stringify(this.accountType));
     } catch (e) {
       throw (e);
     }
