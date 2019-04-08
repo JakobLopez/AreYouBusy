@@ -125,4 +125,9 @@ export class ViewPage {
     });
   }
 
+  goBack()
+  {
+    this.navCtrl.pop();
+  }
+
 }

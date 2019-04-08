@@ -45,5 +45,5 @@ export class SearchPage {
       console.log(e);
     }
   }
-
+  
 }
