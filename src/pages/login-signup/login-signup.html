@@ -6,6 +6,7 @@
 
       <ion-toolbar no-border-top transparent>
         <ion-segment [(ngModel)]="loginSignUp">
+
           <ion-segment-button value="login">
             Login
           </ion-segment-button>
@@ -19,6 +20,7 @@
     </ion-title>
 
     <div [ngSwitch]="loginSignUp" id="login">
+
 
       <!-- formats MSU emblem and header -->
       <div style="text-align:center">

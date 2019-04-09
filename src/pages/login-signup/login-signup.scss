@@ -6,6 +6,7 @@ page-login-signup {
 
     #background{
         background-image: url(../../assets/imgs/library-3.jpg);
+
         background-size: cover;
         width: 100%;
         height: 100%;
@@ -17,9 +18,9 @@ page-login-signup {
     .col{
         display:inline-block;
     }
-
     .error-message{
         color:red;
+
     }
 
 }
