@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { DatabaseProvider } from '../database/database';
+import { Storage } from '@ionic/storage';
+import * as firebase from 'firebase/app';
 
 
 @Injectable()
 export class AuthProvider {
-  uid: String;
+  uid: string;
 
-  constructor(public afAuth: AngularFireAuth) {
-    console.log('Hello AuthProvider Provider');
+  constructor(public afAuth: AngularFireAuth,
+    public db: DatabaseProvider,
+    public storage: Storage) {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        console.log(user.email + " is signed in")
+      } else {
+        console.log("Nobody is signed in")
+      }
+    });
   }
 
   /**
@@ -20,11 +31,11 @@ export class AuthProvider {
   * @Returns:
   *    Error if couldn't create account
   **/
-  async register(credentials) {
+  async register(credentials: any) {
     try {
-      console.log(credentials.email, credentials.password)
-      await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
-      console.log("Successfully created");
+      let newuser = await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
+      await this.db.setUserDoc(newuser.user.uid, credentials)
+      this.uid = this.afAuth.auth.currentUser.uid;
     }
     catch (e) {
       throw (e)
@@ -44,6 +55,21 @@ export class AuthProvider {
     try {
       await this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
       this.uid = this.afAuth.auth.currentUser.uid;
+    }
+    catch (e) {
+      throw (e);
+    }
+  }
+
+  //Logs user out
+  async logout() {
+    console.log("hey")
+    try {
+      await this.afAuth.auth.signOut();
+
+      await this.storage.remove('user');
+      await this.storage.remove('usersObj');
+      await this.storage.remove('type');
     }
     catch (e) {
       throw (e);

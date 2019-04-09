@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons> 
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding class="profileContent">
+
+  <div>
+    <h3>{{userInfo.email}}</h3>
+  </div>
+  <div>
+    <h3>{{userInfo.name}} </h3>
+  </div>
+  <div>
+    <h3>{{userInfo.type}} </h3>
+  </div>
+
+  <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
+    <ion-icon name="star"></ion-icon>
+    Add Favorite
+  </button>
+
+  <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
+    <ion-icon name="star"></ion-icon>
+  </button>
+
+  <button ion-button (click)='goToBook()'>Make an Appointment</button>
+
+  <div *ngFor="let appointment of appointments | orderby: 'date'">
+    <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
+      *ngIf="(appointment.timestamp | date:'shortDate') == (today | date:'shortDate')">
+      <h2>{{appointment.timestamp | date:"MMMM d, yyyy"}}</h2>
+      <h2>{{appointment.timestamp | date:"hh:mm a"}}</h2>
+    </ion-item>
+  </div>
+
+
+
+
+</ion-content>

@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import {IonicStorageModule} from '@ionic/storage';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth'
@@ -12,7 +13,8 @@ import { FIREBASE_CONFIG } from './credentials'
 import { MyApp } from './app.component';
 import { AuthProvider } from '../providers/auth/auth';
 import { ValidatorProvider } from '../providers/validator/validator';
-
+import { DatabaseProvider } from '../providers/database/database';
+import { AppointmentProvider } from '../providers/appointment/appointment';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { ValidatorProvider } from '../providers/validator/validator';
     AngularFireModule.initializeApp(FIREBASE_CONFIG.config),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    IonicStorageModule.forRoot(),
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -34,7 +38,9 @@ import { ValidatorProvider } from '../providers/validator/validator';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    ValidatorProvider
+    ValidatorProvider,
+    DatabaseProvider,
+    AppointmentProvider
   ]
 })
 export class AppModule {}

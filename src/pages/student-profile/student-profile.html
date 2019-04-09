@@ -1,0 +1,39 @@
+<ion-content padding class="profileContent">
+  <div class="header-image"></div>
+
+  <div class="main-content" text-wrap text-center>
+    <div class="circular"></div>
+    <button ion-button (click)="settings()" icon-only clear>
+        <ion-icon name="settings" style="color:grey"></ion-icon>
+      </button>
+
+    <h3>{{userInfo.name}} </h3>
+
+    <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
+
+    <hr>
+
+    <ion-item *ngFor="let fav of favorites">
+      <h2>{{fav.User.name }}</h2>
+    </ion-item>
+
+    <ion-list>
+      <div *ngFor="let appointment of appointments | orderby: 'date'">
+        <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
+          <ion-item>
+            {{appointment.timestamp | date:"MMMM d, yyyy"}}
+            {{appointment.timestamp | date:"hh:mm a"}}
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button (click)="clearAppointment(appointment)">
+              <ion-icon name="trash"></ion-icon>Delete
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </ion-list>
+  </div>
+
+
+
+</ion-content>

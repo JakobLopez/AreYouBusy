@@ -1,13 +1,16 @@
-<ion-header>
-  <ion-navbar no-border-bottom transparent>
+<!-- took away the header completely and placed toolbar in content -->
+<div id="background">
+  <ion-content padding id="tint">
+
     <ion-title padding center text center>
-      
-      <ion-toolbar no-border-top>
-        <ion-segment [(ngModel)]="loginSignUp" >
+
+      <ion-toolbar no-border-top transparent>
+        <ion-segment [(ngModel)]="loginSignUp">
+
           <ion-segment-button value="login">
             Login
           </ion-segment-button>
-    
+
           <ion-segment-button value="signUp">
             Sign Up
           </ion-segment-button>
@@ -15,120 +18,114 @@
       </ion-toolbar>
 
     </ion-title>
-  </ion-navbar>
-</ion-header>
 
-<div id="background">
-<ion-content padding  id="tint">
-  <div [ngSwitch]="loginSignUp"  id="login">
-  
-  <!-- formats MSU emblem and header -->
-  <div style="text-align:center">
-  <img height = 150 width = 150 src="../../assets/imgs/MSUemblem.png">
-  <h1 style="color:white"><strong>AreYouBusy</strong></h1>
-  </div>
+    <div [ngSwitch]="loginSignUp" id="login">
 
-    <form [formGroup]="loginForm" (submit)="tryLogin(loginForm.value)" novalidate *ngSwitchCase="'login'">
 
-      <ion-item >
+      <!-- formats MSU emblem and header -->
+      <div style="text-align:center">
+        <img height=150 width=150 src="../../assets/imgs/MSUemblem.png">
+        <h1 style="color:white">AreYouBusy</h1>
+      </div>
 
-        <!-- <ion-label stacked> Email </ion-label> -->
-        <ion-input formControlName="email" type="email"  placeholder="username@gmail.com"
-          [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
+      <form [formGroup]="loginForm" (submit)="tryLogin(loginForm.value)" novalidate *ngSwitchCase="'login'">
+        <ion-item>
+          <!-- <ion-label stacked> Email </ion-label> -->
+          <ion-input transparent formControlName="email" type="email" placeholder="username@gmail.com" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)"></ion-input>
 
-      </ion-item>
-      
-      <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)">
-        <p> Please enter a valid email.</p>
-      </ion-item>
-      
-      <br>
-      
-      <ion-item>
-        <!-- <ion-label stacked> Password </ion-label> -->
-        <ion-input formControlName="password" type="password" placeholder="password"
-          [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)"></ion-input>
-      </ion-item>
+        </ion-item>
 
-      <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)">
-        <p> Your password needs more than 6 characters. </p>
-      </ion-item>
+        <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid && (loginForm.controls.email.touched || submitAttempt)">
+          <p> Please enter a valid email.</p>
+        </ion-item>
 
-      <br>
+        <br>
 
-      <button ion-button block color="gold" type="submit">
-        Login
-      </button>
+        <ion-item>
+          <!-- <ion-label stacked> Password </ion-label> -->
+          <ion-input formControlName="password" type="password" placeholder="password" [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)"></ion-input>
+        </ion-item>
 
-    </form>
-  
+        <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid && (loginForm.controls.password.touched || submitAttempt)">
+          <p> Your password needs more than 6 characters. </p>
+        </ion-item>
 
-    <form [formGroup]="signUpForm" (submit)="tryRegister(signUpForm.value)" novalidate *ngSwitchCase="'signUp'">
+        <br>
 
-      <ion-item>
+        <button ion-button block [disabled]="!loginForm.valid" color="gold" type="submit">
+          Login
+        </button>
 
-        <!-- <ion-label stacked> Name </ion-label> -->
-        <ion-input formControlName="name" type="text" placeholder="Name"
-          [class.invalid]="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)"></ion-input>
+      </form>
 
-      </ion-item>
 
-      <ion-item class="error-message" *ngIf="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)">
-        <p> Please enter a valid Name.</p>
-      </ion-item>
+      <form [formGroup]="signUpForm" (submit)="tryRegister(signUpForm.value)" novalidate *ngSwitchCase="'signUp'">
 
-      <br>
+        <ion-item>
+          <!-- <ion-label stacked> Name </ion-label> -->
+          <ion-input formControlName="name" type="text" placeholder="Name" [class.invalid]="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)"></ion-input>
 
-      <ion-item>
+        </ion-item>
 
-        <!-- <ion-label stacked> Email </ion-label> -->
-        <ion-input formControlName="email" type="email" placeholder="username@gmail.com"
-          [class.invalid]="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)"></ion-input>
+        <ion-item class="error-message" *ngIf="!signUpForm.controls.name.valid && (signUpForm.controls.name.touched || submitAttempt)">
+          <p color="danger"> Please enter a valid Name.</p>
+        </ion-item>
 
-      </ion-item>
+        <br>
 
-      <ion-item class="error-message" *ngIf="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)">
-        <p> Please enter a valid email.</p>
-      </ion-item>
+        <ion-item>
 
-      <br>
+          <!-- <ion-label stacked> Email </ion-label> -->
+          <ion-input formControlName="email" type="email" placeholder="username@gmail.com" [class.invalid]="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)"></ion-input>
 
-      <ion-item>
-        <!-- <ion-label stacked> Password </ion-label> -->
-        <ion-input formControlName="password" type="password" placeholder="Password"
-          [class.invalid]="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)"></ion-input>
-      </ion-item>
+        </ion-item>
 
-      <ion-item class="error-message" *ngIf="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)">
-        <p> Your password needs more than 6 characters. </p>
-      </ion-item>
+        <ion-item class="error-message" *ngIf="!signUpForm.controls.email.valid && (signUpForm.controls.email.touched || submitAttempt)">
+          <p> Please enter a valid email.</p>
+        </ion-item>
 
-      <br>
+        <br>
 
-      <ion-item>
-        <!-- <ion-label stacked> Confirm Password </ion-label> -->
-        <ion-input formControlName="confirmPassword" type="password" 
-          placeholder="Confirm Password" [class.invalid]="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)"></ion-input>
-      </ion-item>
+        <ion-item>
+          <!-- <ion-label stacked> Password </ion-label> -->
+          <ion-input formControlName="password" type="password" placeholder="Password" [class.invalid]="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)"></ion-input>
+        </ion-item>
 
-      <ion-item class="error-message" *ngIf="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
-        <p> Your password needs more than 6 characters. </p>
-      </ion-item>
+        <ion-item class="error-message" *ngIf="!signUpForm.controls.password.valid && (signUpForm.controls.password.touched || submitAttempt)">
+          <p> Your password needs more than 6 characters. </p>
+        </ion-item>
 
-      <ion-item class="error-message" *ngIf="signUpForm.errors && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
-        <p> Your passwords do not match. </p>
-      </ion-item>
+        <br>
 
-      <br>
+        <ion-item>
+          <!-- <ion-label stacked> Confirm Password </ion-label> -->
+          <ion-input formControlName="confirmPassword" type="password" placeholder="Confirm Password" [class.invalid]="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)"></ion-input>
+        </ion-item>
 
-      <button ion-button block color="gold" type="submit">
-        Sign Up
-      </button>
+        <ion-item class="error-message" *ngIf="!signUpForm.controls.confirmPassword.valid && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
+          <p> Your password needs more than 6 characters. </p>
+        </ion-item>
 
-    </form>
+        <ion-item class="error-message" *ngIf="signUpForm.errors && (signUpForm.controls.confirmPassword.touched || submitAttempt)">
+          <p> Your passwords do not match. </p>
+        </ion-item>
 
-  </div>
- 
-</ion-content>
+        <br>
+
+        <ion-row formControlName='type' radio-group >
+          <ion-item *ngFor="let entry of account" class="col">
+            <ion-label>{{entry.val}}</ion-label>
+            <ion-radio value="{{entry.val}}" (ionSelect)="setValue(entry.val)"></ion-radio>
+          </ion-item>
+
+        </ion-row>
+
+        <br>
+
+        <button ion-button block [disabled]="!signUpForm.valid" color="gold" type="submit">
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </ion-content>
 </div>
-
