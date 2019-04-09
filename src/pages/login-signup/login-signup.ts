@@ -3,6 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidatorProvider } from '../../providers/validator/validator';
 import { AuthProvider } from '../../providers/auth/auth'
+import { DatabaseProvider } from '../../providers/database/database';
+import { Storage } from '@ionic/storage';
+
 
 
 @IonicPage()
@@ -11,15 +14,23 @@ import { AuthProvider } from '../../providers/auth/auth'
   templateUrl: 'login-signup.html',
 })
 export class LoginSignupPage {
-  public loginForm: FormGroup;
-  public loginSignUp: string = "login";
-  public signUpForm: FormGroup;
-  public submitAttempt: boolean = false;
+  loginForm: FormGroup;
+  loginSignUp: string = "login";
+  signUpForm: FormGroup;
+  submitAttempt: boolean = false;
+
+  account = [
+    { val: 'Student' },
+    { val: 'Teacher' }
+  ];
+  chosenAccount: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
-    public auth: AuthProvider, ) {
+    public auth: AuthProvider, 
+    public db: DatabaseProvider,
+    public storage: Storage) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
@@ -29,26 +40,29 @@ export class LoginSignupPage {
       name: ['', Validators.compose([Validators.minLength(1), Validators.required])],
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      confirmPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])]
+      confirmPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])],
+      type : ['', Validators.required]
     }, { validator: ValidatorProvider.matchingPasswords('password', 'confirmPassword') })
     
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginSignupPage');
-
   }
-
 
   //Attempts to login user given credentials from loginForm
   async tryLogin(credentials) {
     try {
       await this.auth.login(credentials);
-      console.log("success")
-      this.navCtrl.setRoot('LoginPage');
+      console.log("Login sucess");
+
+      this.storage.set('user', JSON.stringify(this.auth.uid));
+
+      await this.db.setAccountType(this.auth.uid);
+
+      this.navCtrl.setRoot('TabPage');
     } catch (e) {
       console.log(e);
-      //this.errorMessage = e.message;
     }
   }
 
@@ -59,17 +73,23 @@ export class LoginSignupPage {
       this.submitAttempt = true;
       
       await this.auth.register(value);
+      console.log("Registration sucess");
 
-      //Once the user signs up, pass them to to login segment to login. Could modify to auto-login the user.
-      //this.loginSignUp = 'login';
-      //this.successMessage = "Your account has been created.";
+      await this.db.setAccountType(this.auth.uid, this.chosenAccount) 
 
-      this.navCtrl.push('HomePage');
+      await this.tryLogin(value);
+
+      this.navCtrl.push('TabPage');
+
     }
     catch (e) {
       console.log(e);
-      //this.errorMessage = e.message;
     }
+  }
+
+  //Sets the value for the account type chosen in checkbox
+  setValue(val){
+    this.chosenAccount = val;
   }
 
 }
