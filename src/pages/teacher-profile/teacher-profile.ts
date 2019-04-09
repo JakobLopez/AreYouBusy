@@ -54,7 +54,6 @@ export class TeacherProfilePage {
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
 
-      console.log(user);
     }
     catch (e) {
       console.log(e);

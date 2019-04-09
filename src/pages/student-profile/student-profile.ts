@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, App  } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -28,7 +28,9 @@ export class StudentProfilePage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider, public auth: AuthProvider,
     public afs: AngularFirestore,
-    public appt:AppointmentProvider) {
+    public appt:AppointmentProvider,
+    public alertCtrl: AlertController,
+    public _app:App) {
       //Track real-time changes to favorites list
       this.afs.collection('Students').doc(this.auth.uid).collection('Favorites').valueChanges().subscribe(data=>{
         this.getUserInformation();
@@ -61,7 +63,6 @@ export class StudentProfilePage {
 
       this.favorites = await this.db.getFavorites(this.auth.uid);
 
-      console.log(user);
     }
     catch (e) {
       console.log(e);
@@ -77,5 +78,30 @@ export class StudentProfilePage {
     }
   }
 
+  settings(){
+    let settings = this.alertCtrl.create({
+      title: 'Unfollow?',
+      message: 'Are your sure you want to unfollow?',
+      buttons: [
+        {
+          text: 'Logout',
+          handler: () => {
+              this.logout();
+          }
+        },
+        { text: 'No' }
+      ]
+    });
+    settings.present();
+  }
 
+  async logout(){
+    try{
+      await this.auth.logout();
+      this._app.getRootNav().setRoot('LoginSignupPage')
+    }
+    catch(e){
+      console.log(e);
+    }
+  }
 }

@@ -11,7 +11,7 @@ import { DatabaseProvider } from '../providers/database/database';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any = 'LoginSignupPage';
+  rootPage: any;
 
   constructor(platform: Platform,
     statusBar: StatusBar,
