@@ -200,11 +200,6 @@ export class DatabaseProvider {
     }
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 316b66f... created logout and update info buttons on student profile
 /* editAccount
   * Desc:  
   *     Edits students name, email
@@ -215,7 +210,7 @@ export class DatabaseProvider {
   *     none if successful, else throws error
   */
   async editAccount(id: string, credentials: any){
-<<<<<<< HEAD
+
     try {
       var obj = {
         name: credentials.Name
@@ -231,22 +226,6 @@ export class DatabaseProvider {
     }
   }
 
-
->>>>>>> 13be10e... Fixed redisplay error
-=======
-    var obj = {
-      name: credentials.Name
-    };
-    if(this.accountType == 'Student')
-      await this.db.collection('Students').doc(id).update(obj);
-    else
-      await this.db.collection('Teachers').doc(id).update(obj);
-
-    console.log('update successful');
-  }
-
-
->>>>>>> 316b66f... created logout and update info buttons on student profile
   /* setFavorite
   * Desc:  
   *     Adds a teacher document to current user's favorite collection
