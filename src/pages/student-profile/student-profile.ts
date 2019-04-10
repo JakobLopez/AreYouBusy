@@ -7,6 +7,10 @@ import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
 import { Observable } from 'rxjs'
 import 'rxjs/add/observable/interval';
+import { Validators, FormControl } from '@angular/forms';
+import { database } from 'firebase';
+import { stringify } from '@angular/core/src/render3/util';
+import { ResourceLoader } from '@angular/compiler';
 
 
 @IonicPage()
@@ -93,6 +97,44 @@ export class StudentProfilePage {
       ]
     });
     settings.present();
+    log_out.present();
+  }
+
+  settings(){
+    let alert = this.alertCtrl.create({
+      title: 'Edit Account',
+      inputs: [
+        {
+          name: 'Name',
+          type: 'String',
+          value: this.userInfo.name
+        },
+      ],
+      message: '',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            if (data.Name.length > 0) {
+              this.db.editAccount(this.auth.uid, data);
+              console.log('update successful');
+              return true;
+            } else {
+              alert.setMessage('Your name is invalid');
+              return false;
+            }
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   async logout(){

@@ -199,6 +199,35 @@ export class DatabaseProvider {
     }
   }
 
+<<<<<<< HEAD
+=======
+/* editAccount
+  * Desc:  
+  *     Edits students name, email
+  * Params:
+  *     id: id of current user
+  *     info: object with name and email
+  * Returns
+  *     none if successful, else throws error
+  */
+  async editAccount(id: string, credentials: any){
+    try {
+      var obj = {
+        name: credentials.Name
+      };
+      if(this.accountType == 'Student')
+        await this.db.collection('Students').doc(id).update(obj);
+      else
+        await this.db.collection('Teachers').doc(id).update(obj);
+
+    }
+    catch (e){
+      throw(e);
+    }
+  }
+
+
+>>>>>>> 13be10e... Fixed redisplay error
   /* setFavorite
   * Desc:  
   *     Adds a teacher document to current user's favorite collection
