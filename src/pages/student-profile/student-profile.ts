@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, App  } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
@@ -6,6 +6,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
 import { Observable } from 'rxjs'
+import { ValidatorProvider } from '../../providers/validator/validator';
 import 'rxjs/add/observable/interval';
 import { Validators, FormControl } from '@angular/forms';
 import { database } from 'firebase';
@@ -82,10 +83,10 @@ export class StudentProfilePage {
     }
   }
 
-  settings(){
-    let settings = this.alertCtrl.create({
-      title: 'Unfollow?',
-      message: 'Are your sure you want to unfollow?',
+  log_out(){
+    let log_out = this.alertCtrl.create({
+      title: 'Logout?',
+      message: 'Are your sure you want to Logout?',
       buttons: [
         {
           text: 'Logout',
@@ -96,7 +97,6 @@ export class StudentProfilePage {
         { text: 'No' }
       ]
     });
-    settings.present();
     log_out.present();
   }
 
