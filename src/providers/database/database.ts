@@ -128,7 +128,6 @@ export class DatabaseProvider {
   /*              These methods set some information in the database or global variables      */
   /* setUserDoc                                                                               */
   /* setAccountType                                                                           */
-  /* editAccount                                                                              */
   /* setFavorite                                                                              */
   /* removeFavorite                                                                           */
   /********************************************************************************************/
@@ -199,32 +198,6 @@ export class DatabaseProvider {
       throw (e);
     }
   }
-
-/* editAccount
-  * Desc:  
-  *     Edits students name, email
-  * Params:
-  *     id: id of current user
-  *     info: object with name and email
-  * Returns
-  *     none if successful, else throws error
-  */
-  async editAccount(id: string, credentials: any){
-    try {
-      var obj = {
-        name: credentials.Name
-      };
-      if(this.accountType == 'Student')
-        await this.db.collection('Students').doc(id).update(obj);
-      else
-        await this.db.collection('Teachers').doc(id).update(obj);
-
-    }
-    catch (e){
-      throw(e);
-    }
-  }
-
 
   /* setFavorite
   * Desc:  
