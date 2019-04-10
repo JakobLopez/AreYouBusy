@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppointmentProvider } from '../../providers/appointment/appointment';
 import { AuthProvider } from '../../providers/auth/auth';
+import { Appointment } from '../../appointment';
 
 
 @IonicPage()
@@ -12,7 +13,6 @@ import { AuthProvider } from '../../providers/auth/auth';
 export class BookPage {
   myAppointment: any = {
     date: "",
-    time: "",
     length: ""
   };
   today: string;
@@ -21,7 +21,6 @@ export class BookPage {
     public ap: AppointmentProvider, public auth: AuthProvider) {
       let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
       this.today = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-      console.log(this.today);
   }
 
   ionViewDidLoad() {
@@ -30,12 +29,13 @@ export class BookPage {
 
   async makeAppointment() {
     try {
-      let appt = {
+      let appt:Appointment = {
         date: this.myAppointment.date,
         from: this.auth.uid,
         to: this.navParams.get('item'),
         timestamp: 0,
-        length: await this.lengthToMilliseconds(this.myAppointment.length)
+        endStamp: this.lengthToMilliseconds(this.myAppointment.length),
+        id: await this.ap.createAppointmentId()
       }
 
       let myDate = new Date(this.myAppointment.date);
@@ -43,10 +43,18 @@ export class BookPage {
       myDate.setMinutes(myDate.getMinutes() + myDate.getTimezoneOffset());
 
       appt.timestamp = await myDate.getTime();
+      appt.endStamp = appt.timestamp + appt.endStamp;
 
-      await this.ap.createAppointment(appt);
-
-      this.navCtrl.pop();
+      if(await this.ap.isValidAppointment(appt))
+      {
+        await this.ap.createAppointment(appt);
+        this.navCtrl.pop();
+      }
+      else
+      {
+        console.log("Somebody else already has an appointment during this time");
+      }
+      
 
     } catch (e) {
       console.log(e);

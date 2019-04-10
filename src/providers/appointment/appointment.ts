@@ -14,33 +14,35 @@ export class AppointmentProvider {
 
   }
 
-  async isValidAppointment(appointment:Appointment){
-      try{
-        let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
-        let docs = await appRef.where('date' , '==' , appointment.date).get();
-        
-        var doc_obj = {};
-        docs.forEach(doc => {
-        var doc_data = doc.data();
-        for (var field in doc_data) {
-          
-          doc_obj[field] = doc_data[field];
-        }
-        console.log(doc.id);
+  async isValidAppointment(appointment: Appointment) {
+    try {
+      let size:any;
+
+      let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
+      await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
+      await appRef.where('endStamp', '>=', appointment.timestamp).get().then(function (querySnapshot) {
+        size = querySnapshot.size;
       });
-      console.log(doc_obj);
-      }catch(e){
-        throw(e);
-      }
+      console.log(size);
+      return (size > 1) ? false: true;
+
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  async createAppointmentId() {
+    try {
+      return await this.db.createId();
+    } catch (e) {
+      throw (e);
+    }
   }
 
   async createAppointment(details: any) {
     try {
-
-      details['id']= this.db.createId();
-      this.isValidAppointment(details);
-
       await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(details.id).set(details);
+
       if (this.dbProv.accountType == 'Student')
         await this.db.collection('Students').doc(details.from).collection('Appointments').doc(details.id).set(details);
     } catch (e) {
@@ -80,12 +82,12 @@ export class AppointmentProvider {
   }
 
   async clear(appointment: Appointment) {
-    try{
+    try {
       await this.db.collection('Students').doc(appointment.from).collection('Cleared Appointments').doc(appointment.id).set(appointment);
       await this.db.collection('Students').doc(appointment.from).collection('Appointments').doc(appointment.id).delete();
     }
-    catch(e){
-      throw(e);
+    catch (e) {
+      throw (e);
     }
   }
 

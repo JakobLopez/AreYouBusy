@@ -4,4 +4,5 @@ export class Appointment {
     from: string;
     id: string;
     date: string;
+    endStamp: number;
   }
