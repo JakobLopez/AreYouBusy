@@ -4,6 +4,7 @@ import { DatabaseProvider } from '../database/database';
 import { Observable } from 'rxjs'
 import { Appointment } from '../../appointment'
 import { map, catchError } from 'rxjs/operators';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 
 @Injectable()
@@ -13,18 +14,35 @@ export class AppointmentProvider {
 
   }
 
+  async isValidAppointment(appointment:Appointment){
+      try{
+        let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
+        let docs = await appRef.where('date' , '==' , appointment.date).get();
+        
+        var doc_obj = {};
+        docs.forEach(doc => {
+        var doc_data = doc.data();
+        for (var field in doc_data) {
+          
+          doc_obj[field] = doc_data[field];
+        }
+        console.log(doc.id);
+      });
+      console.log(doc_obj);
+      }catch(e){
+        throw(e);
+      }
+  }
+
   async createAppointment(details: any) {
     try {
-      let temp: Appointment = {
-        timestamp: details.timestamp,
-        to: details.to,
-        from: details.from,
-        id: this.db.createId()
-      };
 
-      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(temp.id).set(temp);
+      details['id']= this.db.createId();
+      this.isValidAppointment(details);
+
+      await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(details.id).set(details);
       if (this.dbProv.accountType == 'Student')
-        await this.db.collection('Students').doc(details.from).collection('Appointments').doc(temp.id).set(temp);
+        await this.db.collection('Students').doc(details.from).collection('Appointments').doc(details.id).set(details);
     } catch (e) {
       throw (e);
     }

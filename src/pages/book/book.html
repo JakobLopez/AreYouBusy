@@ -12,15 +12,16 @@
 
   <ion-item>
       <ion-label>Date</ion-label>
-      <ion-datetime pickerFormat="DDD MMM DD YYYY" [(ngModel)]="myAppointment['date']"></ion-datetime>
+      <ion-datetime min={{today}} pickerFormat="DDD MMM DD YYYY" [(ngModel)]="myAppointment['date']"></ion-datetime>
   </ion-item>
   <ion-item>
       <ion-label>Time</ion-label>
-      <ion-datetime pickerFormat="h:mm A" [(ngModel)]="myAppointment['date']"></ion-datetime>
+      <ion-datetime pickerFormat="h:mm A" [(ngModel)]="myAppointment['time']"></ion-datetime>
   </ion-item>
-
-  <h2>{{myAppointment.date}}</h2>
-  <h2>{{myAppointment.time}}</h2>
+  <ion-item>
+      <ion-label>Duration</ion-label>
+      <ion-datetime pickerFormat="H:mm" hourValues="00,01" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" [(ngModel)]="myAppointment['length']"></ion-datetime>
+  </ion-item>
 
   <!--<p>{{time | date:'short'}}</p>-->
   <button ion-button (click)='makeAppointment()'>Make Appointment</button>

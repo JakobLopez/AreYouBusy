@@ -123,6 +123,7 @@ export class DatabaseProvider {
     }
   }
 
+
   /********************************************************************************************/
   /*                                   SETTER METHODS                                         */
   /*              These methods set some information in the database or global variables      */
