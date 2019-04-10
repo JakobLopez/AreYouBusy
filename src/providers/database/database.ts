@@ -210,15 +210,19 @@ export class DatabaseProvider {
   *     none if successful, else throws error
   */
   async editAccount(id: string, credentials: any){
-    var obj = {
-      name: credentials.Name
-    };
-    if(this.accountType == 'Student')
-      await this.db.collection('Students').doc(id).update(obj);
-    else
-      await this.db.collection('Teachers').doc(id).update(obj);
+    try {
+      var obj = {
+        name: credentials.Name
+      };
+      if(this.accountType == 'Student')
+        await this.db.collection('Students').doc(id).update(obj);
+      else
+        await this.db.collection('Teachers').doc(id).update(obj);
 
-    console.log('update successful');
+    }
+    catch (e){
+      throw(e);
+    }
   }
 
 

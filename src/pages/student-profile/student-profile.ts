@@ -11,6 +11,7 @@ import 'rxjs/add/observable/interval';
 import { Validators, FormControl } from '@angular/forms';
 import { database } from 'firebase';
 import { stringify } from '@angular/core/src/render3/util';
+import { ResourceLoader } from '@angular/compiler';
 
 
 @IonicPage()
@@ -124,10 +125,9 @@ export class StudentProfilePage {
             if (data.Name.length > 0) {
               this.db.editAccount(this.auth.uid, data);
               console.log('update successful');
-              location.reload();
               return true;
             } else {
-              alert.setMessage('Your email is invalid');
+              alert.setMessage('Your name is invalid');
               return false;
             }
           }
