@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, App  } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database'
 import { AuthProvider } from '../../providers/auth/auth'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
@@ -26,7 +26,9 @@ export class TeacherProfilePage {
   sub: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public db: DatabaseProvider, public auth: AuthProvider, public appt: AppointmentProvider) {
+    public db: DatabaseProvider, public auth: AuthProvider, public appt: AppointmentProvider,
+    public _app:App,
+    public alertCtrl:AlertController) {
     this.getUserInformation();
   }
 
@@ -59,5 +61,70 @@ export class TeacherProfilePage {
       console.log(e);
     }
 
+  }
+
+  log_out(){
+    let log_out = this.alertCtrl.create({
+      title: 'Logout?',
+      message: 'Are your sure you want to Logout?',
+      buttons: [
+        {
+          text: 'Logout',
+          handler: () => {
+              this.logout();
+          }
+        },
+        { text: 'No' }
+      ]
+    });
+    log_out.present();
+  }
+
+  settings(){
+    let alert = this.alertCtrl.create({
+      title: 'Edit Account',
+      inputs: [
+        {
+          name: 'Name',
+          type: 'String',
+          value: this.userInfo.name
+        },
+      ],
+      message: '',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            if (data.Name.length > 0) {
+              this.db.editAccount(this.auth.uid, data);
+              this.getUserInformation();
+              console.log('update successful');
+              return true;
+            } else {
+              alert.setMessage('Your name is invalid');
+              return false;
+            }
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  async logout(){
+    try{
+      await this.auth.logout();
+      this._app.getRootNav().setRoot('LoginSignupPage')
+    }
+    catch(e){
+      console.log(e);
+    }
   }
 }
