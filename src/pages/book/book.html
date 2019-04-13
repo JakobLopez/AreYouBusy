@@ -16,8 +16,8 @@
   </ion-item>
   <ion-item>
       <ion-label>Time</ion-label>
-      <ion-datetime pickerFormat="h:mm A" [(ngModel)]="myAppointment['date']"></ion-datetime>
-  </ion-item>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm"  hourValues="08,09,10,11,12,13,14,15,16,17"[(ngModel)]="myAppointment['date']"></ion-datetime>
+  </ion-item> 
   <ion-item>
       <ion-label>Duration</ion-label>
       <ion-datetime pickerFormat="H:mm" hourValues="00,01" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" [(ngModel)]="myAppointment['length']"></ion-datetime>
