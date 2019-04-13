@@ -38,12 +38,10 @@ export class BookPage {
         id: await this.ap.createAppointmentId()
       }
 
-      let myDate = new Date(this.myAppointment.date);
-
-      myDate.setMinutes(myDate.getMinutes() + myDate.getTimezoneOffset());
-
-      appt.timestamp = await myDate.getTime();
+      
+      appt.timestamp = await this.convertTimezone();
       appt.endStamp = appt.timestamp + appt.endStamp;
+      appt.date = this.myAppointment.date.split("T")[0];
 
       if(await this.ap.isValidAppointment(appt))
       {
@@ -59,6 +57,20 @@ export class BookPage {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async convertTimezone(){
+    try{
+      
+      let myDate = new Date(this.myAppointment.date);
+
+      myDate.setMinutes(myDate.getMinutes() + myDate.getTimezoneOffset());
+
+      return await myDate.getTime();
+    }catch(e){
+      console.log(e);
+    }
+
   }
 
   lengthToMilliseconds(length){

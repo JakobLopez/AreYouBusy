@@ -16,16 +16,38 @@ export class AppointmentProvider {
 
   async isValidAppointment(appointment: Appointment) {
     try {
-      let size:any;
-
+      let size: any;
+ 
       let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
-      await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
-      await appRef.where('endStamp', '>=', appointment.timestamp).get().then(function (querySnapshot) {
-        size = querySnapshot.size;
-      });
-      console.log(size);
-      return (size > 1) ? false: true;
 
+      let query1 = await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
+      let query2 = await appRef.where('date', '==', appointment.date).where('timestamp', '<', appointment.endStamp);
+
+      let result = await query1.get();
+      let flag = true;
+      result.forEach(doc => {
+        var doc_data = doc.data();
+
+        //If appointment is made in the middle of another appointment
+        if(doc_data['endStamp'] >= appointment.timestamp)
+          flag = false;     
+      });
+      if(!flag)
+        return flag;
+
+      result = await query2.get();
+      flag = true;
+      result.forEach(doc => {
+        var doc_data = doc.data();
+
+        //If appointment ends in the middle of another appointment or
+        //if appointment is spanning over an appointment
+        if(doc_data['endStamp'] >= appointment.endStamp || ((doc_data['timestamp'] > appointment.timestamp) && (appointment.endStamp >= doc_data['endStamp'])))
+          flag = false;
+        
+      });
+
+      return flag;
     } catch (e) {
       throw (e);
     }

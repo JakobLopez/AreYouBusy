@@ -35,7 +35,7 @@
     <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
       *ngIf="(appointment.timestamp | date:'shortDate') == (today | date:'shortDate')">
       <h2>{{appointment.timestamp | date:"MMMM d, yyyy"}}</h2>
-      <h2>{{appointment.timestamp | date:"hh:mm a"}}</h2>
+      <h2>{{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</h2>
     </ion-item>
   </div>
 
