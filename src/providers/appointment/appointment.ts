@@ -105,7 +105,7 @@ export class AppointmentProvider {
   * Params:
   *     id - uid of user from which appointments are retrieved
   * returns: 
-  *     appointments as a list
+  *     observable of appointments
   */
   getAppointments(id: string): Observable<Appointment[]> {
     try {

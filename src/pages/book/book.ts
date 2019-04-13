@@ -18,8 +18,9 @@ export class BookPage {
   };
 
   appForm: FormGroup;
-
+  appointments: Appointment[];
   today: string;
+  sendToID: string = this.navParams.get('item');
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -41,12 +42,20 @@ export class BookPage {
     console.log('ionViewDidLoad BookPage');
   }
 
+  ngOnInit(): void {
+    //Watch for changes to appointments
+    this.ap.getAppointments(this.sendToID)
+    .subscribe(appointments => this.appointments = appointments);
+
+
+  }
+
   async makeAppointment() {
     try {
       let appt:Appointment = {
         date: this.myAppointment.date,
         from: this.auth.uid,
-        to: this.navParams.get('item'),
+        to: this.sendToID,
         timestamp: 0,
         endStamp: this.lengthToMilliseconds(this.myAppointment.length),
         id: await this.ap.createAppointmentId()
