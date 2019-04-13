@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppointmentProvider } from '../../providers/appointment/appointment';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
 import { Appointment } from '../../appointment';
 
@@ -15,12 +16,25 @@ export class BookPage {
     date: "",
     length: ""
   };
+
+  appForm: FormGroup;
+
   today: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public ap: AppointmentProvider, public auth: AuthProvider) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    public ap: AppointmentProvider, 
+    public auth: AuthProvider,
+    public formBuilder: FormBuilder,) {
+      //Get today's date in local time
       let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
       this.today = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
+      this.appForm = formBuilder.group({
+        date: ['', Validators.required],
+        time: ['', Validators.required],
+        length: ['', Validators.required]
+      });
   }
 
   ionViewDidLoad() {
