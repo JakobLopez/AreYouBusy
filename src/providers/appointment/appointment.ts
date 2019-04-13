@@ -4,7 +4,6 @@ import { DatabaseProvider } from '../database/database';
 import { Observable } from 'rxjs'
 import { Appointment } from '../../appointment'
 import { map, catchError } from 'rxjs/operators';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 
 @Injectable()
@@ -14,6 +13,18 @@ export class AppointmentProvider {
 
   }
 
+  /* isValidAppointment
+  * Desc:  
+  *     Checks 3 cases:
+  *       - Appointment is not being made during an already existing appointment
+  *       - Appointment is not ending during the middle of an exisiting appointment
+  *       - Appointment is not made so that it puts an already existing appointment in 
+  *         the middle of it
+  * Params:
+  *     appointment - the appointment being requested to make
+  * returns: 
+  *     true if appointment is valid
+  */
   async isValidAppointment(appointment: Appointment) {
     try {
       let size: any;
@@ -53,6 +64,14 @@ export class AppointmentProvider {
     }
   }
 
+  /* createAppointmentId
+  * Desc:  
+  *     Creates an id
+  * Params:
+  *     none
+  * returns: 
+  *     a new id
+  */
   async createAppointmentId() {
     try {
       return await this.db.createId();
@@ -61,6 +80,14 @@ export class AppointmentProvider {
     }
   }
 
+  /* createAppointment
+  * Desc:  
+  *     Creates an appointment
+  * Params:
+  *     details - the appointment to make
+  * returns: 
+  *     none
+  */
   async createAppointment(details: any) {
     try {
       await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(details.id).set(details);
@@ -72,6 +99,14 @@ export class AppointmentProvider {
     }
   }
 
+  /* getAppointments
+  * Desc:  
+  *     Gets all appointments 
+  * Params:
+  *     id - uid of user from which appointments are retrieved
+  * returns: 
+  *     appointments as a list
+  */
   getAppointments(id: string): Observable<Appointment[]> {
     try {
       if (this.dbProv.usersObj[id]['type'] == 'Student') {
@@ -103,6 +138,15 @@ export class AppointmentProvider {
     }
   }
 
+
+  /* clear
+  * Desc:  
+  *     Clears appointments by moving it to a different collection
+  * Params:
+  *     appointment - appointment to be cleared
+  * returns: 
+  *     none
+  */
   async clear(appointment: Appointment) {
     try {
       await this.db.collection('Students').doc(appointment.from).collection('Cleared Appointments').doc(appointment.id).set(appointment);
