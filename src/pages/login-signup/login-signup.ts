@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidatorProvider } from '../../providers/validator/validator';
 import { AuthProvider } from '../../providers/auth/auth'
 import { DatabaseProvider } from '../../providers/database/database';
 import { Storage } from '@ionic/storage';
-
+import * as firebase from 'firebase';
 
 
 @IonicPage()
@@ -18,6 +18,7 @@ export class LoginSignupPage {
   loginSignUp: string = "login";
   signUpForm: FormGroup;
   submitAttempt: boolean = false;
+  fbauth = firebase.auth();
 
   account = [
     { val: 'Student' },
@@ -28,8 +29,9 @@ export class LoginSignupPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
-    public auth: AuthProvider, 
+    public auth: AuthProvider,
     public db: DatabaseProvider,
+    public alertCtrl: AlertController,
     public storage: Storage) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
@@ -44,6 +46,7 @@ export class LoginSignupPage {
       type : ['', Validators.required]
     }, { validator: ValidatorProvider.matchingPasswords('password', 'confirmPassword') })
     
+  
   }
 
   ionViewDidLoad() {
@@ -92,4 +95,40 @@ export class LoginSignupPage {
     this.chosenAccount = val;
   }
 
+  //allows user to reset password
+  async resetPassword(){
+    try{
+      let getEmail= this.alertCtrl.create({
+        title: 'Reset Password',
+        message: 'Please enter your email?',
+        inputs: [
+          {
+            name: 'email',
+            type: 'String',
+            placeholder: 'your email'
+          },
+        ],
+        buttons: [
+          {
+            text: 'Send Email',
+            handler: data => {
+              this.sendEmail(data.email);
+            }
+          },
+          { text: 'Cancel' }
+        ]
+      });
+      getEmail.present();
+    }
+    catch (e){
+      console.log(e);
+    }
+  }
+
+
+  sendEmail(email: string) {
+    return this.fbauth.sendPasswordResetEmail(email)
+      .then(() => console.log("email sent"))
+      .catch((e) => console.log(e))
+  }
 }
