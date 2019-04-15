@@ -63,7 +63,6 @@ export class AuthProvider {
 
   //Logs user out
   async logout() {
-    console.log("hey")
     try {
       await this.afAuth.auth.signOut();
 
