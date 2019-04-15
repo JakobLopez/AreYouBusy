@@ -74,4 +74,15 @@ export class AuthProvider {
       throw (e);
     }
   }
+
+   //Update user email
+   async setEmail(email: any) {
+    var user = firebase.auth().currentUser;
+    user.updateEmail(email).then(function() {
+      console.log("authentication email changed");
+    }).catch(function(e) {
+      console.log(e);
+    });
+   }
+
 }
