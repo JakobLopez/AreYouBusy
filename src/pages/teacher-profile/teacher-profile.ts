@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database'
 import { AuthProvider } from '../../providers/auth/auth'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
@@ -25,8 +25,12 @@ export class TeacherProfilePage {
   today: any;
   sub: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public db: DatabaseProvider, public auth: AuthProvider, public appt: AppointmentProvider) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public db: DatabaseProvider,
+    public auth: AuthProvider,
+    public appt: AppointmentProvider,
+    public alertCtrl: AlertController) {
     this.getUserInformation();
   }
 
@@ -58,6 +62,9 @@ export class TeacherProfilePage {
     catch (e) {
       console.log(e);
     }
+  }
 
+  goTo() {
+    this.navCtrl.push('SchedulePage');
   }
 }

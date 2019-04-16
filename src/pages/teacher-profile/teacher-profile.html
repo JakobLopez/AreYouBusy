@@ -10,6 +10,9 @@
       <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
       <hr>
   
+      <button ion-button (click)="goTo()">
+        Upload office hours
+      </button>
       <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
       *ngFor="let appointment of appointments | orderby: 'date'">
         <h2>{{appointment.timestamp | date:"MMMM d, yyyy"}}</h2>
