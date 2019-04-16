@@ -4,7 +4,6 @@ import { DatabaseProvider } from '../database/database';
 import { Observable } from 'rxjs'
 import { Appointment } from '../../appointment'
 import { map, catchError } from 'rxjs/operators';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 
 @Injectable()
@@ -14,23 +13,65 @@ export class AppointmentProvider {
 
   }
 
+  /* isValidAppointment
+  * Desc:  
+  *     Checks 3 cases:
+  *       - Appointment is not being made during an already existing appointment
+  *       - Appointment is not ending during the middle of an exisiting appointment
+  *       - Appointment is not made so that it puts an already existing appointment in 
+  *         the middle of it
+  * Params:
+  *     appointment - the appointment being requested to make
+  * returns: 
+  *     true if appointment is valid
+  */
   async isValidAppointment(appointment: Appointment) {
     try {
-      let size:any;
-
+      let size: any;
+ 
       let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
-      await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
-      await appRef.where('endStamp', '>=', appointment.timestamp).get().then(function (querySnapshot) {
-        size = querySnapshot.size;
-      });
-      console.log(size);
-      return (size > 1) ? false: true;
 
+      let query1 = await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
+      let query2 = await appRef.where('date', '==', appointment.date).where('timestamp', '<', appointment.endStamp);
+
+      let result = await query1.get();
+      let flag = true;
+      result.forEach(doc => {
+        var doc_data = doc.data();
+
+        //If appointment is made in the middle of another appointment
+        if(doc_data['endStamp'] >= appointment.timestamp)
+          flag = false;     
+      });
+      if(!flag)
+        return flag;
+
+      result = await query2.get();
+      flag = true;
+      result.forEach(doc => {
+        var doc_data = doc.data();
+
+        //If appointment ends in the middle of another appointment or
+        //if appointment is spanning over an appointment
+        if(doc_data['endStamp'] >= appointment.endStamp || ((doc_data['timestamp'] > appointment.timestamp) && (appointment.endStamp >= doc_data['endStamp'])))
+          flag = false;
+        
+      });
+
+      return flag;
     } catch (e) {
       throw (e);
     }
   }
 
+  /* createAppointmentId
+  * Desc:  
+  *     Creates an id
+  * Params:
+  *     none
+  * returns: 
+  *     a new id
+  */
   async createAppointmentId() {
     try {
       return await this.db.createId();
@@ -39,6 +80,14 @@ export class AppointmentProvider {
     }
   }
 
+  /* createAppointment
+  * Desc:  
+  *     Creates an appointment
+  * Params:
+  *     details - the appointment to make
+  * returns: 
+  *     none
+  */
   async createAppointment(details: any) {
     try {
       await this.db.collection('Teachers').doc(details.to).collection('Appointments').doc(details.id).set(details);
@@ -50,6 +99,14 @@ export class AppointmentProvider {
     }
   }
 
+  /* getAppointments
+  * Desc:  
+  *     Gets all appointments 
+  * Params:
+  *     id - uid of user from which appointments are retrieved
+  * returns: 
+  *     observable of appointments
+  */
   getAppointments(id: string): Observable<Appointment[]> {
     try {
       if (this.dbProv.usersObj[id]['type'] == 'Student') {
@@ -81,6 +138,15 @@ export class AppointmentProvider {
     }
   }
 
+
+  /* clear
+  * Desc:  
+  *     Clears appointments by moving it to a different collection
+  * Params:
+  *     appointment - appointment to be cleared
+  * returns: 
+  *     none
+  */
   async clear(appointment: Appointment) {
     try {
       await this.db.collection('Students').doc(appointment.from).collection('Cleared Appointments').doc(appointment.id).set(appointment);

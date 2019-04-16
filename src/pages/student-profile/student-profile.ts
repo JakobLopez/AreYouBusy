@@ -147,4 +147,16 @@ export class StudentProfilePage {
       console.log(e);
     }
   }
+
+    // Go to selected Teacher profile
+    viewUser(viewID:any) {
+      try {
+        this.navCtrl.push('ViewPage',{
+          item:viewID
+          });
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
 }

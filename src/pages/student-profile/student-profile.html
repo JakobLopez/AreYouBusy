@@ -16,9 +16,9 @@
 
     <hr>
 
-    <ion-item *ngFor="let fav of favorites">
-      <h2>{{fav.User.name }}</h2>
-    </ion-item>
+    <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
+      {{fav.User.name }}
+    </button>
 
     <ion-list>
       <div *ngFor="let appointment of appointments | orderby: 'date'">

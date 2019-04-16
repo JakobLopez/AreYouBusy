@@ -25,10 +25,13 @@ export class TeacherProfilePage {
   today: any;
   sub: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public db: DatabaseProvider, public auth: AuthProvider, public appt: AppointmentProvider,
-    public _app:App,
-    public alertCtrl:AlertController) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public db: DatabaseProvider,
+    public auth: AuthProvider,
+    public appt: AppointmentProvider,
+    public alertCtrl: AlertController,
+    public _app:App) {
     this.getUserInformation();
   }
 
@@ -60,7 +63,10 @@ export class TeacherProfilePage {
     catch (e) {
       console.log(e);
     }
+  }
 
+  goTo() {
+    this.navCtrl.push('SchedulePage');
   }
 
   log_out(){

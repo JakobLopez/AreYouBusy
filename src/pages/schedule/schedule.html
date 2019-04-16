@@ -1,0 +1,51 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>schedule</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-list-header >
+      Monday
+    </ion-list-header>
+    <div *ngFor="let att of schedule.mon">
+      
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Label 1</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Label 2</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm" hourValues="08,09,10,11,12,13,14,15,16,17">
+              </ion-datetime>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm" hourValues="08,09,10,11,12,13,14,15,16,17">
+              </ion-datetime>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+      
+  </ion-list>
+
+  <button ion-button (click)="Add('mon')">Add More</button>
+
+
+</ion-content>

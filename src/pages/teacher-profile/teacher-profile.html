@@ -14,6 +14,9 @@
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
     <hr>
+    <button ion-button (click)="goTo()">
+      Upload office hours
+    </button>
 
     <ion-list>
       <div *ngFor="let appointment of appointments | orderby: 'date'">
@@ -32,7 +35,3 @@
     </ion-list>
 
   </div>
-
-
-
-</ion-content>
