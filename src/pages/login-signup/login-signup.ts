@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
-<<<<<<< HEAD
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-=======
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
->>>>>>> settings
 import { ValidatorProvider } from '../../providers/validator/validator';
 import { AuthProvider } from '../../providers/auth/auth'
 import { DatabaseProvider } from '../../providers/database/database';
