@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -7,23 +8,59 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'schedule.html',
 })
 export class SchedulePage {
-  
-  schedule:any = {
-    mon:[null],
-    tue:[null],
-    wed:[null],
-    thur:[null],
-    fri:[null]
+
+  schedule: any = {
+    Monday: [{
+      From: null,
+      To: null
+    }],
+    Tuesday: [{
+      From: null,
+      To: null
+    }],
+    Wednesday: [{
+      From: null,
+      To: null
+    }],
+    Thursday: [{
+      From: null,
+      To: null
+    }],
+    Friday: [{
+      From: null,
+      To: null
+    }]
   }
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+  days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+  scheduleForm: FormGroup;
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public formBuilder: FormBuilder) {
+    this.scheduleForm = formBuilder.group({
+      Monday: [null],
+      Tuesday: [null],
+      Wednesday: [null],
+      Thursday: [null],
+      Friday: [null]
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SchedulePage');
   }
 
-  Add(day:string){
-    this.schedule[day].push(null);
-    }
+  Add(day: string) {
+    this.schedule[day].push({
+      From: null,
+      To: null
+    });
+  }
 
+  makeSchedule() {
+    console.log(this.schedule)
+    this.navCtrl.pop();
+  }
 }
