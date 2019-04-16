@@ -109,7 +109,7 @@ export class TeacherProfilePage {
           text: 'Save',
           handler: data => {
             if (data.Name.length > 0) {
-              this.db.editAccount(this.auth.uid, data);
+              this.db.setName(this.auth.uid, data);
               this.getUserInformation();
               console.log('update successful');
               return true;

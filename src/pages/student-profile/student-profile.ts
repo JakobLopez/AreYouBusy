@@ -109,6 +109,11 @@ export class StudentProfilePage {
           type: 'String',
           value: this.userInfo.name
         },
+        {
+          name: 'email',
+          type: 'String',
+          value: this.userInfo.email
+        },
       ],
       message: '',
       buttons: [
@@ -122,15 +127,30 @@ export class StudentProfilePage {
         {
           text: 'Save',
           handler: data => {
+            //change name
             if (data.Name.length > 0) {
-              this.db.editAccount(this.auth.uid, data);
-              this.getUserInformation();
-              console.log('update successful');
-              return true;
+              if(data.Name != this.userInfo.name){
+                this.db.setName(this.auth.uid, data.Name);
+                console.log('name changed');
+              }
             } else {
               alert.setMessage('Your name is invalid');
               return false;
             }
+            //change email
+            
+            if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email)){
+              if(data.email != this.userInfo.email){
+                this.db.setEmail(this.auth.uid, data.email);
+                this.auth.setEmail(data.email);
+                console.log('email changed');
+              } 
+            } else {
+              alert.setMessage('Your email is invalid');
+              return false;
+            }
+            this.getUserInformation();
+            return true;
           }
         }
       ]

@@ -201,20 +201,46 @@ export class DatabaseProvider {
     }
   }
 
-/* editAccount
+
+  /* setName
   * Desc:  
-  *     Edits students name, email
+  *     Edits users name
   * Params:
   *     id: id of current user
-  *     info: object with name and email
+  *     info: users name
   * Returns
   *     none if successful, else throws error
   */
-  async editAccount(id: string, credentials: any){
-
+  async setName(id: string, Name: any){
     try {
       var obj = {
-        name: credentials.Name
+        name: Name
+      };
+      if(this.accountType == 'Student')
+        await this.db.collection('Students').doc(id).update(obj);
+      else
+        await this.db.collection('Teachers').doc(id).update(obj);
+
+    }
+    catch (e){
+      throw(e);
+    }
+  }
+
+
+  /* setEmail
+  * Desc:  
+  *     Edits users email
+  * Params:
+  *     id: id of current user
+  *     info: users email
+  * Returns
+  *     none if successful, else throws error
+  */
+  async setEmail(id: string, email: any){
+    try {
+      var obj = {
+        email: email
       };
       if(this.accountType == 'Student')
         await this.db.collection('Students').doc(id).update(obj);
