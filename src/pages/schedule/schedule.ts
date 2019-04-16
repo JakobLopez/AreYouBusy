@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DatabaseProvider } from '../../providers/database/database';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage()
 @Component({
@@ -8,6 +10,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: 'schedule.html',
 })
 export class SchedulePage {
+  semester: any
+
+  days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+  scheduleForm: FormGroup;
 
   schedule: any = {
     Monday: [{
@@ -32,13 +39,14 @@ export class SchedulePage {
     }]
   }
 
-  days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
-  scheduleForm: FormGroup;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public formBuilder: FormBuilder) {
+    public formBuilder: FormBuilder,
+    public db:DatabaseProvider,
+    public auth:AuthProvider) {
+
+
     this.scheduleForm = formBuilder.group({
       Monday: [null],
       Tuesday: [null],
@@ -59,8 +67,16 @@ export class SchedulePage {
     });
   }
 
-  makeSchedule() {
-    console.log(this.schedule)
-    this.navCtrl.pop();
+  async makeSchedule() {
+    try{
+      let temp = this.schedule;
+      temp['semester'] = this.semester;
+  
+      await this.db.setSchedule(this.auth.uid, temp);
+      this.navCtrl.pop();
+    }catch(e){
+      console.log(e);
+    }
+
   }
 }

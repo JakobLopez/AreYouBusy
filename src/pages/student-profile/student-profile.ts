@@ -6,12 +6,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
 import { Observable } from 'rxjs'
-import { ValidatorProvider } from '../../providers/validator/validator';
 import 'rxjs/add/observable/interval';
-import { Validators, FormControl } from '@angular/forms';
-import { database } from 'firebase';
-import { stringify } from '@angular/core/src/render3/util';
-import { ResourceLoader } from '@angular/compiler';
 
 
 @IonicPage()

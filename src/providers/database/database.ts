@@ -132,6 +132,7 @@ export class DatabaseProvider {
   /* editAccount                                                                              */
   /* setFavorite                                                                              */
   /* removeFavorite                                                                           */
+  /* setSchedule                                                                              */
   /********************************************************************************************/
 
   /* setUserDoc
@@ -193,7 +194,7 @@ export class DatabaseProvider {
 
       if (!type)
         this.accountType = collection_obj[id]['type'];
-      
+
       this.storage.set('usersObj', JSON.stringify(collection_obj));
       this.storage.set('type', JSON.stringify(this.accountType));
     } catch (e) {
@@ -201,29 +202,29 @@ export class DatabaseProvider {
     }
   }
 
-/* editAccount
-  * Desc:  
-  *     Edits students name, email
-  * Params:
-  *     id: id of current user
-  *     info: object with name and email
-  * Returns
-  *     none if successful, else throws error
-  */
-  async editAccount(id: string, credentials: any){
+  /* editAccount
+    * Desc:  
+    *     Edits students name, email
+    * Params:
+    *     id: id of current user
+    *     info: object with name and email
+    * Returns
+    *     none if successful, else throws error
+    */
+  async editAccount(id: string, credentials: any) {
 
     try {
       var obj = {
         name: credentials.Name
       };
-      if(this.accountType == 'Student')
+      if (this.accountType == 'Student')
         await this.db.collection('Students').doc(id).update(obj);
       else
         await this.db.collection('Teachers').doc(id).update(obj);
 
     }
-    catch (e){
-      throw(e);
+    catch (e) {
+      throw (e);
     }
   }
 
@@ -271,6 +272,22 @@ export class DatabaseProvider {
     }
   }
 
+  /* setSchedule
+  * Desc:  
+  *     Sets a professor's office hours
+  * Params:
+  *     id: the id of the document being set
+  *     schdule: office hours of teacher
+  * returns: nothing.
+  */
+ 
+  async setSchedule(id: string, schedule: any) {
+    try {
+      await this.db.collection('Teachers').doc(id).collection("Schedules").doc(schedule.semester).set(schedule);
+    } catch (e) {
+      throw e;
+    }
+  }
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
   /*                    These methods VERIFY some information in the database                 */
