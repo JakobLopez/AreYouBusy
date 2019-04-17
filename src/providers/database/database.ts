@@ -202,7 +202,6 @@ export class DatabaseProvider {
     }
   }
 
-<<<<<<< HEAD
 
   /* setName
   * Desc:  
@@ -222,18 +221,6 @@ export class DatabaseProvider {
         await this.db.collection('Students').doc(id).update(obj);
       else
         await this.db.collection('Teachers').doc(id).update(obj);
-=======
-  /* editAccount
-    * Desc:  
-    *     Edits students name, email
-    * Params:
-    *     id: id of current user
-    *     info: object with name and email
-    * Returns
-    *     none if successful, else throws error
-    */
-  async editAccount(id: string, credentials: any) {
->>>>>>> appointments
 
     }
     catch (e){
