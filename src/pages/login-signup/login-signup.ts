@@ -66,6 +66,7 @@ export class LoginSignupPage {
 
       this.navCtrl.setRoot('TabPage');
     } catch (e) {
+      this.errorMessage = "User doesn't exit. Check email and password.";
       console.log(e);
     }
   }
@@ -87,6 +88,7 @@ export class LoginSignupPage {
 
     }
     catch (e) {
+      this.errorMessage = e;
       console.log(e);
     }
   }
