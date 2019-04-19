@@ -183,4 +183,32 @@ export class TeacherProfilePage {
       console.log(e);
     }
   }
+
+  async clearAppointment(appoint: Appointment) {
+    try {
+      if(appoint.timestamp > this.today){
+        let confirm = this.alertCtrl.create({
+          title: 'Are your sure you want to delete this appointment?',
+          subTitle: "It will be deleted from the professor's schedule.",
+          buttons: [
+            {
+              text: 'Remove',
+              handler: () => {
+                this.appt.delete(this.auth.uid, appoint, "Teacher").then(() =>{
+                  this.appt.clear(this.auth.uid, appoint, "Teacher");
+                });
+              }
+            },
+            { text: 'Cancel' }
+          ]
+        });
+        confirm.present();
+      }
+      else
+        await this.appt.clear(this.auth.uid, appoint, "Teacher");
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
 }

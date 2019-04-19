@@ -79,16 +79,18 @@ export class StudentProfilePage {
             {
               text: 'Remove',
               handler: () => {
-                this.appt.delete(appoint);
+                this.appt.delete(this.auth.uid, appoint, "Teacher").then(() =>{
+                  this.appt.clear(this.auth.uid, appoint, "Teacher");
+                });
               }
             },
             { text: 'Cancel' }
           ]
         });
         confirm.present();
-
       }
-      await this.appt.clear(appoint);
+      else
+        await this.appt.clear(this.auth.uid, appoint, "Teacher");
     }
     catch (e) {
       console.log(e);

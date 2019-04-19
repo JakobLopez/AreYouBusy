@@ -3,7 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { DatabaseProvider } from '../database/database';
 import { Observable } from 'rxjs'
 import { Appointment } from '../../appointment'
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
@@ -28,7 +28,7 @@ export class AppointmentProvider {
   async isValidAppointment(appointment: Appointment) {
     try {
       let size: any;
- 
+
       let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
 
       let query1 = await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
@@ -40,10 +40,10 @@ export class AppointmentProvider {
         var doc_data = doc.data();
 
         //If appointment is made in the middle of another appointment
-        if(doc_data['endStamp'] >= appointment.timestamp)
-          flag = false;     
+        if (doc_data['endStamp'] >= appointment.timestamp)
+          flag = false;
       });
-      if(!flag)
+      if (!flag)
         return flag;
 
       result = await query2.get();
@@ -53,9 +53,9 @@ export class AppointmentProvider {
 
         //If appointment ends in the middle of another appointment or
         //if appointment is spanning over an appointment
-        if(doc_data['endStamp'] >= appointment.endStamp || ((doc_data['timestamp'] > appointment.timestamp) && (appointment.endStamp >= doc_data['endStamp'])))
+        if (doc_data['endStamp'] >= appointment.endStamp || ((doc_data['timestamp'] > appointment.timestamp) && (appointment.endStamp >= doc_data['endStamp'])))
           flag = false;
-        
+
       });
 
       return flag;
@@ -141,16 +141,23 @@ export class AppointmentProvider {
 
   /* clear
   * Desc:  
-  *     Clears appointments by moving it to a different collection
+  *     Clears user's appointment by moving it to a different collection
   * Params:
   *     appointment - appointment to be cleared
   * returns: 
   *     none
   */
-  async clear(appointment: Appointment) {
+  async clear(id: string, appointment: Appointment, type: string) {
     try {
-      await this.db.collection('Students').doc(appointment.from).collection('Cleared Appointments').doc(appointment.id).set(appointment);
-      await this.db.collection('Students').doc(appointment.from).collection('Appointments').doc(appointment.id).delete();
+      if (type == "Student") {
+        await this.db.collection('Students').doc(id).collection('Cleared Appointments').doc(appointment.id).set(appointment);
+        await this.db.collection('Students').doc(id).collection('Appointments').doc(appointment.id).delete();
+      }
+      else {
+        await this.db.collection('Teachers').doc(id).collection('Cleared Appointments').doc(appointment.id).set(appointment);
+        await this.db.collection('Teachers').doc(id).collection('Appointments').doc(appointment.id).delete();
+      }
+
     }
     catch (e) {
       throw (e);
@@ -159,20 +166,41 @@ export class AppointmentProvider {
 
   /* delete
   * Desc:  
-  *     Removes appointment from professor's schedule
+  *     Moves appointment from other user's appointments to cleared collection
+  *     3 cases for removal:
+  *         - student deleting appointment made with professor
+  *         - professor deleting appointment made from student
+  *         - professor deleting appointment made to another professor
   * Params:
+  *     id - uid of user making deletion request
   *     appointment - appointment to be deleted from professor's collection
+  *     type - account type of user making deletion request
   * returns: 
   *     none
   */
- async delete(appointment: Appointment) {
-  try {
-    await this.db.collection('Teachers').doc(appointment.to).collection('Cleared Appointments').doc(appointment.id).set(appointment);
-    await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').doc(appointment.id).delete();
+  async delete(id: string, appointment: Appointment, type: string) {
+    try {
+      //If student wants to delete an upcoming appointment
+      if (type == "Student") {
+        await this.db.collection('Teachers').doc(appointment.to).collection('Cleared Appointments').doc(appointment.id).set(appointment);
+        await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').doc(appointment.id).delete();
+      }
+      //If professor wants to delete upcoming appointment
+      else {
+        //If professor made appointment with another professor
+        if (id == appointment.from) {
+          await this.db.collection('Teachers').doc(appointment.to).collection('Cleared Appointments').doc(appointment.id).set(appointment);
+          await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').doc(appointment.id).delete();
+        }
+        //If deleting an appointment from a student
+        else{
+          await this.db.collection('Students').doc(appointment.from).collection('Cleared Appointments').doc(appointment.id).set(appointment);
+          await this.db.collection('Students').doc(appointment.from).collection('Appointments').doc(appointment.id).delete();
+        }
+      }
+    }
+    catch (e) {
+      throw (e);
+    }
   }
-  catch (e) {
-    throw (e);
-  }
-}
-
 }
