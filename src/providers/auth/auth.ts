@@ -75,14 +75,23 @@ export class AuthProvider {
     }
   }
 
-   //Update user email
-   async setEmail(email: any) {
-    var user = firebase.auth().currentUser;
-    user.updateEmail(email).then(function() {
-      console.log("authentication email changed");
-    }).catch(function(e) {
-      console.log(e);
-    });
-   }
+  //Sends message to email to reset password
+  async resetEmail(email: string){
+    try{
+      await this.afAuth.auth.sendPasswordResetEmail(email);
+    }catch(e){
+      throw(e);
+    }
+  }
+
+  //Update user email
+  async setEmail(email: any) {
+    try {
+      await firebase.auth().currentUser.updateEmail(email);
+    }
+    catch (e) {
+      throw (e);
+    }
+  }
 
 }

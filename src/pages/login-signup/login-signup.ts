@@ -19,6 +19,7 @@ export class LoginSignupPage {
   signUpForm: FormGroup;
   submitAttempt: boolean = false;
   fbauth = firebase.auth();
+  errorMessage: string = "";
 
   account = [
     { val: 'Student' },
@@ -43,10 +44,10 @@ export class LoginSignupPage {
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
       confirmPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      type : ['', Validators.required]
+      type: ['', Validators.required]
     }, { validator: ValidatorProvider.matchingPasswords('password', 'confirmPassword') })
-    
-  
+
+
   }
 
   ionViewDidLoad() {
@@ -74,11 +75,11 @@ export class LoginSignupPage {
     try {
       // Submit Attempt toggles the display of form validation errors
       this.submitAttempt = true;
-      
+
       await this.auth.register(value);
       console.log("Registration sucess");
 
-      await this.db.setAccountType(this.auth.uid, this.chosenAccount) 
+      await this.db.setAccountType(this.auth.uid, this.chosenAccount)
 
       await this.tryLogin(value);
 
@@ -91,14 +92,14 @@ export class LoginSignupPage {
   }
 
   //Sets the value for the account type chosen in checkbox
-  setValue(val){
+  setValue(val) {
     this.chosenAccount = val;
   }
 
   //allows user to reset password
-  async resetPassword(){
-    try{
-      let getEmail= this.alertCtrl.create({
+  async resetPassword() {
+    try {
+      let getEmail = this.alertCtrl.create({
         title: 'Reset Password',
         message: 'Please enter your email?',
         inputs: [
@@ -120,15 +121,20 @@ export class LoginSignupPage {
       });
       getEmail.present();
     }
-    catch (e){
+    catch (e) {
       console.log(e);
     }
   }
 
+  //Tries to reset email
+  async sendEmail(email: string) {
+    try {
+      await this.auth.resetEmail(email);
 
-  sendEmail(email: string) {
-    return this.fbauth.sendPasswordResetEmail(email)
-      .then(() => console.log("email sent"))
-      .catch((e) => console.log(e))
+    } catch (e) {
+      console.log(e);
+      this.errorMessage = e;
+    }
+
   }
 }
