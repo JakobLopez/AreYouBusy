@@ -113,7 +113,8 @@ export class LoginSignupPage {
           {
             text: 'Send Email',
             handler: data => {
-              this.sendEmail(data.email);
+              this.auth.resetEmail(data.email).then(() => console.log("email sent")).
+              catch(e => console.log(e));
             }
           },
           { text: 'Cancel' }
@@ -126,15 +127,4 @@ export class LoginSignupPage {
     }
   }
 
-  //Tries to reset email
-  async sendEmail(email: string) {
-    try {
-      await this.auth.resetEmail(email);
-
-    } catch (e) {
-      console.log(e);
-      this.errorMessage = e;
-    }
-
-  }
 }
