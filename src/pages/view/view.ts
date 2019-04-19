@@ -22,8 +22,10 @@ export class ViewPage {
     type: null
   };
   appointments: Appointment[];
-  today:any;
-  sub:any;
+  today: any;
+  sub: any;
+
+  schedule: any[] = [];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -48,6 +50,48 @@ export class ViewPage {
     //Get current time every second
     this.sub = Observable.interval(1000)
       .subscribe(() => this.today = Date.now());
+
+    this.db.getScheduleBySemester(this.pageID, 'Fall 2019').subscribe(res => {
+      for (let key in res) {
+        switch (key) {
+          case "Monday": {
+            this.schedule[0] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Tuesday": {
+            this.schedule[1] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Wednesday": {
+            this.schedule[2] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Thursday": {
+            this.schedule[3] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Friday": {
+            this.schedule[4] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+        }
+      }
+    });
 
   }
 
@@ -125,8 +169,7 @@ export class ViewPage {
     });
   }
 
-  goBack()
-  {
+  goBack() {
     this.navCtrl.pop();
   }
 

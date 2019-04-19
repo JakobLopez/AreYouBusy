@@ -3,6 +3,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
@@ -123,6 +125,27 @@ export class DatabaseProvider {
     }
   }
 
+  /* getScheduleBySemester
+  * Desc:  
+  *     Gets a professor's office hours for semester
+  * Params:
+  *     id: uid of user that will be returned
+  *     semster: semester professor wants to get office hours from
+  * returns: 
+  *     object of office hours for a given semester
+  */
+ getScheduleBySemester(id: string, semester:string): Observable<any> {
+    try {      
+      return this.db.collection('Teachers').doc(id).collection(
+        'Schedules'
+      ).doc(semester).valueChanges();
+
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+
 
   /********************************************************************************************/
   /*                                   SETTER METHODS                                         */
@@ -212,19 +235,19 @@ export class DatabaseProvider {
   * Returns
   *     none if successful, else throws error
   */
-  async setName(id: string, Name: any){
+  async setName(id: string, Name: any) {
     try {
       var obj = {
         name: Name
       };
-      if(this.accountType == 'Student')
+      if (this.accountType == 'Student')
         await this.db.collection('Students').doc(id).update(obj);
       else
         await this.db.collection('Teachers').doc(id).update(obj);
 
     }
-    catch (e){
-      throw(e);
+    catch (e) {
+      throw (e);
     }
   }
 
@@ -238,7 +261,7 @@ export class DatabaseProvider {
   * Returns
   *     none if successful, else throws error
   */
-  async setEmail(id: string, email: any){
+  async setEmail(id: string, email: any) {
     try {
       var obj = {
         email: email
@@ -306,7 +329,7 @@ export class DatabaseProvider {
   *     schdule: office hours of teacher
   * returns: nothing.
   */
- 
+
   async setSchedule(id: string, schedule: any) {
     try {
       await this.db.collection('Teachers').doc(id).collection("Schedules").doc(schedule.semester).set(schedule);

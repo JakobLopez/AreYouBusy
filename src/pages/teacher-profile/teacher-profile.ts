@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, App  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database'
 import { AuthProvider } from '../../providers/auth/auth'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
 import { Appointment } from '../../appointment';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 
 
@@ -25,14 +26,20 @@ export class TeacherProfilePage {
   today: any;
   sub: any;
 
+  schedule: any[] = [];
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public db: DatabaseProvider,
     public auth: AuthProvider,
     public appt: AppointmentProvider,
     public alertCtrl: AlertController,
-    public _app:App) {
+    public _app: App,
+    public afs: AngularFirestore) {
+
     this.getUserInformation();
+
+
   }
 
   ionViewDidLoad() {
@@ -48,6 +55,48 @@ export class TeacherProfilePage {
     this.sub = Observable.interval(1000)
       .subscribe(() => this.today = Date.now());
 
+    this.db.getScheduleBySemester(this.auth.uid,'Fall 2019').subscribe(res => {
+        for (let key in res) {
+          switch(key) { 
+            case "Monday": { 
+              this.schedule[0] = ({
+                key: key,
+                value: res[key]
+              }); 
+               break; 
+            } 
+            case "Tuesday": { 
+              this.schedule[1] = ({
+                key: key,
+                value: res[key]
+              });  
+               break; 
+            } 
+            case "Wednesday": {
+              this.schedule[2] = ({
+                key: key,
+                value: res[key]
+              });  
+               break;    
+            } 
+            case "Thursday": { 
+              this.schedule[3] = ({
+                key: key,
+                value: res[key]
+              });  
+               break; 
+            }  
+            case "Friday": { 
+              this.schedule[4] = ({
+                key: key,
+                value: res[key]
+              }); 
+               break;              
+            } 
+         }
+        }
+      });
+
   }
 
   // Set user information from database so it can be displayed
@@ -59,6 +108,7 @@ export class TeacherProfilePage {
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
 
+
     }
     catch (e) {
       console.log(e);
@@ -69,7 +119,7 @@ export class TeacherProfilePage {
     this.navCtrl.push('SchedulePage');
   }
 
-  log_out(){
+  log_out() {
     let log_out = this.alertCtrl.create({
       title: 'Logout?',
       message: 'Are your sure you want to Logout?',
@@ -77,7 +127,7 @@ export class TeacherProfilePage {
         {
           text: 'Logout',
           handler: () => {
-              this.logout();
+            this.logout();
           }
         },
         { text: 'No' }
@@ -86,7 +136,7 @@ export class TeacherProfilePage {
     log_out.present();
   }
 
-  settings(){
+  settings() {
     let alert = this.alertCtrl.create({
       title: 'Edit Account',
       inputs: [
@@ -124,12 +174,12 @@ export class TeacherProfilePage {
     alert.present();
   }
 
-  async logout(){
-    try{
+  async logout() {
+    try {
       await this.auth.logout();
       this._app.getRootNav().setRoot('LoginSignupPage')
     }
-    catch(e){
+    catch (e) {
       console.log(e);
     }
   }

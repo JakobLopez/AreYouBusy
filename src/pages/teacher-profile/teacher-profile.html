@@ -19,6 +19,16 @@
     </button>
 
     <ion-list>
+      <div *ngFor="let day of schedule">
+          {{day.key}}
+          <div *ngFor="let hours of day.value">
+            {{hours.From | convertTime}} - {{hours.To | convertTime}}
+          </div>
+      </div>
+    </ion-list>
+
+
+    <ion-list>
       <div *ngFor="let appointment of appointments | orderby: 'date'">
         <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
           <ion-item>
