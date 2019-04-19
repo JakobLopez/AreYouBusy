@@ -157,4 +157,22 @@ export class AppointmentProvider {
     }
   }
 
+  /* delete
+  * Desc:  
+  *     Removes appointment from professor's schedule
+  * Params:
+  *     appointment - appointment to be deleted from professor's collection
+  * returns: 
+  *     none
+  */
+ async delete(appointment: Appointment) {
+  try {
+    await this.db.collection('Teachers').doc(appointment.to).collection('Cleared Appointments').doc(appointment.id).set(appointment);
+    await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').doc(appointment.id).delete();
+  }
+  catch (e) {
+    throw (e);
+  }
+}
+
 }

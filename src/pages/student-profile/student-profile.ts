@@ -71,6 +71,23 @@ export class StudentProfilePage {
 
   async clearAppointment(appoint: Appointment) {
     try {
+      if(appoint.timestamp > this.today){
+        let confirm = this.alertCtrl.create({
+          title: 'Are your sure you want to delete this appointment?',
+          subTitle: "It will be deleted from the professor's schedule.",
+          buttons: [
+            {
+              text: 'Remove',
+              handler: () => {
+                this.appt.delete(appoint);
+              }
+            },
+            { text: 'Cancel' }
+          ]
+        });
+        confirm.present();
+
+      }
       await this.appt.clear(appoint);
     }
     catch (e) {

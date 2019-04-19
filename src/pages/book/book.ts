@@ -46,8 +46,6 @@ export class BookPage {
     //Watch for changes to appointments
     this.ap.getAppointments(this.sendToID)
     .subscribe(appointments => this.appointments = appointments);
-
-
   }
 
   async makeAppointment() {
