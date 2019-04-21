@@ -63,7 +63,7 @@ export class TeacherProfilePage {
       .subscribe(() => this.today = Date.now());
 
     //Get current availability every 5 seconds
-    this.statusCheck = Observable.interval(5000)
+    this.statusCheck = Observable.interval(1000)
       .subscribe(() => {
         this.getStatus();
       });
@@ -119,6 +119,22 @@ export class TeacherProfilePage {
     });
   }
 
+  // Set user information from database so it can be displayed
+  async getUserInformation() {
+    try {
+      let user = await this.db.getUser(this.auth.uid, true);
+
+      this.userInfo.name = user['name'];
+      this.userInfo.email = user['email'];
+      this.userInfo.type = user['type'];
+      this.userInfo.toggle = user['toggle'];
+
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
   //Gets the day name for today
   getDay() {
     let currentDate = new Date();
@@ -130,69 +146,74 @@ export class TeacherProfilePage {
   //Checks office hours and appointments 
   async getStatus() {
     try {
-      if (this.userInfo.toggle == true && this.busyStatus) {
+
+      if (this.userInfo.toggle) {
         this.statusCheck.unsubscribe();
-        if (this.busyStatus == 'Available')
-          this.busyStatus = 'Busy';
-        else
-          this.busyStatus = 'Available';
+        this.busyStatus = this.userInfo.toggle;
       }
       else {
-        //if(day != "Sunday" && day != "Saturday")
-        //{
-        let appStatus = await this.appt.getStatus(this.auth.uid, this.today);
 
-        //If not in middle of appointment, check if in office hours
-        if (appStatus == "Available") {
-          let daySchedule = this.scheduleObj[this.day];
+        if (this.day != "Sunday" && this.day != "Saturday") {
+          let appStatus = await this.appt.getStatus(this.auth.uid, this.today);
 
-          for (let slot of daySchedule) {
-            //Get current time in 24hr format
-            let event = new Date(this.today);
-            let time = event.toLocaleTimeString('en-GB')
+          //If not in middle of appointment, check if in office hours
+          if (appStatus == "Available") {
+            let daySchedule = this.scheduleObj[this.day];
+            let scheduleStatus = "";
 
-            if (time >= slot.From && time <= slot.To)
+            for (let slot of daySchedule) {
+              //Get current time in 24hr format
+              let event = new Date(this.today);
+              let time = event.toLocaleTimeString('en-GB')
+
+              if (time >= slot.From && time <= slot.To)
+                scheduleStatus = 'Available';
+
+            }
+
+            if (scheduleStatus != 'Available')
+              this.busyStatus = 'Not Available';
+            else
               this.busyStatus = 'Available';
+          } else {
+            this.busyStatus = appStatus;
           }
-          if (this.busyStatus != 'Available')
-            this.busyStatus = 'Not Available';
-        } else {
-          this.busyStatus = appStatus;
-        }
 
-        if (this.userInfo.toggle == true) {
-          this.statusCheck.unsubscribe();
-          if (this.busyStatus == 'Available')
-            this.busyStatus = 'Busy';
-          else
-            this.busyStatus = 'Available';
+          if (this.userInfo.toggle) {
+            this.statusCheck.unsubscribe();
+            this.busyStatus = this.userInfo.toggle;
+          }
         }
-
-        //}
       }
-
     } catch (e) {
       console.log(e);
     }
   }
 
-  // Set user information from database so it can be displayed
-  async getUserInformation() {
+  //Toggle the status in the database
+  //If toggle is being activated, unsubscribe from 
+  async toggleStatus() {
     try {
+      if (this.userInfo.toggle == "") {
+        this.statusCheck.unsubscribe();
 
-      let user = await this.db.getUser(this.auth.uid, true);
-
-      this.userInfo.name = user['name'];
-      this.userInfo.email = user['email'];
-      this.userInfo.type = user['type'];
-      this.userInfo.toggle = user['toggle'];
-
-
-      //await this.getStatus();
-
-      console.log(user);
-    }
-    catch (e) {
+        if (this.busyStatus == 'Available') {
+          await this.db.setStatus(this.auth.uid, "Busy");
+          this.busyStatus = 'Busy';
+        }
+        else {
+          await this.db.setStatus(this.auth.uid, 'Available');
+          this.busyStatus = 'Available';
+        }
+      }
+      else {
+        await this.db.setStatus(this.auth.uid, "");
+        this.statusCheck = Observable.interval(1000)
+          .subscribe(() => {
+            this.getStatus();
+          });
+      }
+    } catch (e) {
       console.log(e);
     }
   }
@@ -294,23 +315,4 @@ export class TeacherProfilePage {
     }
   }
 
-  async toggleStatus() {
-    try {
-      if (this.userInfo.toggle == false) {
-        await this.db.setStatus(this.auth.uid, true);
-        this.statusCheck.unsubscribe();
-
-      }
-      else {
-        await this.db.setStatus(this.auth.uid, false);
-        this.statusCheck = Observable.interval(5000)
-          .subscribe(() => {
-            this.getStatus();
-          });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-
-  }
 }

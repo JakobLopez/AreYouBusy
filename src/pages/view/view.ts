@@ -47,7 +47,6 @@ export class ViewPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ViewPage');
   }
 
   ngOnInit(): void {
@@ -62,7 +61,7 @@ export class ViewPage {
       });
 
     //Get current availability every 5 seconds
-    this.statusCheck = Observable.interval(5000)
+    this.statusCheck = Observable.interval(1000)
       .subscribe(() => {
         this.getStatus();
       });
@@ -118,66 +117,6 @@ export class ViewPage {
     });
   }
 
-  //Gets the day name for today
-  getDay() {
-    let currentDate = new Date();
-    let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    this.day = weekdays[currentDate.getDay()];
-  }
-
-  //Gets availability of current professor
-  //Checks office hours and appointments 
-    //Checks office hours and appointments 
-    async getStatus() {
-      try {
-        if (this.userInfo.toggle == true && this.busyStatus) {
-          console.log("here 3")
-          this.statusCheck.unsubscribe();
-          if (this.busyStatus == 'Available')
-            this.busyStatus = 'Busy';
-          else
-            this.busyStatus = 'Available';
-        }
-        else {
-          //if(day != "Sunday" && day != "Saturday")
-          //{
-          let appStatus = await this.appt.getStatus(this.pageID, this.today);
-  
-          //If not in middle of appointment, check if in office hours
-          if (appStatus == "Available") {
-            let daySchedule = this.scheduleObj[this.day];
-  
-            for (let slot of daySchedule) {
-              //Get current time in 24hr format
-              let event = new Date(this.today);
-              let time = event.toLocaleTimeString('en-GB')
-  
-              if (time >= slot.From && time <= slot.To)
-                this.busyStatus = 'Available';
-            }
-            if (this.busyStatus != 'Available')
-              this.busyStatus = 'Not Available';
-          } else {
-            this.busyStatus = appStatus;
-          }
-  
-          if (this.userInfo.toggle == true) {
-            console.log("here")
-            this.statusCheck.unsubscribe();
-            if (this.busyStatus == 'Available')
-              this.busyStatus = 'Busy';
-            else
-              this.busyStatus = 'Available';
-          }
-  
-          //}
-        }
-  
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
   // Set user information from database so it can be displayed
   // Information displayed is slightly different than what page owner sees
   async getUserInformation(id: any) {
@@ -191,15 +130,67 @@ export class ViewPage {
       this.userInfo.toggle = user['toggle'];
 
       this.isFollowing = await this.favor();
-
-      //await this.getStatus();
-
-      console.log(user);
     }
     catch (e) {
       console.log(e);
     }
   }
+
+  //Gets the day name for today
+  getDay() {
+    let currentDate = new Date();
+    let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    this.day = weekdays[currentDate.getDay()];
+  }
+
+  //Gets availability of current professor
+  //Checks office hours and appointments 
+  async getStatus() {
+    try {
+
+      if (this.userInfo.toggle) {
+        this.busyStatus = this.userInfo.toggle;
+      }
+      else {
+
+        if (this.day != "Sunday" && this.day != "Saturday") {
+          let appStatus = await this.appt.getStatus(this.pageID, this.today);
+
+          //If not in middle of appointment, check if in office hours
+          if (appStatus == "Available") {
+            let daySchedule = this.scheduleObj[this.day];
+            let scheduleStatus = "";
+
+            for (let slot of daySchedule) {
+              //Get current time in 24hr format
+              let event = new Date(this.today);
+              let time = event.toLocaleTimeString('en-GB')
+
+              if (time >= slot.From && time <= slot.To)
+                scheduleStatus = 'Available';
+
+            }
+
+            if (scheduleStatus != 'Available')
+              this.busyStatus = 'Not Available';
+            else
+              this.busyStatus = 'Available';
+          } else {
+            this.busyStatus = appStatus;
+          }
+
+          if (this.userInfo.toggle) {
+            this.statusCheck.unsubscribe();
+            this.busyStatus = this.userInfo.toggle;
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
 
   //Gets whether professor is a favorite
   async favor() {

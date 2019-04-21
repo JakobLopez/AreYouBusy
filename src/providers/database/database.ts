@@ -181,7 +181,7 @@ export class DatabaseProvider {
       };
 
       var pObj = sObj;
-      pObj['toggle'] = false;
+      pObj['toggle'] = "";
       await this.db.collection(`Users`).doc(id).set(o);
       if(credentials.type == 'Student')
         await this.db.collection('Students').doc(id).set(sObj);
@@ -352,7 +352,7 @@ export class DatabaseProvider {
   * returns: nothing.
   */
 
- async setStatus(id: string, status: boolean) {
+ async setStatus(id: string, status: string) {
   try {
     let temp = { toggle : status};
     await this.db.collection('Teachers').doc(id).update(temp);
