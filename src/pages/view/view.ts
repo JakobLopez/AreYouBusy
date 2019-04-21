@@ -15,20 +15,23 @@ import 'rxjs/add/observable/interval';
   templateUrl: 'view.html',
 })
 export class ViewPage {
-  pageID: any;
+  pageID: any = this.navParams.get('item');
   isFollowing: boolean = false;
   userInfo: any = {
     name: null,
     email: null,
-    type: null
+    type: null,
+    toggle: null
   };
   scheduleObj: any = {};
   appointments: Appointment[];
   today: any;
   day: string;
-  sub: any;
+  timeCheck: any;
+  statusCheck: any;
   busyStatus: string;
   schedule: any[] = [];
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -37,12 +40,10 @@ export class ViewPage {
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     public appt: AppointmentProvider,
-    public afs: AngularFirestore
-  ) {
+    public afs: AngularFirestore) {
+
     this.getDay();
     this.today = Date.now()
-    this.getUserInformation(this.navParams.get('item'));
-
   }
 
   ionViewDidLoad() {
@@ -55,9 +56,14 @@ export class ViewPage {
       .subscribe(appointments => this.appointments = appointments);
 
     //Get current time every second
-    this.sub = Observable.interval(1000)
+    this.timeCheck = Observable.interval(1000)
       .subscribe(() => {
         this.today = Date.now();
+      });
+
+    //Get current availability every 5 seconds
+    this.statusCheck = Observable.interval(5000)
+      .subscribe(() => {
         this.getStatus();
       });
 
@@ -113,41 +119,64 @@ export class ViewPage {
   }
 
   //Gets the day name for today
-  getDay(){
+  getDay() {
     let currentDate = new Date();
     let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     this.day = weekdays[currentDate.getDay()];
   }
-  async getStatus() {
-    try {
-      //if(day != "Sunday" && day != "Saturday")
-      //{
-      let appStatus = await this.appt.getStatus(this.pageID, this.today);
 
-      //If not in middle of appointment, check if in office hours
-      if (appStatus == "Available") {
-        let daySchedule = this.scheduleObj[this.day];
-        for (let slot of daySchedule) {
-          //Get current time in 24hr format
-          let event = new Date(this.today);
-          let time = event.toLocaleTimeString('en-GB')
-
-          if (time >= slot.From && time <= slot.To)
+  //Gets availability of current professor
+  //Checks office hours and appointments 
+    //Checks office hours and appointments 
+    async getStatus() {
+      try {
+        if (this.userInfo.toggle == true && this.busyStatus) {
+          console.log("here 3")
+          this.statusCheck.unsubscribe();
+          if (this.busyStatus == 'Available')
+            this.busyStatus = 'Busy';
+          else
             this.busyStatus = 'Available';
         }
-        if (this.busyStatus != 'Available')
-          this.busyStatus = 'Not Available';
-      } else {
-        this.busyStatus = appStatus;
+        else {
+          //if(day != "Sunday" && day != "Saturday")
+          //{
+          let appStatus = await this.appt.getStatus(this.pageID, this.today);
+  
+          //If not in middle of appointment, check if in office hours
+          if (appStatus == "Available") {
+            let daySchedule = this.scheduleObj[this.day];
+  
+            for (let slot of daySchedule) {
+              //Get current time in 24hr format
+              let event = new Date(this.today);
+              let time = event.toLocaleTimeString('en-GB')
+  
+              if (time >= slot.From && time <= slot.To)
+                this.busyStatus = 'Available';
+            }
+            if (this.busyStatus != 'Available')
+              this.busyStatus = 'Not Available';
+          } else {
+            this.busyStatus = appStatus;
+          }
+  
+          if (this.userInfo.toggle == true) {
+            console.log("here")
+            this.statusCheck.unsubscribe();
+            if (this.busyStatus == 'Available')
+              this.busyStatus = 'Busy';
+            else
+              this.busyStatus = 'Available';
+          }
+  
+          //}
+        }
+  
+      } catch (e) {
+        console.log(e);
       }
-      //}
-      
-
-
-    } catch (e) {
-      console.log(e);
     }
-  }
 
   // Set user information from database so it can be displayed
   // Information displayed is slightly different than what page owner sees
@@ -159,10 +188,11 @@ export class ViewPage {
       this.userInfo.name = user['name'];
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
+      this.userInfo.toggle = user['toggle'];
 
       this.isFollowing = await this.favor();
 
-      await this.getStatus();
+      //await this.getStatus();
 
       console.log(user);
     }
@@ -171,7 +201,7 @@ export class ViewPage {
     }
   }
 
-
+  //Gets whether professor is a favorite
   async favor() {
     try {
       return this.db.isFavorite(this.auth.uid, this.pageID);
@@ -216,6 +246,8 @@ export class ViewPage {
         this.pageID);
     }
   }
+
+
 
   //Goes to appointment page
   goToBook() {

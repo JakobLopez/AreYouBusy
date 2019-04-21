@@ -11,6 +11,7 @@
     </button>
 
     <h3>{{userInfo.name}} </h3>
+    <button ion-button (click)='toggleStatus()'>{{busyStatus}}</button>
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
     <hr>

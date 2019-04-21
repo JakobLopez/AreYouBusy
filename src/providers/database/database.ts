@@ -172,15 +172,21 @@ export class DatabaseProvider {
         type: credentials.type,
         uid: id
       };
-      var obj = {
+      var sObj = {
         name: credentials.name,
         email: credentials.email,
         type: credentials.type,
         uid: id,
         creation_time: new Date()
       };
+
+      var pObj = sObj;
+      pObj['toggle'] = false;
       await this.db.collection(`Users`).doc(id).set(o);
-      await this.db.collection(`${obj.type}s`).doc(id).set(obj);
+      if(credentials.type == 'Student')
+        await this.db.collection('Students').doc(id).set(sObj);
+      else
+        await this.db.collection('Teachers').doc(id).set(pObj);
 
     } catch (e) {
       throw e;
@@ -337,6 +343,23 @@ export class DatabaseProvider {
       throw e;
     }
   }
+
+  /* setStatus
+  * Desc:  
+  *     Sets a professor's toggle status
+  * Params:
+  *     id: the id of the document being set
+  * returns: nothing.
+  */
+
+ async setStatus(id: string, status: boolean) {
+  try {
+    let temp = { toggle : status};
+    await this.db.collection('Teachers').doc(id).update(temp);
+  } catch (e) {
+    throw e;
+  }
+}
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
   /*                    These methods VERIFY some information in the database                 */

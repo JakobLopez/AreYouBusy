@@ -20,13 +20,21 @@ export class TeacherProfilePage {
   userInfo: any = {
     name: null,
     email: null,
-    type: null
+    type: null,
+    toggle: null
   };
   appointments: Appointment[];
   today: any;
+
   sub: any;
+  statusCheck: any;
 
   schedule: any[] = [];
+  scheduleObj: any = {};
+
+  day: string;
+
+  busyStatus: string;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -37,9 +45,8 @@ export class TeacherProfilePage {
     public _app: App,
     public afs: AngularFirestore) {
 
-    this.getUserInformation();
-
-
+    this.getDay();
+    this.today = Date.now()
   }
 
   ionViewDidLoad() {
@@ -55,60 +62,135 @@ export class TeacherProfilePage {
     this.sub = Observable.interval(1000)
       .subscribe(() => this.today = Date.now());
 
-    this.db.getScheduleBySemester(this.auth.uid,'Fall 2019').subscribe(res => {
-        for (let key in res) {
-          switch(key) { 
-            case "Monday": { 
-              this.schedule[0] = ({
-                key: key,
-                value: res[key]
-              }); 
-               break; 
-            } 
-            case "Tuesday": { 
-              this.schedule[1] = ({
-                key: key,
-                value: res[key]
-              });  
-               break; 
-            } 
-            case "Wednesday": {
-              this.schedule[2] = ({
-                key: key,
-                value: res[key]
-              });  
-               break;    
-            } 
-            case "Thursday": { 
-              this.schedule[3] = ({
-                key: key,
-                value: res[key]
-              });  
-               break; 
-            }  
-            case "Friday": { 
-              this.schedule[4] = ({
-                key: key,
-                value: res[key]
-              }); 
-               break;              
-            } 
-         }
-        }
+    //Get current availability every 5 seconds
+    this.statusCheck = Observable.interval(5000)
+      .subscribe(() => {
+        this.getStatus();
       });
 
+    //Update page on professor's database changes
+    this.afs.collection('Teachers').doc(this.auth.uid).valueChanges().subscribe(() => {
+      this.getUserInformation();
+    })
+
+    this.db.getScheduleBySemester(this.auth.uid, 'Fall 2019').subscribe(res => {
+      this.scheduleObj = res;
+      this.getStatus();
+
+      for (let key in res) {
+        switch (key) {
+          case "Monday": {
+            this.schedule[0] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Tuesday": {
+            this.schedule[1] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Wednesday": {
+            this.schedule[2] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Thursday": {
+            this.schedule[3] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+          case "Friday": {
+            this.schedule[4] = ({
+              key: key,
+              value: res[key]
+            });
+            break;
+          }
+        }
+      }
+    });
+  }
+
+  //Gets the day name for today
+  getDay() {
+    let currentDate = new Date();
+    let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    this.day = weekdays[currentDate.getDay()];
+  }
+
+  //Gets availability of current professor
+  //Checks office hours and appointments 
+  async getStatus() {
+    try {
+      if (this.userInfo.toggle == true && this.busyStatus) {
+        this.statusCheck.unsubscribe();
+        if (this.busyStatus == 'Available')
+          this.busyStatus = 'Busy';
+        else
+          this.busyStatus = 'Available';
+      }
+      else {
+        //if(day != "Sunday" && day != "Saturday")
+        //{
+        let appStatus = await this.appt.getStatus(this.auth.uid, this.today);
+
+        //If not in middle of appointment, check if in office hours
+        if (appStatus == "Available") {
+          let daySchedule = this.scheduleObj[this.day];
+
+          for (let slot of daySchedule) {
+            //Get current time in 24hr format
+            let event = new Date(this.today);
+            let time = event.toLocaleTimeString('en-GB')
+
+            if (time >= slot.From && time <= slot.To)
+              this.busyStatus = 'Available';
+          }
+          if (this.busyStatus != 'Available')
+            this.busyStatus = 'Not Available';
+        } else {
+          this.busyStatus = appStatus;
+        }
+
+        if (this.userInfo.toggle == true) {
+          this.statusCheck.unsubscribe();
+          if (this.busyStatus == 'Available')
+            this.busyStatus = 'Busy';
+          else
+            this.busyStatus = 'Available';
+        }
+
+        //}
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   // Set user information from database so it can be displayed
   async getUserInformation() {
     try {
-      let user = await this.db.getUser(this.auth.uid, false);
+
+      let user = await this.db.getUser(this.auth.uid, true);
 
       this.userInfo.name = user['name'];
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
+      this.userInfo.toggle = user['toggle'];
 
 
+      //await this.getStatus();
+
+      console.log(user);
     }
     catch (e) {
       console.log(e);
@@ -186,7 +268,7 @@ export class TeacherProfilePage {
 
   async clearAppointment(appoint: Appointment) {
     try {
-      if(appoint.timestamp > this.today){
+      if (appoint.timestamp > this.today) {
         let confirm = this.alertCtrl.create({
           title: 'Are your sure you want to delete this appointment?',
           subTitle: "It will be deleted from the professor's schedule.",
@@ -194,7 +276,7 @@ export class TeacherProfilePage {
             {
               text: 'Remove',
               handler: () => {
-                this.appt.delete(this.auth.uid, appoint, "Teacher").then(() =>{
+                this.appt.delete(this.auth.uid, appoint, "Teacher").then(() => {
                   this.appt.clear(this.auth.uid, appoint, "Teacher");
                 });
               }
@@ -210,5 +292,25 @@ export class TeacherProfilePage {
     catch (e) {
       console.log(e);
     }
+  }
+
+  async toggleStatus() {
+    try {
+      if (this.userInfo.toggle == false) {
+        await this.db.setStatus(this.auth.uid, true);
+        this.statusCheck.unsubscribe();
+
+      }
+      else {
+        await this.db.setStatus(this.auth.uid, false);
+        this.statusCheck = Observable.interval(5000)
+          .subscribe(() => {
+            this.getStatus();
+          });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
   }
 }
