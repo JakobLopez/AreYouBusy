@@ -27,8 +27,6 @@ export class AppointmentProvider {
   */
   async isValidAppointment(appointment: Appointment) {
     try {
-      let size: any;
-
       let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
 
       let query1 = await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
@@ -61,6 +59,37 @@ export class AppointmentProvider {
       return flag;
     } catch (e) {
       throw (e);
+    }
+  }
+
+  /* getStatus
+  * Desc:  
+  *     Checks if a timestamp is in the middle of an appointment
+  * Params:
+  *     id - uid of professor
+  *     stamp - current timestamp
+  * returns: 
+  *     false if not in middle, true if in middle
+  */
+  async getStatus(id: string, stamp:number){
+    try{
+      let query = await this.db.collection('Teachers').doc(id).collection('Appointments').ref.
+      where('timestamp', '<=', stamp);
+
+      let result = await query.get();
+
+      let flag = "Available";
+      result.forEach(doc => {
+        var doc_data = doc.data();
+        //If appointment is made in the middle of another appointment
+        if (doc_data['endStamp'] >= stamp)
+          flag = "Busy";
+      });
+      
+      return flag;
+
+    }catch(e){
+      throw(e);
     }
   }
 

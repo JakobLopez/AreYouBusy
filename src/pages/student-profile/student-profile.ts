@@ -31,12 +31,13 @@ export class StudentProfilePage {
     public appt: AppointmentProvider,
     public alertCtrl: AlertController,
     public _app: App) {
+
     //Track real-time changes to favorites list
     this.afs.collection('Students').doc(this.auth.uid).collection('Favorites').valueChanges().subscribe(data => {
       this.getUserInformation();
     });
-
   }
+  
   ngOnInit(): void {
     //Watch for changes to appointments
     this.appt.getAppointments(this.auth.uid)
@@ -79,8 +80,8 @@ export class StudentProfilePage {
             {
               text: 'Remove',
               handler: () => {
-                this.appt.delete(this.auth.uid, appoint, "Teacher").then(() =>{
-                  this.appt.clear(this.auth.uid, appoint, "Teacher");
+                this.appt.delete(this.auth.uid, appoint, "Student").then(() =>{
+                  this.appt.clear(this.auth.uid, appoint, "Student");
                 });
               }
             },
@@ -90,7 +91,7 @@ export class StudentProfilePage {
         confirm.present();
       }
       else
-        await this.appt.clear(this.auth.uid, appoint, "Teacher");
+        await this.appt.clear(this.auth.uid, appoint, "Student");
     }
     catch (e) {
       console.log(e);
