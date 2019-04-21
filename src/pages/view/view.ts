@@ -25,6 +25,7 @@ export class ViewPage {
   scheduleObj: any = {};
   appointments: Appointment[];
   today: any;
+  day: string;
   sub: any;
   busyStatus: string;
   schedule: any[] = [];
@@ -38,6 +39,7 @@ export class ViewPage {
     public appt: AppointmentProvider,
     public afs: AngularFirestore
   ) {
+    this.getDay();
     this.today = Date.now()
     this.getUserInformation(this.navParams.get('item'));
 
@@ -54,13 +56,14 @@ export class ViewPage {
 
     //Get current time every second
     this.sub = Observable.interval(1000)
-      .subscribe(() => this.today = Date.now());
+      .subscribe(() => {
+        this.today = Date.now();
+        this.getStatus();
+      });
 
     //Update page on professor's database changes
     this.afs.collection('Teachers').doc(this.pageID).valueChanges().subscribe(() => {
       this.getUserInformation(this.pageID);
-
-      this.getStatus();
     })
 
     this.db.getScheduleBySemester(this.pageID, 'Fall 2019').subscribe(res => {
@@ -109,19 +112,21 @@ export class ViewPage {
     });
   }
 
+  //Gets the day name for today
+  getDay(){
+    let currentDate = new Date();
+    let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    this.day = weekdays[currentDate.getDay()];
+  }
   async getStatus() {
     try {
-      let currentDate = new Date();
-      let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      let day = weekdays[currentDate.getDay()];
-
       //if(day != "Sunday" && day != "Saturday")
       //{
       let appStatus = await this.appt.getStatus(this.pageID, this.today);
 
       //If not in middle of appointment, check if in office hours
       if (appStatus == "Available") {
-        let daySchedule = this.scheduleObj[day];
+        let daySchedule = this.scheduleObj[this.day];
         for (let slot of daySchedule) {
           //Get current time in 24hr format
           let event = new Date(this.today);
@@ -136,6 +141,7 @@ export class ViewPage {
         this.busyStatus = appStatus;
       }
       //}
+      
 
 
     } catch (e) {
