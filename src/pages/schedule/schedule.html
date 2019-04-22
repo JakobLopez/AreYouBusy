@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>schedule</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+  <ion-select [(ngModel)]="semester" placeholder="Semester">
+    <ion-option value="Fall 2019">Fall 2019</ion-option>
+    <ion-option value="Spring 2019">Spring 2019</ion-option>
+  </ion-select>
+
+
+  <div *ngFor="let day of days">
+    <ion-list>
+      <ion-list-header text-center>
+        {{day}}
+      </ion-list-header>
+      <div *ngFor="let att of schedule[day];let i = index;">
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label class="noLine">From</ion-label>
+              <ion-datetime [(ngModel)]="schedule[day][i]['From']" displayFormat="h:mm A" pickerFormat="h:mm"
+                hourValues="08,09,10,11,12,13,14,15,16,17">
+              </ion-datetime>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>To</ion-label>
+              <ion-datetime [(ngModel)]="schedule[day][i]['To']" displayFormat="h:mm A" pickerFormat="h:mm"
+                hourValues="08,09,10,11,12,13,14,15,16,17">
+              </ion-datetime>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+      <button ion-button (click)="Add(day)">Add More</button>
+    </ion-list>
+
+
+  </div>
+  <button ion-button block (click)="makeSchedule()">Submit Schedule</button>
+
+</ion-content>

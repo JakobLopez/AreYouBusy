@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidatorProvider } from '../../providers/validator/validator';
 import { AuthProvider } from '../../providers/auth/auth'
 import { DatabaseProvider } from '../../providers/database/database';
 import { Storage } from '@ionic/storage';
-
+import * as firebase from 'firebase';
 
 
 @IonicPage()
@@ -18,6 +18,8 @@ export class LoginSignupPage {
   loginSignUp: string = "login";
   signUpForm: FormGroup;
   submitAttempt: boolean = false;
+  fbauth = firebase.auth();
+  errorMessage: string = "";
 
   account = [
     { val: 'Student' },
@@ -28,8 +30,9 @@ export class LoginSignupPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
-    public auth: AuthProvider, 
+    public auth: AuthProvider,
     public db: DatabaseProvider,
+    public alertCtrl: AlertController,
     public storage: Storage) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
@@ -41,9 +44,10 @@ export class LoginSignupPage {
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
       confirmPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      type : ['', Validators.required]
+      type: ['', Validators.required]
     }, { validator: ValidatorProvider.matchingPasswords('password', 'confirmPassword') })
-    
+
+
   }
 
   ionViewDidLoad() {
@@ -62,6 +66,7 @@ export class LoginSignupPage {
 
       this.navCtrl.setRoot('TabPage');
     } catch (e) {
+      this.errorMessage = "User doesn't exit. Check email and password.";
       console.log(e);
     }
   }
@@ -71,11 +76,11 @@ export class LoginSignupPage {
     try {
       // Submit Attempt toggles the display of form validation errors
       this.submitAttempt = true;
-      
+
       await this.auth.register(value);
       console.log("Registration sucess");
 
-      await this.db.setAccountType(this.auth.uid, this.chosenAccount) 
+      await this.db.setAccountType(this.auth.uid, this.chosenAccount)
 
       await this.tryLogin(value);
 
@@ -83,13 +88,45 @@ export class LoginSignupPage {
 
     }
     catch (e) {
+      this.errorMessage = e;
       console.log(e);
     }
   }
 
   //Sets the value for the account type chosen in checkbox
-  setValue(val){
+  setValue(val) {
     this.chosenAccount = val;
+  }
+
+  //allows user to reset password
+  async resetPassword() {
+    try {
+      let getEmail = this.alertCtrl.create({
+        title: 'Reset Password',
+        message: 'Please enter your email?',
+        inputs: [
+          {
+            name: 'email',
+            type: 'String',
+            placeholder: 'your email'
+          },
+        ],
+        buttons: [
+          {
+            text: 'Send Email',
+            handler: data => {
+              this.auth.resetEmail(data.email).then(() => console.log("email sent")).
+              catch(e => console.log(e));
+            }
+          },
+          { text: 'Cancel' }
+        ]
+      });
+      getEmail.present();
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
 }

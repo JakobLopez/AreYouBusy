@@ -4,18 +4,21 @@
   <div class="main-content" text-wrap text-center>
     <div class="circular"></div>
     <button ion-button (click)="settings()" icon-only clear>
-        <ion-icon name="settings" style="color:grey"></ion-icon>
+      <ion-icon name="settings" style="color:grey"></ion-icon>
       </button>
-
+    <button ion-button (click)="log_out()" icon-only clear>
+        <ion-icon name="log-out" style="color:grey"></ion-icon>
+      </button>
+    
     <h3>{{userInfo.name}} </h3>
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
 
     <hr>
 
-    <ion-item *ngFor="let fav of favorites">
-      <h2>{{fav.User.name }}</h2>
-    </ion-item>
+    <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
+      {{fav.User.name }}
+    </button>
 
     <ion-list>
       <div *ngFor="let appointment of appointments | orderby: 'date'">

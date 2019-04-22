@@ -63,7 +63,6 @@ export class AuthProvider {
 
   //Logs user out
   async logout() {
-    console.log("hey")
     try {
       await this.afAuth.auth.signOut();
 
@@ -75,4 +74,24 @@ export class AuthProvider {
       throw (e);
     }
   }
+
+  //Sends message to email to reset password
+  async resetEmail(email: string){
+    try{
+      await this.afAuth.auth.sendPasswordResetEmail(email);
+    }catch(e){
+      throw(e);
+    }
+  }
+
+  //Update user email
+  async setEmail(email: any) {
+    try {
+      await firebase.auth().currentUser.updateEmail(email);
+    }
+    catch (e) {
+      throw (e);
+    }
+  }
+
 }

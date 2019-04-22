@@ -8,21 +8,47 @@
 
 
 <ion-content padding>
-
-
-  <ion-item>
+  <form [formGroup]="appForm" (submit)="makeAppointment()" novalidate>
+    <ion-item>
       <ion-label>Date</ion-label>
-      <ion-datetime pickerFormat="DDD MMM DD YYYY" [(ngModel)]="myAppointment['date']"></ion-datetime>
-  </ion-item>
-  <ion-item>
+      <ion-datetime formControlName="date" min={{today}} pickerFormat="DDD MMM DD YYYY"
+        [(ngModel)]="myAppointment['date']"></ion-datetime>
+    </ion-item>
+    <ion-item>
       <ion-label>Time</ion-label>
-      <ion-datetime pickerFormat="h:mm A" [(ngModel)]="myAppointment['date']"></ion-datetime>
-  </ion-item>
+      <ion-datetime formControlName="time" displayFormat="h:mm A" pickerFormat="h:mm"
+        hourValues="08,09,10,11,12,13,14,15,16,17, 18" [(ngModel)]="myAppointment['date']"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Duration</ion-label>
+      <ion-datetime formControlName="length" pickerFormat="H:mm" hourValues="00,01"
+        minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" [(ngModel)]="myAppointment['length']"></ion-datetime>
+    </ion-item>
 
-  <h2>{{myAppointment.date}}</h2>
-  <h2>{{myAppointment.time}}</h2>
+    <button ion-button block [disabled]="!appForm.valid" type="submit">
+      Make Appointment
+    </button>
 
-  <!--<p>{{time | date:'short'}}</p>-->
-  <button ion-button (click)='makeAppointment()'>Make Appointment</button>
+    <ion-row>
+        <ion-col style="text-align:center;">
+          <label class="error-message">{{errorMessage}}</label>
+        </ion-col>
+      </ion-row>
+  </form>
+
+  <div *ngIf="appForm.controls.date.touched">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Appointments for {{myAppointment.date | date:"MMMM d, yyyy"}}</ion-label>
+      </ion-list-header>
+      <div *ngFor="let appointment of appointments | orderby: 'date'">
+        <ion-item *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')" >
+          <div id="appointments">{{appointment.timestamp | date:"MMMM d, yyyy"}}
+          {{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</div>
+        </ion-item>
+
+      </div>
+    </ion-list>
+  </div>
 
 </ion-content>

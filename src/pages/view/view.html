@@ -1,10 +1,6 @@
 <ion-header>
-  <ion-navbar hideBackButton>
-    <ion-buttons start>
-      <button ion-button icon-only (click)="goBack()">
-        <ion-icon name="arrow-back"></ion-icon>
-      </button>
-    </ion-buttons> 
+  <ion-navbar>
+    
   </ion-navbar>
 
 </ion-header>
@@ -19,6 +15,8 @@
   <div>
     <h3>{{userInfo.type}} </h3>
   </div>
+  {{busyStatus}}
+  
 
   <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
     <ion-icon name="star"></ion-icon>
@@ -31,11 +29,21 @@
 
   <button ion-button (click)='goToBook()'>Make an Appointment</button>
 
+
+  <ion-list>
+      <div *ngFor="let day of schedule">
+          {{day.key}}
+          <div *ngFor="let hours of day.value">
+            {{hours.From | convertTime}} - {{hours.To | convertTime}}
+          </div>
+      </div>
+    </ion-list>
+    
   <div *ngFor="let appointment of appointments | orderby: 'date'">
     <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
       *ngIf="(appointment.timestamp | date:'shortDate') == (today | date:'shortDate')">
       <h2>{{appointment.timestamp | date:"MMMM d, yyyy"}}</h2>
-      <h2>{{appointment.timestamp | date:"hh:mm a"}}</h2>
+      <h2>{{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</h2>
     </ion-item>
   </div>
 
