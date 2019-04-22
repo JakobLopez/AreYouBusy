@@ -15,7 +15,8 @@ export class AppointmentProvider {
 
   /* isValidAppointment
   * Desc:  
-  *     Checks 3 cases:
+  *     Checks 4 cases:
+  *       - Appointment is in professor's office hours
   *       - Appointment is not being made during an already existing appointment
   *       - Appointment is not ending during the middle of an exisiting appointment
   *       - Appointment is not made so that it puts an already existing appointment in 
@@ -27,13 +28,32 @@ export class AppointmentProvider {
   */
   async isValidAppointment(appointment: Appointment) {
     try {
+      let startDate = new Date(appointment.timestamp);
+      let endDate = new Date(appointment.endStamp);
+      let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      let day = weekdays[startDate.getDay()];
+      let timeFrom = startDate.toLocaleTimeString('en-GB');
+      let timeTo = endDate.toLocaleTimeString('en-GB');
+
       let appRef = await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').ref;
+      let hoursRef = await this.db.collection('Teachers').doc(appointment.to).collection("Schedules").doc('Fall 2019').get();
+      
+      let flag = false;
+      await hoursRef.forEach(doc => {
+        var doc_data = doc.data();
+        for (let field in doc_data[day]) {
+          if (timeFrom >= doc_data[day][field]['From'] && timeTo <= doc_data[day][field]['To'])
+            flag = true;         
+        }
+      });
+      if (!flag)
+        return flag
 
       let query1 = await appRef.where('date', '==', appointment.date).where('timestamp', '<=', appointment.timestamp);
       let query2 = await appRef.where('date', '==', appointment.date).where('timestamp', '<', appointment.endStamp);
 
       let result = await query1.get();
-      let flag = true;
+      flag = true;
       result.forEach(doc => {
         var doc_data = doc.data();
 
@@ -71,10 +91,10 @@ export class AppointmentProvider {
   * returns: 
   *     false if not in middle, true if in middle
   */
-  async getStatus(id: string, stamp:number){
-    try{
+  async getStatus(id: string, stamp: number) {
+    try {
       let query = await this.db.collection('Teachers').doc(id).collection('Appointments').ref.
-      where('timestamp', '<=', stamp);
+        where('timestamp', '<=', stamp);
 
       let result = await query.get();
 
@@ -85,11 +105,11 @@ export class AppointmentProvider {
         if (doc_data['endStamp'] >= stamp)
           flag = "Busy";
       });
-      
+
       return flag;
 
-    }catch(e){
-      throw(e);
+    } catch (e) {
+      throw (e);
     }
   }
 
@@ -222,7 +242,7 @@ export class AppointmentProvider {
           await this.db.collection('Teachers').doc(appointment.to).collection('Appointments').doc(appointment.id).delete();
         }
         //If deleting an appointment from a student
-        else{
+        else {
           await this.db.collection('Students').doc(appointment.from).collection('Cleared Appointments').doc(appointment.id).set(appointment);
           await this.db.collection('Students').doc(appointment.from).collection('Appointments').doc(appointment.id).delete();
         }

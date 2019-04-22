@@ -21,6 +21,7 @@ export class BookPage {
   appointments: Appointment[];
   today: string;
   sendToID: string = this.navParams.get('item');
+  errorMessage:string;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -75,7 +76,7 @@ export class BookPage {
         this.navCtrl.pop();
       }
       else
-        console.log("Somebody else already has an appointment during this time");
+        this.errorMessage = "An appointment cannot be made at this time.";
       
     } catch (e) {
       console.log(e);

@@ -164,7 +164,7 @@ export class TeacherProfilePage {
             for (let slot of daySchedule) {
               //Get current time in 24hr format
               let event = new Date(this.today);
-              let time = event.toLocaleTimeString('en-GB')
+              let time = event.toLocaleTimeString('en-GB');
 
               if (time >= slot.From && time <= slot.To)
                 scheduleStatus = 'Available';

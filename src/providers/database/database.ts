@@ -4,7 +4,6 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators';
 
 
 @Injectable()
