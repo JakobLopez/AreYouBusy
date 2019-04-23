@@ -1,9 +1,20 @@
 page-student-profile {
+    ion-header{
+        background-color: gold;
+    }
+
+    #align{
+        text-align: center;
+        font-size: 5vh;
+        color: white;
+    }
+
     .header-image {
-        background-image: url(../../assets/imgs/library-3.jpg);
+        background-image: url(../../assets/imgs/MSU.png);
         height: 30vh;
-        background-size: cover;
-        background-position: center center;
+        background-size: contain;
+        background-position: center;
+        background-color: white;
         position: relative;
         z-index: -1;
     }
@@ -27,7 +38,7 @@ page-student-profile {
         -webkit-border-radius: 150px;
         -moz-border-radius: 150px;
         border: solid white;
-        background: url(../../assets/imgs/library-3.jpg) no-repeat;
+        background: url(../../assets/imgs/headshot.png) no-repeat;
         background-size: 100%;
         margin-top: -70px;
         margin-left: auto;

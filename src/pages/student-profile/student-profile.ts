@@ -5,7 +5,7 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
 
 
