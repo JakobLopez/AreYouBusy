@@ -1,7 +1,7 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>book</ion-title>
+  <ion-navbar color = gold>
+    <ion-title>Book</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -25,7 +25,7 @@
         minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" [(ngModel)]="myAppointment['length']"></ion-datetime>
     </ion-item>
 
-    <button ion-button block [disabled]="!appForm.valid" type="submit">
+    <button ion-button block [disabled]="!appForm.valid" type="submit" color = gold>
       Make Appointment
     </button>
 

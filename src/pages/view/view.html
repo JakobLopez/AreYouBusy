@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar>
-    
+  <ion-navbar color = gold>
+    <ion-title>{{userInfo.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,17 +17,18 @@
   </div>
   {{busyStatus}}
   
-
-  <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
+  <!--
+  <button color = gold ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
     <ion-icon name="star"></ion-icon>
     Add Favorite
   </button>
+  -->
 
-  <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
+  <button ion-button (click)="toggleFollow()" *ngIf="isFollowing" color=gold>
     <ion-icon name="star"></ion-icon>
   </button>
 
-  <button ion-button (click)='goToBook()'>Make an Appointment</button>
+  <button ion-button (click)='goToBook()' color = gold>Make an Appointment</button>
 
 
   <ion-list>
