@@ -1,24 +1,27 @@
-<!--header and navbar needed for menu-->
+<!--header and navbar needed for menu -->
 <ion-header>
 
-    <ion-navbar color = gold>
-      
-      <button ion-button menuToggle>
-            <ion-icon name="menu" color=white></ion-icon>
-      </button>
+  <ion-navbar color=gold>
 
-      <ion-title>
-        <h1>Profile</h1>
-        
-      </ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu" color=white></ion-icon>
+    </button>
 
-      <span style="float:right">
-        <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
-      </span>
+    <ion-title>
+      <h1>Profile</h1>
 
-    </ion-navbar>
-  
+    </ion-title>
+
+    <span style="float:right">
+      <img src="../../assets/imgs/MSUemblem.png" style="height: 50px;" />
+    </span>
+
+  </ion-navbar>
+
+
 </ion-header>
+
+
 
 <ion-content padding class="profileContent" class="tint">
   <div class="header-image"></div>
@@ -27,11 +30,11 @@
     <div class="circular"></div>
     <button ion-button (click)="settings()" icon-only clear>
       <ion-icon name="create" style="color:grey"></ion-icon>
-      </button>
+    </button>
     <button ion-button (click)="log_out()" icon-only clear>
-        <ion-icon name="log-out" style="color:grey"></ion-icon>
-      </button>
-    
+      <ion-icon name="log-out" style="color:grey"></ion-icon>
+    </button>
+
     <h3>{{userInfo.name}} </h3>
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
