@@ -30,7 +30,7 @@
 
 
     <ion-list>
-      <div *ngFor="let appointment of appointments | orderby: 'date'">
+      <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
         <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
           <ion-item>
             {{appointment.timestamp | date:"MMMM d, yyyy"}}
