@@ -157,7 +157,6 @@ export class TeacherProfilePage {
         if (this.day != "Sunday" && this.day != "Saturday") {
 
           let appStatus: string = 'Available';
-
           for (let item of this.appointments) {
             if (this.today >= item.timestamp && this.today <= item.endStamp)
               appStatus = 'Busy';
