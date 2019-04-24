@@ -42,20 +42,19 @@
 
     <button ion-button (click)='goToBook()'>Make an Appointment</button>
 
-  <ion-card text-center>
-    <ion-card-header>
+  <ion-card class="bord">
+    <ion-card-header text-center>
       Office Hours
       <hr>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list class="bord">
+      <ion-list>
         <div *ngFor="let day of schedule">
-            <br />
-            {{day.key}}
-            <div *ngFor="let hours of day.value">
+            {{day.key}}: 
+            <span *ngFor="let hours of day.value">
               {{hours.From | convertTime}} - {{hours.To | convertTime}}
-            </div>
+            </span>
             <br />
         </div>
       </ion-list>
