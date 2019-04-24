@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { AuthProvider } from '../providers/auth/auth';
 import { DatabaseProvider } from '../providers/database/database';
+import { FcmProvider } from '../providers/fcm/fcm';
 
 
 @Component({
@@ -13,12 +14,14 @@ import { DatabaseProvider } from '../providers/database/database';
 export class MyApp {
   rootPage: any;
 
-  constructor(platform: Platform,
+  constructor(private platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     private storage: Storage,
     auth: AuthProvider,
-    db: DatabaseProvider
+    db: DatabaseProvider,
+    public toastController: ToastController,
+    private fcm: FcmProvider,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -46,7 +49,28 @@ export class MyApp {
         }
       });
 
+      this.notificationSetup();
     });
+  }
+
+  private async presentToast(message) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  private notificationSetup() {
+    this.fcm.getToken();
+    this.fcm.onNotifications().subscribe(
+      (msg) => {
+        if (this.platform.is('ios')) {
+          this.presentToast(msg.aps.alert);
+        } else {
+          this.presentToast(msg.body);
+        }
+      });
   }
 }
 
