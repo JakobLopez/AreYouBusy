@@ -1,1 +1,26 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<!--Side menu-->
+ <ion-menu [content]="mycontent">
+    <ion-content>
+      <button ion-item (click)=dashboardClicked()>
+        <ion-icon color="primary" item-start name="contact"></ion-icon>
+        Profile
+      </button>
+      
+      <button ion-item (click)=friendsClicked()>
+        <ion-icon color="primary" item-start name="people"></ion-icon>
+        Friends
+      </button>
+      
+      <button ion-item>
+        <ion-icon color="primary" item-start name="chatboxes"></ion-icon>
+        Messages
+      </button>
+
+      <button ion-item (click)=logoutConfirm()>
+        <ion-icon color="primary" item-start name="log-out"></ion-icon>
+        Logout
+      </button>
+    </ion-content>
+  </ion-menu>
+
+  <ion-nav #mycontent [root]="rootPage"></ion-nav>
