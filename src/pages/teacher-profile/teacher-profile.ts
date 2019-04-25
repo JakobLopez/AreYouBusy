@@ -144,17 +144,23 @@ export class TeacherProfilePage {
 
   //Gets availability of current professor
   //Checks office hours and appointments 
-  async getStatus() {
-    try {
+  getStatus() {
 
-      if (this.userInfo.toggle) {
-        this.statusCheck.unsubscribe();
-        this.busyStatus = this.userInfo.toggle;
-      }
-      else {
 
+    if (this.userInfo.toggle) {
+      this.statusCheck.unsubscribe();
+      this.busyStatus = this.userInfo.toggle;
+    }
+    else {
+
+      if (this.day != "Sunday" && this.day != "Saturday") {
         if (this.day != "Sunday" && this.day != "Saturday") {
-          let appStatus = await this.appt.getStatus(this.auth.uid, this.today);
+
+          let appStatus: string = 'Available';
+          for (let item of this.appointments) {
+            if (this.today >= item.timestamp && this.today <= item.endStamp)
+              appStatus = 'Busy';
+          }
 
           //If not in middle of appointment, check if in office hours
           if (appStatus == "Available") {
@@ -185,8 +191,6 @@ export class TeacherProfilePage {
           }
         }
       }
-    } catch (e) {
-      console.log(e);
     }
   }
 

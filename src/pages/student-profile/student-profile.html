@@ -1,4 +1,4 @@
-<!--header and navbar needed for menu-->
+<!--header and navbar needed for menu -->
 <ion-header>
 
     <ion-navbar color = primary>
@@ -11,13 +11,12 @@
         <h2>Profile</h2>
       </ion-title>
 
-      <span style="float:right">
-        <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
-      </span>
 
-    </ion-navbar>
-  
+  </ion-navbar>
+
 </ion-header>
+
+
 
 <ion-content padding class="profileContent" class="tint">
   <div class="header-image"></div>
@@ -26,11 +25,11 @@
     <div class="circular"></div>
     <button ion-button (click)="settings()" icon-only clear>
       <ion-icon name="create" style="color:grey"></ion-icon>
-      </button>
+    </button>
     <button ion-button (click)="log_out()" icon-only clear>
-        <ion-icon name="log-out" style="color:grey"></ion-icon>
-      </button>
-    
+      <ion-icon name="log-out" style="color:grey"></ion-icon>
+    </button>
+
     <h3>{{userInfo.name}} </h3>
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
@@ -42,7 +41,7 @@
     </button>
 
     <ion-list>
-      <div *ngFor="let appointment of appointments | orderby: 'date'">
+      <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
         <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
           <ion-item>
             {{appointment.timestamp | date:"MMMM d, yyyy"}}

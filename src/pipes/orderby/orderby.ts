@@ -10,7 +10,7 @@ export class OrderbyPipe implements PipeTransform {
       return [];
     } else {
       return items.sort(function(a, b){
-        return new Date(b[field]).getTime() - new Date(a[field]).getTime();
+        return new Date(a[field]).getTime() - new Date(b[field]).getTime();
       });
     }
   }
