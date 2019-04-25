@@ -5,14 +5,16 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AuthProvider } from '../auth/auth';
 
 
+
 @Injectable()
 export class FcmProvider {
+  token:string;
 
-
+  public auth: AuthProvider;
   constructor(private firebase: Firebase,
     private afs: AngularFirestore,
     private platform: Platform,
-    public auth:AuthProvider) { }
+    ) { }
 
   async getToken() {
     let token;
@@ -25,7 +27,9 @@ export class FcmProvider {
       token = await this.firebase.getToken();
       await this.firebase.grantPermission();
     }
-    console.log(token);
+    
+    this.token = token;
+
     this.saveToken(token);
   }
 
@@ -33,11 +37,13 @@ export class FcmProvider {
     if (!token) return;
 
     const devicesRef = this.afs.collection('devices');
-    console.log(this.auth.uid)
+
+
     const data = {
       token,
-      userId: this.auth.uid
+      userId:"test"
     };
+    console.log(data);
 
     return devicesRef.doc(token).set(data);
   }
