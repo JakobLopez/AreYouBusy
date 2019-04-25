@@ -1,11 +1,21 @@
+<!--header and navbar needed for menu-->
 <ion-header>
+  <ion-navbar color = primary>
+    
+    <button ion-button menuToggle>
+          <ion-icon name="menu" color=white></ion-icon>
+    </button>
 
-  <ion-navbar color = gold>
-    <ion-title>Book</ion-title>
+    <ion-title>
+      <h1>Book</h1>
+    </ion-title>
+
+    <span style="float:right">
+      <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
+    </span>
+
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content padding>
   <form [formGroup]="appForm" (submit)="makeAppointment()" novalidate>
@@ -25,7 +35,7 @@
         minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" [(ngModel)]="myAppointment['length']"></ion-datetime>
     </ion-item>
 
-    <button ion-button block [disabled]="!appForm.valid" type="submit" color = gold>
+    <button ion-button block [disabled]="!appForm.valid" type="submit">
       Make Appointment
     </button>
 
