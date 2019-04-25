@@ -49,7 +49,7 @@ export class MyApp {
         }
       });
 
-      //this.notificationSetup();
+      this.notificationSetup();
     });
   }
 
