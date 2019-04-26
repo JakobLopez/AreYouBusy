@@ -23,9 +23,9 @@ export class MyApp {
     private storage: Storage,
     public auth: AuthProvider,
     db: DatabaseProvider,
-    private toastController:ToastController,
-    private fcm:FcmProvider
-    
+    private toastController: ToastController,
+    private fcm: FcmProvider
+
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -56,7 +56,7 @@ export class MyApp {
       //this.notificationSetup();
     });
   }
-  
+
   private async presentToast(message) {
     const toast = await this.toastController.create({
       message,
@@ -111,6 +111,4 @@ export class MyApp {
       console.log(e);
     }
   }
-}
-
 }

@@ -11,9 +11,9 @@
       <h2>Profile</h2>
     </ion-title>
 
-      <span style="float:right">
-          <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
-      </span>
+    <span style="float:right">
+      <img src="../../assets/imgs/MSUemblem.png" height=50; />
+    </span>
   </ion-navbar>
 
 </ion-header>
@@ -21,56 +21,53 @@
 
 <ion-content padding class="profileContent">
   <!--<img class="header-image" src="../../assets/imgs/building_header.jpg"/>-->
-  <img style="text-align:center" class="circular" src="../../assets/imgs/profile.png"/>
-  
+  <img style="text-align:center" class="circular" src="../../assets/imgs/profile.png" />
+
   <div text-center style="color:white">
-    <h2><br/> {{userInfo.name}}</h2>
+    <h2><br /> {{userInfo.name}}</h2>
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
 
-<<<<<<< HEAD
-<ion-content padding class="profileContent" class="tint">
-  <div class="header-image"></div>
+    <ion-content padding class="profileContent" class="tint">
+      <div class="header-image"></div>
 
-  <div class="main-content" text-wrap text-center>
-    <div id="profile-pic" class="circular" (click)="setProfilePic()">
-    </div>
-=======
->>>>>>> c6aa238010616526aa8b5e8a1c4601b4db39f626
-    <button ion-button (click)="settings()" icon-only clear>
-      <ion-icon name="create" style="color:white"></ion-icon>
-    </button>
-    <button ion-button (click)="log_out()" icon-only clear>
-      <ion-icon name="log-out" style="color:white"></ion-icon>
-    </button>
-  </div>
-
-  <ion-card class="main-content">
-    <ion-card-content text-wrap text-center>
-      
-      <h2 style="font-size:24px;">Favorites</h2>
-      <hr>
-
-      <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
-        {{fav.User.name }} Appointments
-      </button>
-
-      <ion-list>
-        <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-          <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
-            <ion-item>
-              {{appointment.timestamp | date:"MMMM d, yyyy"}}
-              {{appointment.timestamp | date:"hh:mm a"}}
-            </ion-item>
-            <ion-item-options side="right">
-              <button ion-button (click)="clearAppointment(appointment)">
-                <ion-icon name="trash"></ion-icon>Delete
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
+      <div class="main-content" text-wrap text-center>
+        <div id="profile-pic" class="circular" (click)="setProfilePic()">
         </div>
-      </ion-list>
-    </ion-card-content>
-</ion-card>
+        <button ion-button (click)="settings()" icon-only clear>
+          <ion-icon name="create" style="color:white"></ion-icon>
+        </button>
+        <button ion-button (click)="log_out()" icon-only clear>
+          <ion-icon name="log-out" style="color:white"></ion-icon>
+        </button>
+      </div>
+
+      <ion-card class="main-content">
+        <ion-card-content text-wrap text-center>
+
+          <h2 style="font-size:24px;">Favorites</h2>
+          <hr>
+
+          <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
+            {{fav.User.name }} Appointments
+          </button>
+
+          <ion-list>
+            <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
+              <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
+                <ion-item>
+                  {{appointment.timestamp | date:"MMMM d, yyyy"}}
+                  {{appointment.timestamp | date:"hh:mm a"}}
+                </ion-item>
+                <ion-item-options side="right">
+                  <button ion-button (click)="clearAppointment(appointment)">
+                    <ion-icon name="trash"></ion-icon>Delete
+                  </button>
+                </ion-item-options>
+              </ion-item-sliding>
+            </div>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
 
 
-</ion-content>
+    </ion-content>

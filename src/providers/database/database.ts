@@ -425,7 +425,6 @@ export class DatabaseProvider {
   async getProfilePic(imagePath: any) {
     var pathReference = this.strg.ref(imagePath);
     return await pathReference.getDownloadURL().then(function (url) {
-      console.log(url);
       return url;
     }).catch(function (e) {
       console.log(e);
