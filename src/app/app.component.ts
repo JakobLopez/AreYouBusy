@@ -22,10 +22,9 @@ export class MyApp {
     splashScreen: SplashScreen,
     private storage: Storage,
     public auth: AuthProvider,
-    db: DatabaseProvider,
-    private toastController:ToastController,
-    private fcm:FcmProvider
-    
+    public db: DatabaseProvider,
+    public toastController: ToastController,
+    private fcm: FcmProvider,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -43,8 +42,12 @@ export class MyApp {
 
           this.storage.get('usersObj').then(value => db.usersObj = JSON.parse(value));
           this.storage.get('type').then(value => {
-            db.accountType = JSON.parse(value)
-            this.rootPage = 'TabPage';
+          db.accountType = JSON.parse(value)
+
+          if (JSON.parse(value) == 'Student')
+            this.rootPage = 'StudentProfilePage';
+          else
+            this.rootPage = 'TeacherProfilePage';
           });
 
         }
@@ -78,7 +81,10 @@ export class MyApp {
   }
 
   profileClicked() {
-    this.nav.setRoot('StudentProfilePage');
+    if (this.db.accountType == 'Student')
+      this.nav.setRoot('StudentProfilePage');
+      else
+        this.nav.setRoot('TeacherProfilePage');
   }
 
   searchClicked() {
@@ -111,6 +117,4 @@ export class MyApp {
       console.log(e);
     }
   }
-}
-
 }

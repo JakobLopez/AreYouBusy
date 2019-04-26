@@ -37,31 +37,20 @@
 
     {{busyStatus}}
 
-
-    <!--
-    <button color = gold ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
+    <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
       <ion-icon name="star"></ion-icon>
       Add Favorite
     </button>
-    -->
-<div id="profile-pic" class="circular" (click)="setProfilePic()">
-    </div>
 
-    <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
-      <ion-icon name="star"></ion-icon>
-    </button>
+  <ion-card class="border">
+    <ion-card-header text-center>
+      Office Hours
+      <hr>
+    </ion-card-header>
 
-    <button ion-button (click)='goToBook()'>Make an Appointment</button>
+    <ion-card-content>
+      <ion-list>
 
-
-    <ion-card class="bord">
-      <ion-card-header text-center>
-        Office Hours
-        <hr>
-      </ion-card-header>
-
-      <ion-card-content>
-        <ion-list>
           <div *ngFor="let day of schedule">
             {{day.key}}
             <div *ngFor="let hours of day.value">

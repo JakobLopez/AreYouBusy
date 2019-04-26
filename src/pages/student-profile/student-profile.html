@@ -48,10 +48,10 @@
     <ion-card-content text-wrap text-center>
       
       <h2 style="font-size:24px;">Favorites</h2>
-      <hr>
+      <hr color = "secondary">
 
       <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
-        {{fav.User.name }} Appointments
+        {{fav.User.name }}
       </button>
 
       <ion-list>
