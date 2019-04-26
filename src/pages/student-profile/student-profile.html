@@ -2,14 +2,17 @@
 <ion-header>
 
     <ion-navbar color = primary>
-      
       <button ion-button menuToggle>
         <ion-icon name="menu" color=white></ion-icon>
       </button>
 
-      <ion-title>
-        <h2>Profile</h2>
-      </ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu" color=white></ion-icon>
+    </button>
+
+    <ion-title>
+      <h2>Profile</h2>
+    </ion-title>
 
       <span style="float:right">
           <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
@@ -23,7 +26,6 @@
   <div id="profile-pic" class="circular" (click)="setProfilePic()">
   </div>
 
-  
   <div text-center style="color:white">
     <h2><br/> {{userInfo.name}}</h2>
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
