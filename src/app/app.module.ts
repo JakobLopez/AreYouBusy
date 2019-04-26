@@ -18,6 +18,7 @@ import { DatabaseProvider } from '../providers/database/database';
 import { AppointmentProvider } from '../providers/appointment/appointment';
 import { FcmProvider } from '../providers/fcm/fcm';
 
+
 @NgModule({
   declarations: [
     MyApp

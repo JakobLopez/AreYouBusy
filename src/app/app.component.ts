@@ -59,7 +59,7 @@ export class MyApp {
       //this.notificationSetup();
     });
   }
-
+  
   private async presentToast(message) {
     const toast = await this.toastController.create({
       message,
@@ -118,4 +118,3 @@ export class MyApp {
     }
   }
 }
-

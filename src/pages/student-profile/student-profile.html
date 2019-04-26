@@ -19,7 +19,6 @@
 </ion-header>
 
 
-
 <ion-content padding class="profileContent">
   <!--<img class="header-image" src="../../assets/imgs/building_header.jpg"/>-->
   <img style="text-align:center" class="circular" src="../../assets/imgs/profile.png"/>
@@ -27,6 +26,7 @@
   <div text-center style="color:white">
     <h2><br/> {{userInfo.name}}</h2>
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
+
     <button ion-button (click)="settings()" icon-only clear>
       <ion-icon name="create" style="color:white"></ion-icon>
     </button>

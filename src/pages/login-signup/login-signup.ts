@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
 
 
+
 @IonicPage()
 @Component({
   selector: 'page-login-signup',
@@ -33,7 +34,7 @@ export class LoginSignupPage {
     public auth: AuthProvider,
     public db: DatabaseProvider,
     public alertCtrl: AlertController,
-    public storage: Storage) {
+    public storage: Storage,) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
@@ -74,6 +75,7 @@ export class LoginSignupPage {
       console.log(e);
     }
   }
+
 
   //Attempts to register user
   async tryRegister(value) {
@@ -120,7 +122,7 @@ export class LoginSignupPage {
             text: 'Send Email',
             handler: data => {
               this.auth.resetEmail(data.email).then(() => console.log("email sent")).
-              catch(e => console.log(e));
+                catch(e => console.log(e));
             }
           },
           { text: 'Cancel' }
