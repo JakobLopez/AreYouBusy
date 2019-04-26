@@ -259,7 +259,7 @@ export class ViewPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    this.navCtrl.popToRoot;
   }
 
 }
