@@ -128,6 +128,10 @@ export class ViewPage {
       this.userInfo.type = user['type'];
       this.userInfo.toggle = user['toggle'];
 
+      var pic = await document.getElementById("profile-pic");
+      pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
+      pic.style.backgroundSize = "contain";
+      
       this.isFollowing = await this.favor();
     }
     catch (e) {

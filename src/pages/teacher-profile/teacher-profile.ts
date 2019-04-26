@@ -129,6 +129,10 @@ export class TeacherProfilePage {
       this.userInfo.type = user['type'];
       this.userInfo.toggle = user['toggle'];
 
+
+      var pic = await document.getElementById("profile-pic");
+      pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
+      pic.style.backgroundSize = "contain";
     }
     catch (e) {
       console.log(e);
@@ -272,7 +276,7 @@ export class TeacherProfilePage {
           handler: data => {
             //change name
             if (data.Name.length > 0) {
-              if(data.Name != this.userInfo.name){
+              if (data.Name != this.userInfo.name) {
                 this.db.setName(this.auth.uid, data.Name);
                 console.log('name changed');
               }
@@ -281,13 +285,13 @@ export class TeacherProfilePage {
               return false;
             }
             //change email
-            
-            if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email)){
-              if(data.email != this.userInfo.email){
+
+            if (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email)) {
+              if (data.email != this.userInfo.email) {
                 this.db.setEmail(this.auth.uid, data.email);
                 this.auth.setEmail(data.email);
                 console.log('email changed');
-              } 
+              }
             } else {
               alert.setMessage('Your email is invalid');
               return false;
@@ -311,8 +315,6 @@ export class TeacherProfilePage {
     }
   }
 
-<<<<<<< HEAD
-=======
   async clearAppointment(appoint: Appointment) {
     try {
       if (appoint.timestamp > this.today) {
@@ -341,5 +343,4 @@ export class TeacherProfilePage {
     }
   }
 
->>>>>>> 07c38ef0f36dcd5012b453b866b3193dd6169671
 }
