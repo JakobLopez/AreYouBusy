@@ -64,7 +64,11 @@ export class LoginSignupPage {
 
       await this.db.setAccountType(this.auth.uid);
 
-      this.navCtrl.setRoot('TabPage');
+      if (this.db.accountType == 'Student')
+      this.navCtrl.setRoot('StudentProfilePage');
+      else
+        this.navCtrl.setRoot('TeacherProfilePage');
+
     } catch (e) {
       this.errorMessage = "User doesn't exit. Check email and password.";
       console.log(e);

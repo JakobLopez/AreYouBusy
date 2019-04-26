@@ -1,3 +1,23 @@
+<!--header and navbar needed for menu -->
+<ion-header>
+
+  <ion-navbar color = primary>
+    
+    <button ion-button menuToggle>
+          <ion-icon name="menu" color=white></ion-icon>
+    </button>
+
+    <ion-title>
+      <h2>Profile</h2>
+    </ion-title>
+
+    <span style="float:right">
+        <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
+    </span>
+</ion-navbar>
+
+</ion-header>
+
 <ion-content padding class="profileContent">
   <div class="header-image"></div>
 
@@ -10,8 +30,11 @@
       <ion-icon name="log-out" style="color:grey"></ion-icon>
     </button>
 
-    <h3>{{userInfo.name}} </h3>
-    <button ion-button (click)='toggleStatus()'>{{busyStatus}}</button>
+    <h3>{{userInfo.name}}</h3>
+
+    <button ion-button (click)='toggleStatus()' [ngClass]="(busyStatus == 'Available') ? 'greenButton': 'redButton'">
+      {{busyStatus}}
+    </button>
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
     <hr>
@@ -31,7 +54,7 @@
 
     <ion-list>
       <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-        <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
+        <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today)}">
           <ion-item>
             {{appointment.timestamp | date:"MMMM d, yyyy"}}
             {{appointment.timestamp | date:"hh:mm a"}}
