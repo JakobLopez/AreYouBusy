@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs'
+import { FcmProvider } from '../fcm/fcm';
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class DatabaseProvider {
   private fire: any;
 
   constructor(public db: AngularFirestore,
-    public storage: Storage) {
+    public storage: Storage,
+    public fcm: FcmProvider) {
     console.log('Hello DatabaseProvider Provider');
     this.fire = firebase.firestore();
   }
@@ -133,8 +135,8 @@ export class DatabaseProvider {
   * returns: 
   *     object of office hours for a given semester
   */
- getScheduleBySemester(id: string, semester:string): Observable<any> {
-    try {      
+  getScheduleBySemester(id: string, semester: string): Observable<any> {
+    try {
       return this.db.collection('Teachers').doc(id).collection(
         'Schedules'
       ).doc(semester).valueChanges();
@@ -182,7 +184,7 @@ export class DatabaseProvider {
       var pObj = sObj;
       pObj['toggle'] = "";
       await this.db.collection(`Users`).doc(id).set(o);
-      if(credentials.type == 'Student')
+      if (credentials.type == 'Student')
         await this.db.collection('Students').doc(id).set(sObj);
       else
         await this.db.collection('Teachers').doc(id).set(pObj);
@@ -351,14 +353,30 @@ export class DatabaseProvider {
   * returns: nothing.
   */
 
- async setStatus(id: string, status: string) {
-  try {
-    let temp = { toggle : status};
-    await this.db.collection('Teachers').doc(id).update(temp);
-  } catch (e) {
-    throw e;
+  async setStatus(id: string, status: string) {
+    try {
+      let temp = { toggle: status };
+      await this.db.collection('Teachers').doc(id).update(temp);
+    } catch (e) {
+      throw e;
+    }
   }
-}
+
+  /* setTokenId
+  * Desc:  
+  *     Sets the userId of token when logging in
+  * Params:
+  *     id: the id of field to be updated
+  * returns: nothing.
+  */
+  async setTokenId(id: string) {
+    try {
+      let temp = { userId: id };
+      await this.db.collection('devices').doc(this.fcm.token).update(temp);
+    } catch (e) {
+      throw e;
+    }
+  }
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
   /*                    These methods VERIFY some information in the database                 */
@@ -394,10 +412,5 @@ export class DatabaseProvider {
       throw (e);
     }
   }
-
-
-
-
-
 
 }

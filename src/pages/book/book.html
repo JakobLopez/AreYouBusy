@@ -6,9 +6,12 @@
           <ion-icon name="menu" color=white></ion-icon>
     </button>
 
+
+
     <ion-title>
       <h1>Book</h1>
     </ion-title>
+
 
     <span style="float:right">
       <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
@@ -35,15 +38,17 @@
         minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" [(ngModel)]="myAppointment['length']"></ion-datetime>
     </ion-item>
 
+
     <button ion-button block [disabled]="!appForm.valid" type="submit">
+
       Make Appointment
     </button>
 
     <ion-row>
-        <ion-col style="text-align:center;">
-          <label class="error-message">{{errorMessage}}</label>
-        </ion-col>
-      </ion-row>
+      <ion-col style="text-align:center;">
+        <label class="error-message">{{errorMessage}}</label>
+      </ion-col>
+    </ion-row>
   </form>
 
   <div *ngIf="appForm.controls.date.touched">
@@ -51,10 +56,10 @@
       <ion-list-header>
         <ion-label>Appointments for {{myAppointment.date | date:"MMMM d, yyyy"}}</ion-label>
       </ion-list-header>
-      <div *ngFor="let appointment of appointments | orderby: 'date'">
-        <ion-item *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')" >
+      <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
+        <ion-item *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')">
           <div id="appointments">{{appointment.timestamp | date:"MMMM d, yyyy"}}
-          {{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</div>
+            {{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</div>
         </ion-item>
 
       </div>

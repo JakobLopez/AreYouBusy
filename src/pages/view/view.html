@@ -1,5 +1,6 @@
 <!--header and navbar needed for menu-->
 <ion-header>
+
   <ion-navbar color = primary>
     <button ion-button menuToggle>
           <ion-icon name="menu" color=white></ion-icon>
@@ -14,6 +15,7 @@
     </span>
   </ion-navbar>
 </ion-header>
+
 
 
 <div id="background">
@@ -37,6 +39,7 @@
     </button>
     -->
 
+
     <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
       <ion-icon name="star"></ion-icon>
     </button>
@@ -51,15 +54,19 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list>
-        <div *ngFor="let day of schedule">
-            {{day.key}}: 
-            <span *ngFor="let hours of day.value">
-              {{hours.From | convertTime}} - {{hours.To | convertTime}}
-            </span>
-            <br />
+        <ion-list>
+    <div *ngFor="let day of schedule">
+      {{day.key}}
+      <div *ngFor="let hours of day.value">
+        <div *ngIf="hours.From != null">
+          {{hours.From | convertTime}} - {{hours.To | convertTime}}
         </div>
-      </ion-list>
+        <div *ngIf="hours.From == null">
+          Not in office
+        </div>
+      </div>
+    </div>
+  </ion-list>
     </ion-card-content>
   </ion-card>
       
@@ -74,3 +81,4 @@
   </ion-content>
 
 </div>
+
