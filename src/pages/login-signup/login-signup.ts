@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, Platform } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorProvider } from '../../providers/validator/validator';
 import { AuthProvider } from '../../providers/auth/auth'
 import { DatabaseProvider } from '../../providers/database/database';
 import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
-
+import { FcmProvider } from '../../providers/fcm/fcm';
 
 
 @IonicPage()
@@ -34,7 +34,10 @@ export class LoginSignupPage {
     public auth: AuthProvider,
     public db: DatabaseProvider,
     public alertCtrl: AlertController,
-    public storage: Storage,) {
+    public storage: Storage,
+    private toastController:ToastController,
+    private fcm: FcmProvider,
+    private platform:Platform) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, ValidatorProvider.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
@@ -74,6 +77,25 @@ export class LoginSignupPage {
     }
   }
 
+  private async presentToast(message) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  private notificationSetup() {
+    this.fcm.getToken();
+    this.fcm.onNotifications().subscribe(
+      (msg) => {
+        if (this.platform.is('ios')) {
+          this.presentToast(msg.aps.alert);
+        } else {
+          this.presentToast(msg.body);
+        }
+      });
+  }
 
   //Attempts to register user
   async tryRegister(value) {

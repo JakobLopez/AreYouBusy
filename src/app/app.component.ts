@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { AuthProvider } from '../providers/auth/auth';
 import { DatabaseProvider } from '../providers/database/database';
-import { FcmProvider } from '../providers/fcm/fcm';
 
 
 @Component({
@@ -20,8 +19,6 @@ export class MyApp {
     private storage: Storage,
     auth: AuthProvider,
     db: DatabaseProvider,
-    private toastController:ToastController,
-    private fcm:FcmProvider
     
   ) {
     platform.ready().then(() => {
@@ -50,30 +47,13 @@ export class MyApp {
         }
       });
 
+<<<<<<< HEAD
       //this.notificationSetup();
+=======
+      
+>>>>>>> parent of 8d5cd12... dynamic push notifications
     });
   }
-  
-  private async presentToast(message) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 3000
-    });
-    toast.present();
-  }
-
-  private notificationSetup() {
-    this.fcm.getToken();
-    this.fcm.onNotifications().subscribe(
-      (msg) => {
-        if (this.platform.is('ios')) {
-          this.presentToast(msg.aps.alert);
-        } else {
-          this.presentToast(msg.body);
-        }
-      });
-  }
-
 
 
 }
