@@ -181,7 +181,7 @@ export class DatabaseProvider {
         type: credentials.type,
         uid: id,
         creation_time: new Date(),
-        profile_pic: "profile_pictures/default-profile-pic.jpg"
+        profile_pic: "profile_pictures/profile_default.png"
       };
 
       var pObj = sObj;
