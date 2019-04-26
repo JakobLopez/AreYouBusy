@@ -311,8 +311,6 @@ export class TeacherProfilePage {
     }
   }
 
-<<<<<<< HEAD
-=======
   async clearAppointment(appoint: Appointment) {
     try {
       if (appoint.timestamp > this.today) {
@@ -341,5 +339,4 @@ export class TeacherProfilePage {
     }
   }
 
->>>>>>> 07c38ef0f36dcd5012b453b866b3193dd6169671
 }

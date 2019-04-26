@@ -4,7 +4,7 @@
     <ion-navbar color = primary>
       
       <button ion-button menuToggle>
-            <ion-icon name="menu" color=white></ion-icon>
+        <ion-icon name="menu" color=white></ion-icon>
       </button>
 
       <ion-title>
@@ -20,8 +20,9 @@
 
 
 <ion-content padding class="profileContent">
-  <!--<img class="header-image" src="../../assets/imgs/building_header.jpg"/>-->
-  <img style="text-align:center" class="circular" src="../../assets/imgs/profile.png"/>
+  <div id="profile-pic" class="circular" (click)="setProfilePic()">
+  </div>
+
   
   <div text-center style="color:white">
     <h2><br/> {{userInfo.name}}</h2>

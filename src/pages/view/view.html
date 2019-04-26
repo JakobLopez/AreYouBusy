@@ -51,9 +51,9 @@
     <ion-card-content>
       <ion-list>
           <div *ngFor="let day of schedule">
-            {{day.key}}
-            <div *ngFor="let hours of day.value">
-              <div *ngIf="hours.From != null">
+            {{day.key}}:
+            <div *ngFor="let hours of day.value" >
+              <div *ngIf="hours.From != null" style="float:center">
                 {{hours.From | convertTime}} - {{hours.To | convertTime}}
               </div>
               <div *ngIf="hours.From == null">
