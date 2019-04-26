@@ -17,34 +17,30 @@
 
 
 <div id="background">
-  <ion-content id="tint" padding class="profileContent">
+  <ion-content id="background" padding class="profileContent">
 
-    <div>
-      <h3>{{userInfo.email}}</h3>
+    <div style="color:white">
+        <h3>{{userInfo.email}}</h3>
+        <h3>{{userInfo.name}}</h3>
+        <h3>{{userInfo.type}}</h3>
+      {{busyStatus}}
+      
+      <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
+      <ion-icon name="star"></ion-icon>
+      </button>
+
+      <button ion-button (click)='goToBook()'>Make an Appointment</button>
+
     </div>
-    <div>
-      <h3>{{userInfo.name}} </h3>
-    </div>
-    <div>
-      <h3>{{userInfo.type}} </h3>
-    </div>
-    {{busyStatus}}
-    
+
     <!--
     <button color = gold ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
       <ion-icon name="star"></ion-icon>
       Add Favorite
     </button>
-    -->
+  -->
 
-    <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
-      <ion-icon name="star"></ion-icon>
-    </button>
-
-    <button ion-button (click)='goToBook()'>Make an Appointment</button>
-
-
-  <ion-card class="bord">
+  <ion-card class="border">
     <ion-card-header text-center>
       Office Hours
       <hr>
@@ -54,8 +50,8 @@
       <ion-list>
         <div *ngFor="let day of schedule">
             {{day.key}}: 
-            <span *ngFor="let hours of day.value">
-              {{hours.From | convertTime}} - {{hours.To | convertTime}}
+            <span *ngFor="let hours of day.value" style="float:center;">
+              {{hours.From | convertTime}} - {{hours.To | convertTime}} <br />
             </span>
             <br />
         </div>
