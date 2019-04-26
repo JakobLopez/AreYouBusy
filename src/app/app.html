@@ -1,23 +1,35 @@
 <!--Side menu-->
  <ion-menu [content]="mycontent">
-    <ion-content>
-      <button ion-item (click)=dashboardClicked()>
-        <ion-icon color="primary" item-start name="contact"></ion-icon>
+    <ion-header style="display:inline-block; text-align:center; background-color:#ECAC02;">
+      <span style="float:left">
+        <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
+      </span>
+      <h2 style="color:white">Menu</h2>
+      <span style="float:right">
+        <button ion-button menuToggle color=transparent>
+          <ion-icon name="menu" color=white></ion-icon>
+        </button>
+      </span>
+    </ion-header>
+
+    <ion-content style="background-color: #650001">
+      <button menuClose ion-item (click)=profileClicked() color="secondary">
+        <ion-icon  item-start name="contact"></ion-icon>
         Profile
       </button>
       
-      <button ion-item (click)=friendsClicked()>
-        <ion-icon color="primary" item-start name="people"></ion-icon>
-        Friends
+      <button menuClose ion-item (click)=searchClicked() color="secondary">
+        <ion-icon item-start name="people"></ion-icon>
+        Find a Professor
       </button>
       
-      <button ion-item>
-        <ion-icon color="primary" item-start name="chatboxes"></ion-icon>
-        Messages
+      <button ion-item color="secondary">
+        <ion-icon item-start name="calendar"></ion-icon>
+        Appointments
       </button>
 
-      <button ion-item (click)=logoutConfirm()>
-        <ion-icon color="primary" item-start name="log-out"></ion-icon>
+      <button menuClose ion-item (click)=log_out() color="secondary">
+        <ion-icon item-start name="log-out"></ion-icon>
         Logout
       </button>
     </ion-content>

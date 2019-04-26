@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform, ToastController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, ToastController, Nav, App, AlertController, UrlSerializer } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -13,12 +13,15 @@ import { FcmProvider } from '../providers/fcm/fcm';
 })
 export class MyApp {
   rootPage: any;
+  @ViewChild(Nav) nav: Nav;
 
   constructor(private platform: Platform,
+    public alertCtrl: AlertController,
+    public _app: App,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     private storage: Storage,
-    auth: AuthProvider,
+    public auth: AuthProvider,
     db: DatabaseProvider,
     private toastController:ToastController,
     private fcm:FcmProvider
@@ -74,6 +77,40 @@ export class MyApp {
       });
   }
 
+  profileClicked() {
+    this.nav.setRoot('StudentProfilePage');
+  }
 
+  searchClicked() {
+    this.nav.setRoot('SearchPage');
+  }
+
+  log_out() {
+    let log_out = this.alertCtrl.create({
+      title: 'Logout?',
+      message: 'Are your sure you want to Logout?',
+      buttons: [
+        {
+          text: 'Logout',
+          handler: () => {
+            this.logout();
+          }
+        },
+        { text: 'No' }
+      ]
+    });
+    log_out.present();
+  }
+
+  async logout() {
+    try {
+      await this.auth.logout();
+      this._app.getRootNav().setRoot('LoginSignupPage')
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+}
 
 }
