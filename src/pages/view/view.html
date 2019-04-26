@@ -19,42 +19,39 @@
 
 
 <div id="background">
-  <ion-content id="tint" padding class="profileContent">
+  <ion-content id="background" padding class="profileContent">
 
-    <div>
-      <h3>{{userInfo.email}}</h3>
+    <div style="color:white">
+        <h3>{{userInfo.email}}</h3>
+        <h3>{{userInfo.name}}</h3>
+        <h3>{{userInfo.type}}</h3>
+      {{busyStatus}}
+      
+      <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
+      <ion-icon name="star"></ion-icon>
+      </button>
+
+      <button ion-button (click)='goToBook()'>Make an Appointment</button>
+
     </div>
-    <div>
-      <h3>{{userInfo.name}} </h3>
-    </div>
-    <div>
-      <h3>{{userInfo.type}} </h3>
-    </div>
+
     {{busyStatus}}
+
 
     <!--
     <button color = gold ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
       <ion-icon name="star"></ion-icon>
       Add Favorite
     </button>
-    -->
+-->
+  <ion-card class="border">
+    <ion-card-header text-center>
+      Office Hours
+      <hr>
+    </ion-card-header>
 
-
-    <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
-      <ion-icon name="star"></ion-icon>
-    </button>
-
-    <button ion-button (click)='goToBook()'>Make an Appointment</button>
-
-
-    <ion-card class="bord">
-      <ion-card-header text-center>
-        Office Hours
-        <hr>
-      </ion-card-header>
-
-      <ion-card-content>
-        <ion-list>
+    <ion-card-content>
+      <ion-list>
           <div *ngFor="let day of schedule">
             {{day.key}}
             <div *ngFor="let hours of day.value">
@@ -67,8 +64,9 @@
             </div>
           </div>
         </ion-list>
-      </ion-card-content>
-    </ion-card>
+    </ion-card-content>
+  </ion-card>
+      
 
     <div *ngFor="let appointment of appointments | orderby: 'date'">
       <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
