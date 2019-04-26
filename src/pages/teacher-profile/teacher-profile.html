@@ -11,12 +11,23 @@
     </button>
 
     <h3>{{userInfo.name}} </h3>
+    <button ion-button (click)='toggleStatus()'>{{busyStatus}}</button>
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
     <hr>
     <button ion-button (click)="goTo()">
       Upload office hours
     </button>
+
+    <ion-list>
+      <div *ngFor="let day of schedule">
+          {{day.key}}
+          <div *ngFor="let hours of day.value">
+            {{hours.From | convertTime}} - {{hours.To | convertTime}}
+          </div>
+      </div>
+    </ion-list>
+
 
     <ion-list>
       <div *ngFor="let appointment of appointments | orderby: 'date'">

@@ -19,7 +19,17 @@ page-login-signup {
     }
     .error-message{
         color:red;
+        font-weight: bold;
+        font-size: 15px;
+        margin:0;
+        padding:0;
 
     }
+
+    .forgot{
+        text-decoration: underline;
+        color:white;
+    }
+
 
 }

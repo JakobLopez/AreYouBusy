@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppointmentProvider } from '../../providers/appointment/appointment';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
 import { Appointment } from '../../appointment';
 
@@ -21,6 +21,7 @@ export class BookPage {
   appointments: Appointment[];
   today: string;
   sendToID: string = this.navParams.get('item');
+  errorMessage:string;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -46,8 +47,6 @@ export class BookPage {
     //Watch for changes to appointments
     this.ap.getAppointments(this.sendToID)
     .subscribe(appointments => this.appointments = appointments);
-
-
   }
 
   async makeAppointment() {
@@ -77,7 +76,7 @@ export class BookPage {
         this.navCtrl.pop();
       }
       else
-        console.log("Somebody else already has an appointment during this time");
+        this.errorMessage = "An appointment cannot be made at this time.";
       
     } catch (e) {
       console.log(e);

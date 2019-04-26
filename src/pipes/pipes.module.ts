@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { OrderbyPipe } from './orderby/orderby';
+import { ConvertTimePipe } from './convert-time/convert-time';
 @NgModule({
-	declarations: [OrderbyPipe],
+	declarations: [OrderbyPipe,
+    ConvertTimePipe],
 	imports: [],
-	exports: [OrderbyPipe]
+	exports: [OrderbyPipe,
+    ConvertTimePipe]
 })
 export class PipesModule {}

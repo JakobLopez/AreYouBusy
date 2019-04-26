@@ -3,6 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs'
 
 
 @Injectable()
@@ -123,6 +124,27 @@ export class DatabaseProvider {
     }
   }
 
+  /* getScheduleBySemester
+  * Desc:  
+  *     Gets a professor's office hours for semester
+  * Params:
+  *     id: uid of user that will be returned
+  *     semster: semester professor wants to get office hours from
+  * returns: 
+  *     object of office hours for a given semester
+  */
+ getScheduleBySemester(id: string, semester:string): Observable<any> {
+    try {      
+      return this.db.collection('Teachers').doc(id).collection(
+        'Schedules'
+      ).doc(semester).valueChanges();
+
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+
 
   /********************************************************************************************/
   /*                                   SETTER METHODS                                         */
@@ -132,6 +154,7 @@ export class DatabaseProvider {
   /* editAccount                                                                              */
   /* setFavorite                                                                              */
   /* removeFavorite                                                                           */
+  /* setSchedule                                                                              */
   /********************************************************************************************/
 
   /* setUserDoc
@@ -151,7 +174,7 @@ export class DatabaseProvider {
         type: credentials.type,
         uid: id
       };
-      var obj = {
+      var sObj = {
         name: credentials.name,
         email: credentials.email,
         type: credentials.type,
@@ -159,8 +182,14 @@ export class DatabaseProvider {
         creation_time: new Date(),
         profile_pic: defaultRef
       };
+
+      var pObj = sObj;
+      pObj['toggle'] = "";
       await this.db.collection(`Users`).doc(id).set(o);
-      await this.db.collection(`${obj.type}s`).doc(id).set(obj);
+      if(credentials.type == 'Student')
+        await this.db.collection('Students').doc(id).set(sObj);
+      else
+        await this.db.collection('Teachers').doc(id).set(pObj);
 
     } catch (e) {
       throw e;
@@ -197,7 +226,7 @@ export class DatabaseProvider {
 
       if (!type)
         this.accountType = collection_obj[id]['type'];
-      
+
       this.storage.set('usersObj', JSON.stringify(collection_obj));
       this.storage.set('type', JSON.stringify(this.accountType));
     } catch (e) {
@@ -215,19 +244,19 @@ export class DatabaseProvider {
   * Returns
   *     none if successful, else throws error
   */
-  async setName(id: string, Name: any){
+  async setName(id: string, Name: any) {
     try {
       var obj = {
         name: Name
       };
-      if(this.accountType == 'Student')
+      if (this.accountType == 'Student')
         await this.db.collection('Students').doc(id).update(obj);
       else
         await this.db.collection('Teachers').doc(id).update(obj);
 
     }
-    catch (e){
-      throw(e);
+    catch (e) {
+      throw (e);
     }
   }
 
@@ -241,19 +270,19 @@ export class DatabaseProvider {
   * Returns
   *     none if successful, else throws error
   */
-  async setEmail(id: string, email: any){
+  async setEmail(id: string, email: any) {
     try {
       var obj = {
         email: email
       };
-      if(this.accountType == 'Student')
+      if (this.accountType == 'Student')
         await this.db.collection('Students').doc(id).update(obj);
       else
         await this.db.collection('Teachers').doc(id).update(obj);
 
     }
-    catch (e){
-      throw(e);
+    catch (e) {
+      throw (e);
     }
   }
 
@@ -301,6 +330,39 @@ export class DatabaseProvider {
     }
   }
 
+  /* setSchedule
+  * Desc:  
+  *     Sets a professor's office hours
+  * Params:
+  *     id: the id of the document being set
+  *     schdule: office hours of teacher
+  * returns: nothing.
+  */
+
+  async setSchedule(id: string, schedule: any) {
+    try {
+      await this.db.collection('Teachers').doc(id).collection("Schedules").doc(schedule.semester).set(schedule);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* setStatus
+  * Desc:  
+  *     Sets a professor's toggle status
+  * Params:
+  *     id: the id of the document being set
+  * returns: nothing.
+  */
+
+ async setStatus(id: string, status: string) {
+  try {
+    let temp = { toggle : status};
+    await this.db.collection('Teachers').doc(id).update(temp);
+  } catch (e) {
+    throw e;
+  }
+}
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
   /*                    These methods VERIFY some information in the database                 */
