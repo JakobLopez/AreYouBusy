@@ -58,6 +58,9 @@ export class SchedulePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SchedulePage');
+    let date = new Date();
+    console.log(date )
+    console.log(date.getFullYear())
   }
 
   Add(day: string) {

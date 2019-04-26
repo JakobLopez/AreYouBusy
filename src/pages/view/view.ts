@@ -146,48 +146,49 @@ export class ViewPage {
   //Gets availability of current professor
   //Checks office hours and appointments 
   async getStatus() {
-    try {
+    if (this.userInfo.toggle) {
+      this.busyStatus = this.userInfo.toggle;
+    }
+    else {
 
-      if (this.userInfo.toggle) {
-        this.busyStatus = this.userInfo.toggle;
-      }
-      else {
+      if (this.day != "Sunday" && this.day != "Saturday") {
+        let appStatus: string = 'Available';
+        for (let item of this.appointments) {
+          if (this.today >= item.timestamp && this.today <= item.endStamp)
+            appStatus = 'Busy';
+        }
+        //let appStatus = await this.appt.getStatus(this.pageID, this.today);
 
-        if (this.day != "Sunday" && this.day != "Saturday") {
-          let appStatus = await this.appt.getStatus(this.pageID, this.today);
+        //If not in middle of appointment, check if in office hours
+        if (appStatus == "Available") {
+          let daySchedule = this.scheduleObj[this.day];
+          let scheduleStatus = "";
 
-          //If not in middle of appointment, check if in office hours
-          if (appStatus == "Available") {
-            let daySchedule = this.scheduleObj[this.day];
-            let scheduleStatus = "";
+          for (let slot of daySchedule) {
+            //Get current time in 24hr format
+            let event = new Date(this.today);
+            let time = event.toLocaleTimeString('en-GB')
 
-            for (let slot of daySchedule) {
-              //Get current time in 24hr format
-              let event = new Date(this.today);
-              let time = event.toLocaleTimeString('en-GB')
+            if (time >= slot.From && time <= slot.To)
+              scheduleStatus = 'Available';
 
-              if (time >= slot.From && time <= slot.To)
-                scheduleStatus = 'Available';
-
-            }
-
-            if (scheduleStatus != 'Available')
-              this.busyStatus = 'Not Available';
-            else
-              this.busyStatus = 'Available';
-          } else {
-            this.busyStatus = appStatus;
           }
 
-          if (this.userInfo.toggle) {
-            this.statusCheck.unsubscribe();
-            this.busyStatus = this.userInfo.toggle;
-          }
+          if (scheduleStatus != 'Available')
+            this.busyStatus = 'Not Available';
+          else
+            this.busyStatus = 'Available';
+        } else {
+          this.busyStatus = appStatus;
+        }
+
+        if (this.userInfo.toggle) {
+          this.statusCheck.unsubscribe();
+          this.busyStatus = this.userInfo.toggle;
         }
       }
-    } catch (e) {
-      console.log(e);
     }
+
   }
 
 
@@ -249,7 +250,7 @@ export class ViewPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    this.navCtrl.popToRoot;
   }
 
 }

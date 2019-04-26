@@ -1,15 +1,35 @@
-<ion-content padding class="profileContent">
+<!--header and navbar needed for menu -->
+<ion-header>
+
+    <ion-navbar color = primary>
+      
+      <button ion-button menuToggle>
+            <ion-icon name="menu" color=white></ion-icon>
+      </button>
+
+      <ion-title>
+        <h2>Profile</h2>
+      </ion-title>
+
+
+  </ion-navbar>
+
+</ion-header>
+
+
+
+<ion-content padding class="profileContent" class="tint">
   <div class="header-image"></div>
 
   <div class="main-content" text-wrap text-center>
     <div class="circular" (click)="setProfilePic()"></div>
     <button ion-button (click)="settings()" icon-only clear>
-      <ion-icon name="settings" style="color:grey"></ion-icon>
-      </button>
+      <ion-icon name="create" style="color:grey"></ion-icon>
+    </button>
     <button ion-button (click)="log_out()" icon-only clear>
-        <ion-icon name="log-out" style="color:grey"></ion-icon>
-      </button>
-    
+      <ion-icon name="log-out" style="color:grey"></ion-icon>
+    </button>
+
     <h3>{{userInfo.name}} </h3>
 
     <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
@@ -21,7 +41,7 @@
     </button>
 
     <ion-list>
-      <div *ngFor="let appointment of appointments | orderby: 'date'">
+      <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
         <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
           <ion-item>
             {{appointment.timestamp | date:"MMMM d, yyyy"}}
