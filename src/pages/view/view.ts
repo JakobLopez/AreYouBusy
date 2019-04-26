@@ -73,7 +73,6 @@ export class ViewPage {
 
     this.db.getScheduleBySemester(this.pageID, 'Fall 2019').subscribe(res => {
       this.scheduleObj = res;
-      this.getStatus();
 
       for (let key in res) {
         switch (key) {
@@ -161,23 +160,33 @@ export class ViewPage {
 
         //If not in middle of appointment, check if in office hours
         if (appStatus == "Available") {
-          let daySchedule = this.scheduleObj[this.day];
+          let daySchedule: any;
           let scheduleStatus = "";
+          
+          if (this.scheduleObj) {
+            
+            daySchedule = this.scheduleObj[this.day];
 
-          for (let slot of daySchedule) {
-            //Get current time in 24hr format
-            let event = new Date(this.today);
-            let time = event.toLocaleTimeString('en-GB')
+            for (let slot of daySchedule) {
+              //Get current time in 24hr format
+              let event = new Date(this.today);
+              let time = event.toLocaleTimeString('en-GB')
 
-            if (time >= slot.From && time <= slot.To)
-              scheduleStatus = 'Available';
+              if (time >= slot.From && time <= slot.To)
+                scheduleStatus = 'Available';
 
+            }
+            if (scheduleStatus != 'Available')
+              this.busyStatus = 'Not Available';
+            else
+              this.busyStatus = 'Available';
           }
-
-          if (scheduleStatus != 'Available')
-            this.busyStatus = 'Not Available';
           else
-            this.busyStatus = 'Available';
+          {
+            console.log("her")
+            this.busyStatus = 'Not Available';
+          }
+            
         } else {
           this.busyStatus = appStatus;
         }

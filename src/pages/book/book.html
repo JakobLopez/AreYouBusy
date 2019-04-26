@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color = gold>
+  <ion-navbar color=gold>
     <ion-title>Book</ion-title>
   </ion-navbar>
 
@@ -25,15 +25,15 @@
         minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" [(ngModel)]="myAppointment['length']"></ion-datetime>
     </ion-item>
 
-    <button ion-button block [disabled]="!appForm.valid" type="submit" color = gold>
+    <button ion-button block [disabled]="!appForm.valid" type="submit" color=gold>
       Make Appointment
     </button>
 
     <ion-row>
-        <ion-col style="text-align:center;">
-          <label class="error-message">{{errorMessage}}</label>
-        </ion-col>
-      </ion-row>
+      <ion-col style="text-align:center;">
+        <label class="error-message">{{errorMessage}}</label>
+      </ion-col>
+    </ion-row>
   </form>
 
   <div *ngIf="appForm.controls.date.touched">
@@ -42,9 +42,9 @@
         <ion-label>Appointments for {{myAppointment.date | date:"MMMM d, yyyy"}}</ion-label>
       </ion-list-header>
       <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-        <ion-item *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')" >
+        <ion-item *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')">
           <div id="appointments">{{appointment.timestamp | date:"MMMM d, yyyy"}}
-          {{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</div>
+            {{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</div>
         </ion-item>
 
       </div>

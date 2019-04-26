@@ -6,40 +6,22 @@ admin.initializeApp();
 
 exports.newSubscriberNotification = functions.firestore
     .document('Teachers/{uid}/Appointments/{id}')
-<<<<<<< HEAD
     .onCreate(async (snapshot, context) => {
 
-            const data = snapshot.data();
- 
-            if(!data) return null;
-                
-            const userId = data.to;
-            const fromStamp = data.timestamp;
+        const data = snapshot.data();
 
-            const from = new Date(fromStamp).toLocaleString('en-US');
- 
-            // Notification content
-            const payload = {
-                notification: {
-                    title: ` New Appointment`,
-                    body: `${from}`
-                }
-            }
-=======
-    .onCreate(async event => {
+        if (!data) return null;
 
-        const data = event.after.data();
+        const userId = data.to;
+        const fromStamp = data.timestamp;
 
-        const userId = data.uid;
-        const subscriber = data.name;
->>>>>>> parent of 8d5cd12... dynamic push notifications
+        const from = new Date(fromStamp).toLocaleString('en-US');
 
         // Notification content
         const payload = {
             notification: {
-                title: 'New Subscriber',
-                body: `${subscriber} is following your content!`
-
+                title: ` New Appointment`,
+                body: `${from}`
             }
         }
 

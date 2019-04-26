@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color = gold>
+  <ion-navbar color=gold>
     <ion-title>{{userInfo.name}}</ion-title>
   </ion-navbar>
 
@@ -16,35 +16,35 @@
     <h3>{{userInfo.type}} </h3>
   </div>
   {{busyStatus}}
-  
+
   <!--
-  <button color = gold ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
-    <ion-icon name="star"></ion-icon>
-    Add Favorite
-  </button>
-  -->
+    <button color = gold ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
+      <ion-icon name="star"></ion-icon>
+      Add Favorite
+    </button>
+    -->
 
   <button ion-button (click)="toggleFollow()" *ngIf="isFollowing" color=gold>
     <ion-icon name="star"></ion-icon>
   </button>
 
-  <button ion-button (click)='goToBook()' color = gold>Make an Appointment</button>
+  <button ion-button (click)='goToBook()' color=gold>Make an Appointment</button>
 
 
   <ion-list>
-      <div *ngFor="let day of schedule">
-          {{day.key}}
-          <div *ngFor="let hours of day.value">
-            <div *ngIf="hours.From != null">
-            {{hours.From | convertTime}} - {{hours.To | convertTime}}
-          </div>
-          <div *ngIf="hours.From == null">
-              Not in office
-            </div>
-          </div>
+    <div *ngFor="let day of schedule">
+      {{day.key}}
+      <div *ngFor="let hours of day.value">
+        <div *ngIf="hours.From != null">
+          {{hours.From | convertTime}} - {{hours.To | convertTime}}
+        </div>
+        <div *ngIf="hours.From == null">
+          Not in office
+        </div>
       </div>
-    </ion-list>
-  
+    </div>
+  </ion-list>
+
   <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
     <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
       *ngIf="(appointment.timestamp | date:'shortDate') == (today | date:'shortDate')">
