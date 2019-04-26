@@ -22,16 +22,9 @@ export class MyApp {
     splashScreen: SplashScreen,
     private storage: Storage,
     public auth: AuthProvider,
-<<<<<<< HEAD
-    db: DatabaseProvider,
-    private toastController: ToastController,
-    private fcm: FcmProvider
-
-=======
     public db: DatabaseProvider,
     public toastController: ToastController,
     private fcm: FcmProvider,
->>>>>>> 8e73c97d9be31040ef8c5e177ff8987cc128d437
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
