@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, ToastController } from 'ionic-angular';
+import { Platform, ToastController, AlertController, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -18,10 +18,12 @@ export class MyApp {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     private storage: Storage,
-    auth: AuthProvider,
+    public auth: AuthProvider,
     db: DatabaseProvider,
+    public alertCtrl: AlertController,
     public toastController: ToastController,
     private fcm: FcmProvider,
+    public _app: App,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -71,6 +73,33 @@ export class MyApp {
           this.presentToast(msg.body);
         }
       });
+  }
+
+  private logoutConfirm(){
+    let log_out = this.alertCtrl.create({
+      title: 'Logout?',
+      message: 'Are your sure you want to Logout?',
+      buttons: [
+        {
+          text: 'Logout',
+          handler: () => {
+            this.logout();
+          }
+        },
+        { text: 'No' }
+      ]
+    });
+    log_out.present();
+  }
+
+  async logout() {
+    try {
+      await this.auth.logout();
+      this._app.getRootNav().setRoot('LoginSignupPage')
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 }
 

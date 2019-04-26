@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs'
 import 'rxjs/add/observable/interval';
 
 @IonicPage()
@@ -60,6 +60,13 @@ export class StudentProfilePage {
       this.userInfo.name = user['name'];
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
+
+      var pic = await document.getElementById("profile-pic");
+      console.log(pic);
+      console.log(pic.style);
+      pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
+      pic.style.backgroundSize = "contain";
+
 
       this.favorites = await this.db.getFavorites(this.auth.uid);
 
@@ -183,7 +190,6 @@ export class StudentProfilePage {
   }
 
   // Go to selected Teacher profile
-<<<<<<< HEAD
   viewUser(viewID:any) {
     try {
       this.navCtrl.push('ViewPage',{
@@ -213,21 +219,9 @@ export class StudentProfilePage {
     change_pic.present();
   }
 
+  
 
 
 
 
-
-=======
-  viewUser(viewID: any) {
-    try {
-      this.navCtrl.push('ViewPage', {
-        item: viewID
-      });
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
->>>>>>> 07c38ef0f36dcd5012b453b866b3193dd6169671
 }

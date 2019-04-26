@@ -12,11 +12,13 @@ export class DatabaseProvider {
   allUsers: any;
   usersObj: any;
   private fire: any;
+  public strg: any;
 
   constructor(public db: AngularFirestore,
     public storage: Storage) {
     console.log('Hello DatabaseProvider Provider');
     this.fire = firebase.firestore();
+    this.strg = firebase.storage();
   }
 
   /********************************************************************************************/
@@ -169,7 +171,6 @@ export class DatabaseProvider {
     try {
       var strg = firebase.storage();
       var strgRef = strg.ref();
-      var defaultRef = strgRef.child('image').child('default-profile-photo.jpg');
       var o = {
         type: credentials.type,
         uid: id
@@ -180,7 +181,7 @@ export class DatabaseProvider {
         type: credentials.type,
         uid: id,
         creation_time: new Date(),
-        profile_pic: defaultRef
+        profile_pic: "profile_pictures/default-profile-pic.jpg"
       };
 
       var pObj = sObj;
@@ -399,7 +400,15 @@ export class DatabaseProvider {
     }
   }
 
-
+  async getProfilePic(imagePath:any){
+    var pathReference = this.strg.ref(imagePath);
+    return await pathReference.getDownloadURL().then(function(url) {
+      console.log(url);
+      return url;
+    }).catch(function(e) {
+      console.log(e);
+    });
+  }
 
 
 

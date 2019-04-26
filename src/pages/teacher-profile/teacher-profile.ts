@@ -129,6 +129,11 @@ export class TeacherProfilePage {
       this.userInfo.type = user['type'];
       this.userInfo.toggle = user['toggle'];
 
+      //retrieve picture and replace
+      var pic = await document.getElementById("profile-pic");
+      pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
+      pic.style.backgroundSize = "contain";
+
     }
     catch (e) {
       console.log(e);
@@ -311,8 +316,6 @@ export class TeacherProfilePage {
     }
   }
 
-<<<<<<< HEAD
-=======
   async clearAppointment(appoint: Appointment) {
     try {
       if (appoint.timestamp > this.today) {
@@ -341,5 +344,4 @@ export class TeacherProfilePage {
     }
   }
 
->>>>>>> 07c38ef0f36dcd5012b453b866b3193dd6169671
 }
