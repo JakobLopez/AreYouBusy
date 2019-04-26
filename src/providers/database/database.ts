@@ -12,8 +12,8 @@ export class DatabaseProvider {
   allUsers: any;
   usersObj: any;
   private fire: any;
-  public strg: any;
-
+  strg: any;
+  
   constructor(public db: AngularFirestore,
     public storage: Storage) {
     console.log('Hello DatabaseProvider Provider');
@@ -135,8 +135,8 @@ export class DatabaseProvider {
   * returns: 
   *     object of office hours for a given semester
   */
- getScheduleBySemester(id: string, semester:string): Observable<any> {
-    try {      
+  getScheduleBySemester(id: string, semester: string): Observable<any> {
+    try {
       return this.db.collection('Teachers').doc(id).collection(
         'Schedules'
       ).doc(semester).valueChanges();
@@ -171,6 +171,7 @@ export class DatabaseProvider {
     try {
       var strg = firebase.storage();
       var strgRef = strg.ref();
+      var defaultRef = strgRef.child('image').child('default-profile-photo.jpg');
       var o = {
         type: credentials.type,
         uid: id
@@ -187,7 +188,7 @@ export class DatabaseProvider {
       var pObj = sObj;
       pObj['toggle'] = "";
       await this.db.collection(`Users`).doc(id).set(o);
-      if(credentials.type == 'Student')
+      if (credentials.type == 'Student')
         await this.db.collection('Students').doc(id).set(sObj);
       else
         await this.db.collection('Teachers').doc(id).set(pObj);
@@ -356,14 +357,14 @@ export class DatabaseProvider {
   * returns: nothing.
   */
 
- async setStatus(id: string, status: string) {
-  try {
-    let temp = { toggle : status};
-    await this.db.collection('Teachers').doc(id).update(temp);
-  } catch (e) {
-    throw e;
+  async setStatus(id: string, status: string) {
+    try {
+      let temp = { toggle: status };
+      await this.db.collection('Teachers').doc(id).update(temp);
+    } catch (e) {
+      throw e;
+    }
   }
-}
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
   /*                    These methods VERIFY some information in the database                 */
@@ -400,15 +401,16 @@ export class DatabaseProvider {
     }
   }
 
-  async getProfilePic(imagePath:any){
+  async getProfilePic(imagePath: any) {
     var pathReference = this.strg.ref(imagePath);
-    return await pathReference.getDownloadURL().then(function(url) {
+    return await pathReference.getDownloadURL().then(function (url) {
       console.log(url);
       return url;
-    }).catch(function(e) {
+    }).catch(function (e) {
       console.log(e);
     });
   }
+
 
 
 

@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Appointment } from '../../appointment'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
 
 @IonicPage()
@@ -215,7 +215,7 @@ export class StudentProfilePage {
     change_pic.present();
   }
 
-  
+
 
 
 
