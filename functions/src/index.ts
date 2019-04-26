@@ -12,15 +12,16 @@ exports.newAppointmentNotification = functions.firestore
  
             if(!data) return null;
                 
-            const userId = data.uid;
-            const subscriber = data.name;
+            const userId = data.to;
+            const fromStamp = data.timestamp;
 
+            const from = new Date(fromStamp).toLocaleString('en-US');
+ 
             // Notification content
             const payload = {
                 notification: {
-                    title: 'New Appointment',
-                    body: `${subscriber} is following your content!`
-
+                    title: ` New Appointment`,
+                    body: `${from}`
                 }
             }
 

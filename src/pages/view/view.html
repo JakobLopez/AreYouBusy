@@ -35,7 +35,12 @@
       <div *ngFor="let day of schedule">
           {{day.key}}
           <div *ngFor="let hours of day.value">
+            <div *ngIf="hours.From != null">
             {{hours.From | convertTime}} - {{hours.To | convertTime}}
+          </div>
+          <div *ngIf="hours.From == null">
+              Not in office
+            </div>
           </div>
       </div>
     </ion-list>

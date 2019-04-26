@@ -65,7 +65,7 @@ export class LoginSignupPage {
 
       await this.db.setAccountType(this.auth.uid);
 
-      await this.db.setTokenId(this.auth.uid);
+      //await this.db.setTokenId(this.auth.uid);
 
       this.navCtrl.setRoot('TabPage');
     } catch (e) {

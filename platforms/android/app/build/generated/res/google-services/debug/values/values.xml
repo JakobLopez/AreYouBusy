@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">951387861736-v50m5g83ugnc5jmhunks3tdjv3j4h47i.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://areyoubusy-91f24.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">951387861736</string>
+    <string name="google_api_key" translatable="false">AIzaSyDDDLvlxZxkop1v_mI7m6bR0YcGHaecol0</string>
+    <string name="google_app_id" translatable="false">1:951387861736:android:80d9d86bcc4d973f</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDDDLvlxZxkop1v_mI7m6bR0YcGHaecol0</string>
+    <string name="google_storage_bucket" translatable="false">areyoubusy-91f24.appspot.com</string>
+    <string name="project_id" translatable="false">areyoubusy-91f24</string>
+</resources>

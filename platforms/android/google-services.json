@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "951387861736",
+    "firebase_url": "https://areyoubusy-91f24.firebaseio.com",
+    "project_id": "areyoubusy-91f24",
+    "storage_bucket": "areyoubusy-91f24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951387861736:android:80d9d86bcc4d973f",
+        "android_client_info": {
+          "package_name": "com.djc.areyoubusy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951387861736-v50m5g83ugnc5jmhunks3tdjv3j4h47i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDDLvlxZxkop1v_mI7m6bR0YcGHaecol0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951387861736-v50m5g83ugnc5jmhunks3tdjv3j4h47i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

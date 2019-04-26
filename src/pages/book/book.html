@@ -41,7 +41,7 @@
       <ion-list-header>
         <ion-label>Appointments for {{myAppointment.date | date:"MMMM d, yyyy"}}</ion-label>
       </ion-list-header>
-      <div *ngFor="let appointment of appointments | orderby: 'date'">
+      <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
         <ion-item *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')" >
           <div id="appointments">{{appointment.timestamp | date:"MMMM d, yyyy"}}
           {{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</div>
