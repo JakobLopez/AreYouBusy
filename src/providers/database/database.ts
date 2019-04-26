@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ContentChild } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -144,6 +144,9 @@ export class DatabaseProvider {
   */
   async setUserDoc(id: string, credentials: any) {
     try {
+      var strg = firebase.storage();
+      var strgRef = strg.ref();
+      var defaultRef = strgRef.child('image').child('default-profile-photo.jpg');
       var o = {
         type: credentials.type,
         uid: id
@@ -153,7 +156,8 @@ export class DatabaseProvider {
         email: credentials.email,
         type: credentials.type,
         uid: id,
-        creation_time: new Date()
+        creation_time: new Date(),
+        profile_pic: defaultRef
       };
       await this.db.collection(`Users`).doc(id).set(o);
       await this.db.collection(`${obj.type}s`).doc(id).set(obj);

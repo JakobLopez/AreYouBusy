@@ -13,7 +13,6 @@ import { database } from 'firebase';
 import { stringify } from '@angular/core/src/render3/util';
 import { ResourceLoader } from '@angular/compiler';
 
-
 @IonicPage()
 @Component({
   selector: 'page-student-profile',
@@ -168,15 +167,39 @@ export class StudentProfilePage {
     }
   }
 
-    // Go to selected Teacher profile
-    viewUser(viewID:any) {
-      try {
-        this.navCtrl.push('ViewPage',{
-          item:viewID
-          });
-      }
-      catch (e) {
-        console.log(e);
-      }
+  // Go to selected Teacher profile
+  viewUser(viewID:any) {
+    try {
+      this.navCtrl.push('ViewPage',{
+        item:viewID
+        });
     }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  //prompts the user asking them if they would like to change their profile picture
+  setProfilePic(){
+    let change_pic = this.alertCtrl.create({
+      title: 'Change Profile Pucture?',
+      message: 'Would you like to change your profile picture?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log("So would I!");
+          }
+        },
+        { text: 'No' }
+      ]
+    });
+    change_pic.present();
+  }
+
+
+
+
+
+
 }
