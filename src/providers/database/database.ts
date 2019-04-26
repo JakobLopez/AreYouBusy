@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs'
+import { FcmProvider } from '../fcm/fcm';
 
 
 @Injectable()
@@ -15,7 +16,8 @@ export class DatabaseProvider {
   strg: any;
   
   constructor(public db: AngularFirestore,
-    public storage: Storage) {
+    public storage: Storage,
+    public fcm: FcmProvider) {
     console.log('Hello DatabaseProvider Provider');
     this.fire = firebase.firestore();
     this.strg = firebase.storage();
@@ -364,6 +366,24 @@ export class DatabaseProvider {
     } catch (e) {
       throw e;
     }
+
+  }
+
+  /* setTokenId
+  * Desc:  
+  *     Sets the userId of token when logging in
+  * Params:
+  *     id: the id of field to be updated
+  * returns: nothing.
+  */
+  async setTokenId(id: string) {
+    try {
+      let temp = { userId: id };
+      await this.db.collection('devices').doc(this.fcm.token).update(temp);
+    } catch (e) {
+      throw e;
+    }
+
   }
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
@@ -401,6 +421,7 @@ export class DatabaseProvider {
     }
   }
 
+
   async getProfilePic(imagePath: any) {
     var pathReference = this.strg.ref(imagePath);
     return await pathReference.getDownloadURL().then(function (url) {
@@ -411,8 +432,5 @@ export class DatabaseProvider {
     });
   }
 
-
-
-
-
 }
+

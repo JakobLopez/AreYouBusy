@@ -2,15 +2,19 @@ import { Injectable } from '@angular/core';
 import { Firebase } from '@ionic-native/firebase';
 import { Platform } from 'ionic-angular';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { AuthProvider } from '../auth/auth';
+
 
 
 @Injectable()
 export class FcmProvider {
+  token:string;
 
-
+  public auth: AuthProvider;
   constructor(private firebase: Firebase,
     private afs: AngularFirestore,
-    private platform: Platform) { }
+    private platform: Platform,
+    ) { }
 
   async getToken() {
     let token;
@@ -23,6 +27,8 @@ export class FcmProvider {
       token = await this.firebase.getToken();
       await this.firebase.grantPermission();
     }
+    
+    this.token = token;
 
     this.saveToken(token);
   }
@@ -32,10 +38,12 @@ export class FcmProvider {
 
     const devicesRef = this.afs.collection('devices');
 
+
     const data = {
       token,
-      userId: 'testUserId'
+      userId:"test"
     };
+    console.log(data);
 
     return devicesRef.doc(token).set(data);
   }

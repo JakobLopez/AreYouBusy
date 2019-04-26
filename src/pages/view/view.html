@@ -1,8 +1,9 @@
 <!--header and navbar needed for menu-->
 <ion-header>
-  <ion-navbar color = primary>
+
+  <ion-navbar color=primary>
     <button ion-button menuToggle>
-          <ion-icon name="menu" color=white></ion-icon>
+      <ion-icon name="menu" color=white></ion-icon>
     </button>
 
     <ion-title>
@@ -10,10 +11,11 @@
     </ion-title>
 
     <span style="float:right">
-      <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
+      <img src="../../assets/imgs/MSUemblem.png" height=50; />
     </span>
   </ion-navbar>
 </ion-header>
+
 
 
 <div id="background">
@@ -29,13 +31,14 @@
       <h3>{{userInfo.type}} </h3>
     </div>
     {{busyStatus}}
-    
+
     <!--
     <button color = gold ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
       <ion-icon name="star"></ion-icon>
       Add Favorite
     </button>
     -->
+
 
     <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
       <ion-icon name="star"></ion-icon>
@@ -44,25 +47,29 @@
     <button ion-button (click)='goToBook()'>Make an Appointment</button>
 
 
-  <ion-card class="bord">
-    <ion-card-header text-center>
-      Office Hours
-      <hr>
-    </ion-card-header>
+    <ion-card class="bord">
+      <ion-card-header text-center>
+        Office Hours
+        <hr>
+      </ion-card-header>
 
-    <ion-card-content>
-      <ion-list>
-        <div *ngFor="let day of schedule">
-            {{day.key}}: 
-            <span *ngFor="let hours of day.value">
-              {{hours.From | convertTime}} - {{hours.To | convertTime}}
-            </span>
-            <br />
-        </div>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-      
+      <ion-card-content>
+        <ion-list>
+          <div *ngFor="let day of schedule">
+            {{day.key}}
+            <div *ngFor="let hours of day.value">
+              <div *ngIf="hours.From != null">
+                {{hours.From | convertTime}} - {{hours.To | convertTime}}
+              </div>
+              <div *ngIf="hours.From == null">
+                Not in office
+              </div>
+            </div>
+          </div>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
     <div *ngFor="let appointment of appointments | orderby: 'date'">
       <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
         *ngIf="(appointment.timestamp | date:'shortDate') == (today | date:'shortDate')">
