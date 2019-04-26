@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ContentChild } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -13,12 +13,14 @@ export class DatabaseProvider {
   allUsers: any;
   usersObj: any;
   private fire: any;
-
+  strg: any;
+  
   constructor(public db: AngularFirestore,
     public storage: Storage,
     public fcm: FcmProvider) {
     console.log('Hello DatabaseProvider Provider');
     this.fire = firebase.firestore();
+    this.strg = firebase.storage();
   }
 
   /********************************************************************************************/
@@ -169,6 +171,9 @@ export class DatabaseProvider {
   */
   async setUserDoc(id: string, credentials: any) {
     try {
+      var strg = firebase.storage();
+      var strgRef = strg.ref();
+      var defaultRef = strgRef.child('image').child('default-profile-photo.jpg');
       var o = {
         type: credentials.type,
         uid: id
@@ -178,7 +183,8 @@ export class DatabaseProvider {
         email: credentials.email,
         type: credentials.type,
         uid: id,
-        creation_time: new Date()
+        creation_time: new Date(),
+        profile_pic: "profile_pictures/profile_default.png"
       };
 
       var pObj = sObj;
@@ -360,6 +366,7 @@ export class DatabaseProvider {
     } catch (e) {
       throw e;
     }
+
   }
 
   /* setTokenId
@@ -376,6 +383,7 @@ export class DatabaseProvider {
     } catch (e) {
       throw e;
     }
+
   }
   /********************************************************************************************/
   /*                                   VALIDATION METHODS                                     */
@@ -413,4 +421,16 @@ export class DatabaseProvider {
     }
   }
 
+
+  async getProfilePic(imagePath: any) {
+    var pathReference = this.strg.ref(imagePath);
+    return await pathReference.getDownloadURL().then(function (url) {
+      console.log(url);
+      return url;
+    }).catch(function (e) {
+      console.log(e);
+    });
+  }
+
 }
+

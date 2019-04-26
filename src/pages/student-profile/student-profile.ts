@@ -8,7 +8,6 @@ import { AppointmentProvider } from '../../providers/appointment/appointment';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
 
-
 @IonicPage()
 @Component({
   selector: 'page-student-profile',
@@ -62,6 +61,9 @@ export class StudentProfilePage {
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
 
+      var pic = await document.getElementById("profile-pic");
+      pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
+      pic.style.backgroundSize = "contain";
       this.favorites = await this.db.getFavorites(this.auth.uid);
 
     }
@@ -184,14 +186,38 @@ export class StudentProfilePage {
   }
 
   // Go to selected Teacher profile
-  viewUser(viewID: any) {
+  viewUser(viewID:any) {
     try {
-      this.navCtrl.push('ViewPage', {
-        item: viewID
-      });
+      this.navCtrl.push('ViewPage',{
+        item:viewID
+        });
     }
     catch (e) {
       console.log(e);
     }
   }
+
+  //prompts the user asking them if they would like to change their profile picture
+  setProfilePic(){
+    let change_pic = this.alertCtrl.create({
+      title: 'Change Profile Pucture?',
+      message: 'Would you like to change your profile picture?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log("So would I!");
+          }
+        },
+        { text: 'No' }
+      ]
+    });
+    change_pic.present();
+  }
+
+
+
+
+
+
 }
