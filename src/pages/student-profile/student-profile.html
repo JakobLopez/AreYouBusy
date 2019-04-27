@@ -6,10 +6,6 @@
         <ion-icon name="menu" color=white></ion-icon>
       </button>
 
-    <button ion-button menuToggle>
-      <ion-icon name="menu" color=white></ion-icon>
-    </button>
-
     <ion-title>
       <h2>Profile</h2>
     </ion-title>
@@ -47,22 +43,6 @@
       <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
         {{fav.User.name }}
       </button>
-
-      <ion-list>
-        <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-          <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
-            <ion-item>
-              {{appointment.timestamp | date:"MMMM d, yyyy"}}
-              {{appointment.timestamp | date:"hh:mm a"}}
-            </ion-item>
-            <ion-item-options side="right">
-              <button ion-button (click)="clearAppointment(appointment)">
-                <ion-icon name="trash"></ion-icon>Delete
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
-        </div>
-      </ion-list>
     </ion-card-content>
 </ion-card>
 

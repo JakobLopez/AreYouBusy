@@ -65,12 +65,6 @@ export class StudentProfilePage {
       pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
       pic.style.backgroundSize = "contain";
       this.favorites = await this.db.getFavorites(this.auth.uid);
-
-      var pic = await document.getElementById("profile-pic");
-      pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
-      pic.style.backgroundSize = "contain";
-      this.favorites = await this.db.getFavorites(this.auth.uid);
-
     }
     catch (e) {
       console.log(e);
