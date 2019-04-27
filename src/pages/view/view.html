@@ -6,52 +6,39 @@
       <ion-icon name="menu" color=white></ion-icon>
     </button>
 
-    <ion-title>
-      <h2>{{userInfo.name}}</h2>
-    </ion-title>
-
-    <span style="float:right">
+    <span style="float:center">
       <img src="../../assets/imgs/MSUemblem.png" height=50; />
     </span>
   </ion-navbar>
 </ion-header>
 
+  <ion-content padding class="profileContent">
+    <div text-center style="color:white">
 
+    <h3>{{userInfo.name}}</h3>
+    <p class="profile-description">{{userInfo.email}} &bull;{{userInfo.type}}</p>
 
-<div id="background">
-  <ion-content id="background" padding class="profileContent">
-
-    <div style="color:white">
-        <h3>{{userInfo.email}}</h3>
-        <h3>{{userInfo.name}}</h3>
-        <h3>{{userInfo.type}}</h3>
-      {{busyStatus}}
-      
-      <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
+    <button ion-button (click)="toggleFollow()" *ngIf="isFollowing">
       <ion-icon name="star"></ion-icon>
-      </button>
-
-      <button ion-button (click)='goToBook()'>Make an Appointment</button>
-
-    </div>
-
-    {{busyStatus}}
-
-    <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
-      <ion-icon name="star"></ion-icon>
-      Add Favorite
     </button>
 
-  <ion-card class="border">
-    <ion-card-header text-center>
-      Office Hours
+    <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
+      <ion-icon name="person-add"></ion-icon>
+      Add Favorite
+    </button>
+    <button ion-button [ngClass]="(busyStatus == 'Available') ? 'greenButton': 'redButton'">
+      {{busyStatus}}
+    </button>
+
+  </div>
+  <br/><br/>
+
+  <ion-card class="main-content">
+    <ion-card-content text-wrap text-center>
+      <h2 style="font-size:24px;">Office Hours</h2>
       <hr>
-    </ion-card-header>
-
-    <ion-card-content>
       <ion-list>
-
-          <div *ngFor="let day of schedule">
+        <div *ngFor="let day of schedule" style="color: rgba(101, 0, 1, 1)">
             {{day.key}}:
             <div *ngFor="let hours of day.value" >
               <div *ngIf="hours.From != null" style="float:center">
@@ -60,12 +47,15 @@
               <div *ngIf="hours.From == null">
                 Not in office
               </div>
-            </div>
           </div>
-        </ion-list>
+          <br/>
+        </div>
+        
+      </ion-list>
+      <hr>
+      <button ion-button (click)='goToBook()'>Make an Appointment</button>
     </ion-card-content>
   </ion-card>
-      
 
     <div *ngFor="let appointment of appointments | orderby: 'date'">
       <ion-item [ngClass]="{greyText: (appointment.timestamp < today) }"
@@ -76,5 +66,3 @@
     </div>
 
   </ion-content>
-
-</div>

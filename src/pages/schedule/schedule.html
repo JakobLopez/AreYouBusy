@@ -1,21 +1,33 @@
+<!--header and navbar needed for menu -->
 <ion-header>
-  <ion-navbar color = gold>
-    <ion-title>schedule</ion-title>
-  </ion-navbar>
-</ion-header>
 
-<ion-content padding>
+    <ion-navbar color = primary>
+      <button ion-button menuToggle>
+        <ion-icon name="menu" color=white></ion-icon>
+      </button>
+  
+    <ion-title>
+      <h2>Schedule</h2>
+    </ion-title>
+  
+      <span style="float:right">
+          <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
+      </span>
+    </ion-navbar>
+  
+  </ion-header>
 
-
-  <ion-select [(ngModel)]="semester" placeholder="Semester">
-    <ion-option value="Fall 2019">Fall 2019</ion-option>
-    <ion-option value="Spring 2019">Spring 2019</ion-option>
-  </ion-select>
-
+<ion-content padding >
+  <ion-item style="background-color:transparent; color:white">
+    <ion-select [(ngModel)]="semester" placeholder="Semester">
+      <ion-option value="Fall 2019">Fall 2019</ion-option>
+      <ion-option value="Spring 2019">Spring 2019</ion-option>
+    </ion-select>
+</ion-item>
 
   <div *ngFor="let day of days">
     <ion-list>
-      <ion-list-header text-center>
+      <ion-list-header text-center style="color:white">
         {{day}}
       </ion-list-header>
       <div *ngFor="let att of schedule[day];let i = index;">

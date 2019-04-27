@@ -13,28 +13,34 @@
     <span style="float:right">
         <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
     </span>
-</ion-navbar>
+  </ion-navbar>
 
 </ion-header>
 
-<ion-content padding>
-<ion-card>
-  <ion-card-content>
-    <ion-list>
-        <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-          <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
-            <ion-item>
-              {{appointment.timestamp | date:"MMMM d, yyyy"}}
-              {{appointment.timestamp | date:"hh:mm a"}}
-            </ion-item>
-            <ion-item-options side="right">
-              <button ion-button (click)="clearAppointment(appointment)">
-                <ion-icon name="trash"></ion-icon>Delete
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
-        </div>
-      </ion-list>
-  </ion-card-content>
-</ion-card>
+<ion-content padding text-center style="color: white">
+  
+  <ion-card>
+    <ion-card-header>
+      <h2>Current Appointments:</h2>   
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+          <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
+            <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today)}">
+              <ion-item>
+                {{appointment.timestamp | date:"MMMM d, yyyy"}}
+                {{appointment.timestamp | date:"hh:mm a"}}
+              </ion-item>
+              <ion-item-options side="right">
+                <button ion-button (click)="clearAppointment(appointment)">
+                  <ion-icon name="trash"></ion-icon>Delete
+                </button>
+              </ion-item-options>
+            </ion-item-sliding>
+            <hr>
+          </div>
+        </ion-list>
+        <button ion-button (click)=searchClicked()>Make an Appointment</button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

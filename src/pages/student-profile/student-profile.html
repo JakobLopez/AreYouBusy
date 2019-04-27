@@ -32,17 +32,18 @@
     <button ion-button (click)="log_out()" icon-only clear>
       <ion-icon name="log-out" style="color:white"></ion-icon>
     </button>
+    <h2 style="font-size:24px;"><br/>Favorites</h2>
   </div>
+  
 
   <ion-card class="main-content">
     <ion-card-content text-wrap text-center>
-      
-      <h2 style="font-size:24px;">Favorites</h2>
-      <hr color = "secondary">
-
-      <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
+     
+      <button style="color: rgba(101, 0, 1, 1)" ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
         {{fav.User.name }}
+        <hr>
       </button>
+      
     </ion-card-content>
 </ion-card>
 

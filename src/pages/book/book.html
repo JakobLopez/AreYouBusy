@@ -21,7 +21,7 @@
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="appForm" (submit)="makeAppointment()" novalidate>
+  <form style="margin-top: 10%;" [formGroup]="appForm" (submit)="makeAppointment()" novalidate>
     <ion-item>
       <ion-label>Date</ion-label>
       <ion-datetime formControlName="date" min={{today}} pickerFormat="DDD MMM DD YYYY"
@@ -40,7 +40,6 @@
 
 
     <button ion-button block [disabled]="!appForm.valid" type="submit">
-
       Make Appointment
     </button>
 
@@ -52,16 +51,15 @@
   </form>
 
   <div *ngIf="appForm.controls.date.touched">
-    <ion-list>
+    <ion-list style="color:white">
       <ion-list-header>
-        <ion-label>Appointments for {{myAppointment.date | date:"MMMM d, yyyy"}}</ion-label>
+        <ion-label style="color:white">Appointments for {{myAppointment.date | date:"MMMM d, yyyy"}}</ion-label>
       </ion-list-header>
       <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-        <ion-item *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')">
+        <ion-item style="color:white" *ngIf="(myAppointment.date | date:'MMMM d, yyyy') == (appointment.timestamp | date:'MMMM d, yyyy')">
           <div id="appointments">{{appointment.timestamp | date:"MMMM d, yyyy"}}
             {{appointment.timestamp | date:"hh:mm a"}} - {{appointment.endStamp | date:"hh:mm a"}}</div>
         </ion-item>
-
       </div>
     </ion-list>
   </div>

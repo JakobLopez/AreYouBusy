@@ -1,7 +1,4 @@
 page-student-profile {
-    ion-header{
-        background-color: gold;
-    }
     
     .header-image {
         width: auto;
@@ -16,8 +13,7 @@ page-student-profile {
         -webkit-box-shadow: 0px 0px 55px -16px rgba(0, 0, 0, 0.75);
         -moz-box-shadow: 0px 0px 55px -16px rgba(0, 0, 0, 0.75);
         box-shadow: 0px 0px 55px -16px rgba(0, 0, 0, 0.75);
-        border-radius: 15px 15px 15px 15px;// background: #F5F5F5;
-        //position: relative !important;
+        border-radius: 15px 15px 15px 15px;
     }
 
     .circular {
@@ -40,9 +36,4 @@ page-student-profile {
     .profile-description {
         font-size: 18px;
     }
-    .greyText{
-        opacity: 0.5;
-    }
-
-
 }
