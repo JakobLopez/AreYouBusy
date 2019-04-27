@@ -60,12 +60,11 @@ export class StudentProfilePage {
       this.userInfo.name = user['name'];
       this.userInfo.email = user['email'];
       this.userInfo.type = user['type'];
-
+      
       var pic = await document.getElementById("profile-pic");
       pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
       pic.style.backgroundSize = "contain";
       this.favorites = await this.db.getFavorites(this.auth.uid);
-
     }
     catch (e) {
       console.log(e);

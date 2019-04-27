@@ -1,11 +1,10 @@
 <!--header and navbar needed for menu -->
 <ion-header>
 
-  <ion-navbar color=primary>
-
-    <button ion-button menuToggle>
-      <ion-icon name="menu" color=white></ion-icon>
-    </button>
+    <ion-navbar color = primary>
+      <button ion-button menuToggle>
+        <ion-icon name="menu" color=white></ion-icon>
+      </button>
 
     <ion-title>
       <h2>Profile</h2>
@@ -20,9 +19,8 @@
 
 
 <ion-content padding class="profileContent">
-  <!--<img class="header-image" src="../../assets/imgs/building_header.jpg"/>-->
   <div id="profile-pic" class="circular" (click)="setProfilePic()">
-    </div>
+  </div>
 
   <div text-center style="color:white">
     <h2><br /> {{userInfo.name}}</h2>
@@ -45,22 +43,6 @@
       <button ion-item *ngFor="let fav of favorites" (click)="viewUser(fav.User.uid)">
         {{fav.User.name }}
       </button>
-
-      <ion-list>
-        <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-          <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today) }">
-            <ion-item>
-              {{appointment.timestamp | date:"MMMM d, yyyy"}}
-              {{appointment.timestamp | date:"hh:mm a"}}
-            </ion-item>
-            <ion-item-options side="right">
-              <button ion-button (click)="clearAppointment(appointment)">
-                <ion-icon name="trash"></ion-icon>Delete
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
-        </div>
-      </ion-list>
     </ion-card-content>
   </ion-card>
 

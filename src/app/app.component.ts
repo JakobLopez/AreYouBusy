@@ -91,6 +91,10 @@ export class MyApp {
     this.nav.setRoot('SearchPage');
   }
 
+  appointmentsClicked() {
+    this.nav.setRoot('MakeappointPage');
+  }
+
   log_out() {
     let log_out = this.alertCtrl.create({
       title: 'Logout?',
