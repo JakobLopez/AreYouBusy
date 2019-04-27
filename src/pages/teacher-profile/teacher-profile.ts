@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic
 import { DatabaseProvider } from '../../providers/database/database'
 import { AuthProvider } from '../../providers/auth/auth'
 import { AppointmentProvider } from '../../providers/appointment/appointment';
-import { Appointment } from '../../appointment';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -23,7 +22,7 @@ export class TeacherProfilePage {
     type: null,
     toggle: null
   };
-  appointments: Appointment[];
+ 
   today: any;
 
   sub: any;
@@ -54,10 +53,6 @@ export class TeacherProfilePage {
   }
 
   ngOnInit(): void {
-    //Listen for changes to appointments
-    this.appt.getAppointments(this.auth.uid)
-      .subscribe(appointments => this.appointments = appointments);
-
     //Get current time every second
     this.sub = Observable.interval(1000)
       .subscribe(() => this.today = Date.now());
@@ -149,8 +144,6 @@ export class TeacherProfilePage {
   //Gets availability of current professor
   //Checks office hours and appointments 
   getStatus() {
-
-
     if (this.userInfo.toggle) {
       this.statusCheck.unsubscribe();
       this.busyStatus = this.userInfo.toggle;
@@ -309,34 +302,6 @@ export class TeacherProfilePage {
     try {
       await this.auth.logout();
       this._app.getRootNav().setRoot('LoginSignupPage')
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  async clearAppointment(appoint: Appointment) {
-    try {
-      if (appoint.timestamp > this.today) {
-        let confirm = this.alertCtrl.create({
-          title: 'Are your sure you want to delete this appointment?',
-          subTitle: "It will be deleted from the professor's schedule.",
-          buttons: [
-            {
-              text: 'Remove',
-              handler: () => {
-                this.appt.delete(this.auth.uid, appoint, "Teacher").then(() => {
-                  this.appt.clear(this.auth.uid, appoint, "Teacher");
-                });
-              }
-            },
-            { text: 'Cancel' }
-          ]
-        });
-        confirm.present();
-      }
-      else
-        await this.appt.clear(this.auth.uid, appoint, "Teacher");
     }
     catch (e) {
       console.log(e);

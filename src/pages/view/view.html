@@ -20,7 +20,7 @@
 
 <div id="background">
   <ion-content id="background" padding class="profileContent">
-
+    <br>
     <div style="color:white">
         <h3>{{userInfo.email}}</h3>
         <h3>{{userInfo.name}}</h3>
@@ -34,8 +34,6 @@
       <button ion-button (click)='goToBook()'>Make an Appointment</button>
 
     </div>
-
-    {{busyStatus}}
 
     <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
       <ion-icon name="star"></ion-icon>

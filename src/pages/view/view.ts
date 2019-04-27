@@ -187,7 +187,6 @@ export class ViewPage {
           }
           else
           {
-            console.log("her")
             this.busyStatus = 'Not Available';
           }
             

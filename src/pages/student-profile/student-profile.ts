@@ -3,10 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic
 import { DatabaseProvider } from '../../providers/database/database';
 import { AuthProvider } from '../../providers/auth/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Appointment } from '../../appointment'
-import { AppointmentProvider } from '../../providers/appointment/appointment';
-import { Observable } from 'rxjs';
-import 'rxjs/add/observable/interval';
+
 
 @IonicPage()
 @Component({
@@ -20,14 +17,11 @@ export class StudentProfilePage {
     type: null
   };
   favorites = [];
-  appointments: Appointment[];
   sub: any;
-  today: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public db: DatabaseProvider, public auth: AuthProvider,
     public afs: AngularFirestore,
-    public appt: AppointmentProvider,
     public alertCtrl: AlertController,
     public _app: App) {
 
@@ -37,16 +31,6 @@ export class StudentProfilePage {
     });
   }
   
-  ngOnInit(): void {
-    //Watch for changes to appointments
-    this.appt.getAppointments(this.auth.uid)
-      .subscribe(appointments => this.appointments = appointments);
-
-    //Get current time every second
-    this.sub = Observable.interval(1000)
-      .subscribe(() => this.today = Date.now());
-  }
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StudentProfilePage');
@@ -65,34 +49,6 @@ export class StudentProfilePage {
       pic.style['background'] = 'url(' + await this.db.getProfilePic(user['profile_pic']) + ')';
       pic.style.backgroundSize = "contain";
       this.favorites = await this.db.getFavorites(this.auth.uid);
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  async clearAppointment(appoint: Appointment) {
-    try {
-      if(appoint.timestamp > this.today){
-        let confirm = this.alertCtrl.create({
-          title: 'Are your sure you want to delete this appointment?',
-          subTitle: "It will be deleted from the professor's schedule.",
-          buttons: [
-            {
-              text: 'Remove',
-              handler: () => {
-                this.appt.delete(this.auth.uid, appoint, "Student").then(() =>{
-                  this.appt.clear(this.auth.uid, appoint, "Student");
-                });
-              }
-            },
-            { text: 'Cancel' }
-          ]
-        });
-        confirm.present();
-      }
-      else
-        await this.appt.clear(this.auth.uid, appoint, "Student");
     }
     catch (e) {
       console.log(e);
