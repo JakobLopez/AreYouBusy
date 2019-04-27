@@ -59,11 +59,12 @@ export class LoginSignupPage {
   async tryLogin(credentials) {
     try {
       await this.auth.login(credentials);
-      console.log("Login sucess");
 
       this.storage.set('user', JSON.stringify(this.auth.uid));
 
       await this.db.setAccountType(this.auth.uid);
+
+      //await this.db.setTokenId(this.auth.uid);
 
       if (this.db.accountType == 'Student')
       this.navCtrl.setRoot('StudentProfilePage');

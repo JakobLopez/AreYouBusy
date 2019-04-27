@@ -13,7 +13,7 @@ exports.newSubscriberNotification = functions.firestore
         if (!data) return null;
 
         const userId = data.to;
-        const fromStamp = data.timestamp;
+        const fromStamp = data.timestamp - 18000000;
 
         const from = new Date(fromStamp).toLocaleString('en-US');
 

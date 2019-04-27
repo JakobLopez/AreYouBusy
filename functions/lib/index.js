@@ -11,14 +11,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
-exports.newAppointmentNotification = functions.firestore
+exports.newSubscriberNotification = functions.firestore
     .document('Teachers/{uid}/Appointments/{id}')
     .onCreate((snapshot, context) => __awaiter(this, void 0, void 0, function* () {
     const data = snapshot.data();
     if (!data)
         return null;
     const userId = data.to;
-    const fromStamp = data.timestamp;
+    const fromStamp = data.timestamp - 18000000;
     const from = new Date(fromStamp).toLocaleString('en-US');
     // Notification content
     const payload = {

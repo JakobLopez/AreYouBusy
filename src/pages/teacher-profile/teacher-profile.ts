@@ -6,6 +6,7 @@ import { AppointmentProvider } from '../../providers/appointment/appointment';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Appointment } from '../../appointment'
 
 
 
@@ -22,9 +23,9 @@ export class TeacherProfilePage {
     type: null,
     toggle: null
   };
- 
-  today: any;
 
+  today: any;
+  appointments: Appointment[];
   sub: any;
   statusCheck: any;
 
@@ -53,6 +54,10 @@ export class TeacherProfilePage {
   }
 
   ngOnInit(): void {
+    //Watch for changes to appointments
+    this.appt.getAppointments(this.auth.uid)
+      .subscribe(appointments => this.appointments = appointments);
+
     //Get current time every second
     this.sub = Observable.interval(1000)
       .subscribe(() => this.today = Date.now());
