@@ -7,7 +7,7 @@
     </button>
 
     <ion-title>
-      <h1>Find A Professor</h1>
+      <h1>Professors</h1>
     </ion-title>
 
     <span style="float:right">
@@ -18,9 +18,12 @@
 </ion-header>
 
 <ion-content padding>
+  
+<ion-searchbar showCancelButton style="background-color: #650001"></ion-searchbar>
 
-  <ion-list>
+  <ion-list class="format">
     <ion-item *ngFor="let person of users" (click)='viewUser(person.User.uid)'>
+      
 <!--
       <ion-avatar item-start>
         
@@ -29,6 +32,10 @@
         <img *ngIf="!person.Picture" src={{testImage}} >
         
       </ion-avatar>-->
-      <h2>{{person.User.name }}</h2>
+
+      <!-- Searchbar with a cancel button and custom cancel button text -->
+      <h2>{{person.User.name }}
+      <ion-icon style="float:right" name="arrow-forward"></ion-icon>
+    </h2>
     </ion-item>
   </ion-list>

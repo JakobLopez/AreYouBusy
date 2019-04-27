@@ -37,7 +37,6 @@ export class MakeappointPage {
       .subscribe(() => this.today = Date.now());
   }
 
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad StudentProfilePage');
   }
@@ -68,5 +67,9 @@ export class MakeappointPage {
     catch (e) {
       console.log(e);
     }
+  }
+
+  searchClicked() {
+    this.navCtrl.setRoot('SearchPage');
   }
 }

@@ -2,14 +2,13 @@
 <ion-header>
 
   <ion-navbar color = primary>
-    
     <button ion-button menuToggle>
-          <ion-icon name="menu" color=white></ion-icon>
+      <ion-icon name="menu" color=white></ion-icon>
     </button>
 
-    <ion-title>
-      <h2>Profile</h2>
-    </ion-title>
+  <ion-title>
+    <h2>Profile</h2>
+  </ion-title>
 
     <span style="float:right">
         <img  src="../../assets/imgs/MSUemblem.png" height = 50;/>
@@ -18,55 +17,52 @@
 
 </ion-header>
 
-<ion-content padding class="profileContent">
-  <div class="header-image"></div>
 
-  <div class="main-content" text-wrap text-center>
-    <div id="profile-pic" class="circular" (click)="setProfilePic()">
-    </div>
+<ion-content padding class="profileContent">
+  <div id="profile-pic" class="circular" (click)="setProfilePic()">
+  </div>
+
+  <div text-center style="color:white">
+    <h2><br/> {{userInfo.name}}</h2>
+    <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
+
     <button ion-button (click)="settings()" icon-only clear>
-      <ion-icon name="settings" style="color:grey"></ion-icon>
+      <ion-icon name="create" style="color:white"></ion-icon>
     </button>
     <button ion-button (click)="log_out()" icon-only clear>
-      <ion-icon name="log-out" style="color:grey"></ion-icon>
+      <ion-icon name="log-out" style="color:white"></ion-icon>
     </button>
-
-    <h3>{{userInfo.name}}</h3>
-
+    <br/><br/>
     <button ion-button (click)='toggleStatus()' [ngClass]="(busyStatus == 'Available') ? 'greenButton': 'redButton'">
       {{busyStatus}}
     </button>
-
-    <p class="profile-description">{{userInfo.email}} &bull; {{userInfo.type}}</p>
-    <hr>
-    <button ion-button (click)="goTo()">
-      Upload office hours
-    </button>
-
-    <ion-list>
-      <div *ngFor="let day of schedule">
-          {{day.key}}
-          <div *ngFor="let hours of day.value">
-            {{hours.From | convertTime}} - {{hours.To | convertTime}}
-          </div>
-      </div>
-    </ion-list>
-
-
-    <ion-list>
-      <div *ngFor="let appointment of appointments | orderby: 'timestamp'">
-        <ion-item-sliding [ngClass]="{greyText: (appointment.timestamp < today)}">
-          <ion-item>
-            {{appointment.timestamp | date:"MMMM d, yyyy"}}
-            {{appointment.timestamp | date:"hh:mm a"}}
-          </ion-item>
-          <ion-item-options side="right">
-            <button ion-button (click)="clearAppointment(appointment)">
-              <ion-icon name="trash"></ion-icon>Delete
-            </button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </div>
-    </ion-list>
-
   </div>
+  <br/><br/>
+
+  <ion-card class="main-content">
+    <ion-card-content text-wrap text-center>
+      <h2 style="font-size:24px;"><br/>Office Hours</h2>
+      <hr>
+      <ion-list>
+        <div *ngFor="let day of schedule" style="color: rgba(101, 0, 1, 1)">
+            {{day.key}}:
+            <div *ngFor="let hours of day.value" >
+              <div *ngIf="hours.From != null" style="float:center">
+                {{hours.From | convertTime}} - {{hours.To | convertTime}}
+              </div>
+              <div *ngIf="hours.From == null">
+                Not in office
+              </div>
+          </div>
+          <br/>
+        </div>
+        
+      </ion-list>
+      <hr>
+      <button ion-button (click)="goTo()">
+          Upload office hours
+      </button>   
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

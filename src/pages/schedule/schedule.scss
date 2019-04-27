@@ -1,5 +1,15 @@
 page-schedule {
-    ion-button{
-        color: gold;
+     ion-content{
+        background-image: url(../../assets/imgs/building_header.jpg);
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+     }
+
+    #background{
+        background-image: url(../../assets/imgs/building_header.jpg);
+        background-size: cover;
+        width: 100%;
+        height: 100%;
     }
 }
