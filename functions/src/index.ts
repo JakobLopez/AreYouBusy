@@ -4,7 +4,7 @@ import * as admin from 'firebase-admin';
 admin.initializeApp();
 
 
-exports.newSubscriberNotification = functions.firestore
+exports.newAppointmentotification = functions.firestore
     .document('Teachers/{uid}/Appointments/{id}')
     .onCreate(async (snapshot, context) => {
 

@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
-exports.newSubscriberNotification = functions.firestore
+exports.newAppointmentotification = functions.firestore
     .document('Teachers/{uid}/Appointments/{id}')
     .onCreate((snapshot, context) => __awaiter(this, void 0, void 0, function* () {
     const data = snapshot.data();
